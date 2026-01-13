@@ -3,7 +3,9 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 3
-  tags: []
+  tags:
+  - FxTemporaire
+  - Enemy
   layers:
   - Default
   - TransparentFX
@@ -12,10 +14,10 @@ TagManager:
   - Water
   - UI
   - Wall
-  - char
-  - charface
-  - Ground
-  - 
+  - Char
+  - Enemy
+  - TransChar
+  - Ceiling
   - 
   - 
   - 

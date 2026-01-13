@@ -3,12 +3,13 @@ using UnityEngine;
 public class AttakFinishBehavior : StateMachineBehaviour
 {
     private PlayerController player;
+    private PlayerCombat combat;
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if(player==null)
-            player = animator.GetComponent<PlayerController>();
-        player.CanAttack=false;
+        if(combat==null)
+            combat = animator.GetComponent<PlayerCombat>();
+        combat.CanAttack=false;
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
@@ -22,9 +23,7 @@ public class AttakFinishBehavior : StateMachineBehaviour
     {
         if(player==null)
             player = animator.GetComponent<PlayerController>();
-        player.CanAttack=true;
-        player.CanMove= true;
-        player.ComboIndex = 0;
+        player.OnAnimationFinished();
         
     }
 

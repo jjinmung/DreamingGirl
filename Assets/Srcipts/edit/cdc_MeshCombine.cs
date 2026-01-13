@@ -48,6 +48,8 @@ public class cdc_MeshCombine : MonoBehaviour
         // 2. 새로운 메쉬 생성 및 합치기
         Mesh finalMesh = new Mesh();
         finalMesh.name = "CombinedMesh_" + gameObject.name;
+        finalMesh.indexFormat = UnityEngine.Rendering.IndexFormat.UInt32;
+        
         finalMesh.CombineMeshes(combine, true, true);
 
         // 3. 메쉬 할당

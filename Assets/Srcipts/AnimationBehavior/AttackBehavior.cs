@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class AttackBehavior : StateMachineBehaviour
 {
-    private float dashForce = 5f;
+    private float dashForce = 2f;
     private PlayerController player;
     private Rigidbody rb; 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
@@ -14,9 +14,7 @@ public class AttackBehavior : StateMachineBehaviour
             rb= animator.GetComponent<Rigidbody>();
         Vector3 dashDirection = animator.transform.forward;
         rb.linearVelocity = dashDirection * dashForce;
-
-        player.CanAttack=false;
-        player.CanMove= false;
+        player.OnAnimationStart();
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks

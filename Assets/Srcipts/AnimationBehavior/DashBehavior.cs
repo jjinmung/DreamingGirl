@@ -4,10 +4,12 @@ public class DashBehavior : StateMachineBehaviour
 {
     private PlayerController player;
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
-    //override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    //{
-    //    
-    //}
+    override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    {
+        if(player==null)
+            player = animator.GetComponent<PlayerController>();
+        player.ChangeLayer("TransChar");
+    }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     //override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -20,8 +22,8 @@ public class DashBehavior : StateMachineBehaviour
     {
         if(player==null)
             player = animator.GetComponent<PlayerController>();
-        player.CanAttack=true;
-        player.CanMove = true;
+        player.OnAnimationFinished();
+        player.ChangeLayer("Char");
     }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()
