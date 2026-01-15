@@ -18,25 +18,20 @@ namespace MasterStylizedProjectile
         public bool isTargeting;
         public Transform target;
         public float rotSpeed = 0;
-        [Tooltip("是否平射，如果为true，子弹在y轴方向的速度为0，且不能朝上下旋转")]
         public bool isFlatShoot = false;
         
         private float initialYPosition;
         
         private void Start()
         {
-            
-            initialYPosition = transform.position.y;
-            
-            if (bulletClip != null)
-            {
-                var audio = gameObject.AddComponent<AudioSource>();
-                audio.clip = bulletClip;
-                audio.Play();
-            }
-
-            StartCoroutine(DelayDestroy());
+            Init();
         }
+
+        private void OnEnable()
+        {
+            Init();
+        }
+
         private void Update()
         {
             if (isTargeting  && target != null)
@@ -95,21 +90,30 @@ namespace MasterStylizedProjectile
             if(other.gameObject.CompareTag("Enemy")) return;
             if (OnHitEffect != null)
             {
-                var onHitObj = Instantiate(OnHitEffect, transform.position, Quaternion.identity);
-                var onHit = onHitObj.gameObject.AddComponent<AudioTrigger>();
+                var onHitObj = Managers.Pool.SpawnFromPool(OnHitEffect.gameObject, transform.position, Quaternion.identity);
+                
+                /*var onHit = onHitObj.gameObject.AddComponent<AudioTrigger>();
                 if (onHitClip != null)
                 {
                     onHit.onClip = onHitClip;
-                }
+                }*/
                 
             }
-            Destroy(gameObject);
+            Managers.Pool.ReturnToPool(gameObject);
         }
 
-        IEnumerator DelayDestroy()
+        private void Init()
         {
-            yield return new WaitForSeconds(5f);
-            Destroy(gameObject);
+            initialYPosition = transform.position.y;
+            
+            if (bulletClip != null)
+            {
+                var audio = gameObject.AddComponent<AudioSource>();
+                audio.clip = bulletClip;
+                audio.Play();
+            }
         }
+        
+
     }
 }

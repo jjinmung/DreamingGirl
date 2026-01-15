@@ -6,6 +6,7 @@ TagManager:
   tags:
   - FxTemporaire
   - Enemy
+  - Attack
   layers:
   - Default
   - TransparentFX
@@ -13,13 +14,13 @@ TagManager:
   - 
   - Water
   - UI
-  - Wall
+  - Map
   - Char
   - Enemy
   - TransChar
   - Ceiling
-  - 
-  - 
+  - DeadBody
+  - Attack
   - 
   - 
   - 

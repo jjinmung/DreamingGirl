@@ -41,7 +41,8 @@ namespace MasterStylizedProjectile
 
         public void Shoot()
         {
-            StartCoroutine(ShootIE());
+            DoShoot();
+            //StartCoroutine(ShootIE());
         }
         public IEnumerator ShootIE()
         {
@@ -52,7 +53,7 @@ namespace MasterStylizedProjectile
         {
             if (CurEffect.ChargeParticles != null)
             {
-                var ChargePar = Instantiate(CurEffect.ChargeParticles, StartNodeTrans.position, Quaternion.identity);
+                //var ChargePar = Managers.Pool.SpawnFromPool(CurEffect.ChargeParticles.gameObject, StartNodeTrans.position, Quaternion.identity);
                 //var onStart = gameObject.AddComponent<AudioTrigger>();
                 //if (CurEffect.ChargeClip != null)
                 //{
@@ -68,7 +69,7 @@ namespace MasterStylizedProjectile
                     audiosource.Play();
                 }
                 yield return new WaitForSeconds(CurEffect.ChargeParticleTime);
-                Destroy(ChargePar.gameObject);
+                //Managers.Pool.ReturnToPool(ChargePar.gameObject);
             }
            
         }
@@ -87,27 +88,29 @@ namespace MasterStylizedProjectile
             
             if (CurEffect.StartParticles != null)
             {
-                var StartPar = Instantiate(CurEffect.StartParticles, StartNodeTrans.position, Quaternion.identity);
+                var StartPar = Managers.Pool.SpawnFromPool(CurEffect.StartParticles.gameObject, StartNodeTrans.position, Quaternion.identity);
                 StartPar.transform.forward = targetDir;
 
-                var onStart = StartPar.gameObject.AddComponent<AudioTrigger>();
+                /*var onStart = StartPar.gameObject.AddComponent<AudioTrigger>();
                 if (CurEffect.startClip != null)
                 {
                     onStart.onClip = CurEffect.startClip;
-                }
+                }*/
 
             }
             if (CurEffect.BulletParticles != null)
             {
-                var bulletObj = Instantiate(CurEffect.BulletParticles, StartNodeTrans.position, Quaternion.identity);
+                var bulletObj = Managers.Pool.SpawnFromPool(CurEffect.BulletParticles.gameObject, StartNodeTrans.position, Quaternion.identity);
                 bulletObj.transform.forward = targetDir;
 
-                var bullet = bulletObj.gameObject.AddComponent<Bullet>();
-                bullet.OnHitEffect = CurEffect.HitParticles;
+                var bullet = bulletObj.gameObject.GetComponent<Bullet>();
+                if(bullet == null)
+                    bullet =bulletObj.gameObject.AddComponent<Bullet>();
                 //bullet.Speed = CurEffect.Speed;
                 bullet.Speed = Speed;
                 bullet.isTargeting = CurEffect.isTargeting;
                 bullet.isFlatShoot = CurEffect.isFlatShoot;
+                bullet.OnHitEffect = CurEffect.HitParticles;
                 
                 if (CurEffect.isTargeting)
                 {
@@ -130,9 +133,14 @@ namespace MasterStylizedProjectile
                 }
 
 
-                var collider = bulletObj.gameObject.AddComponent<SphereCollider>();
-                collider.isTrigger = true;
-                collider.radius = 0.6f;
+                var collider = bulletObj.gameObject.GetComponent<SphereCollider>();
+                if (collider == null)
+                {
+                    collider =bulletObj.gameObject.AddComponent<SphereCollider>();
+                    collider.isTrigger = true;
+                    collider.radius = 0.6f;
+                }
+               
             }
       
         }

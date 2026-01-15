@@ -124,7 +124,7 @@ MonoBehaviour:
     hitClip: {fileID: 8300000, guid: f5ca75920ddd5d344bd3a8634b246a0e, type: 3}
     isTargeting: 0
     RotSpeed: 0
-    isFlatShoot: 0
+    isFlatShoot: 1
   - EffectName: RedShoot
     Speed: 30
     ChargeParticles: {fileID: 0}
