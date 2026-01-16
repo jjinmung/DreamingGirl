@@ -56,8 +56,7 @@ public class cdc_MeshCombine : MonoBehaviour
         GetComponent<MeshFilter>().sharedMesh = finalMesh;
 
 #if UNITY_EDITOR
-        // 4. 프리팹 저장을 위한 메쉬 자산화 (선택 사항)
-        // 이 과정이 없으면 프리팹 생성 시 메쉬가 유실됩니다.
+        // 4. 매쉬 프리펩 저장
         if (!Application.isPlaying)
         {
             string path = "Assets/CombinedMesh/CombinedMesh_" + System.DateTime.Now.Ticks + ".asset";

@@ -87,12 +87,14 @@ public class DungeonGenerator : MonoBehaviour
 
     void SpawnRandomPrefab(List<GameObject> prefabList, Vector3 position, Quaternion rotation)
     {
-        bool isNormal;
         if (prefabList != null && prefabList.Count > 0)
         {
             int index = Random.Range(0, prefabList.Count);
-
-            SpawnEditorObject(prefabList[index], position, rotation,index <= 9);
+            //바닥을 생성할 때 기본 타일이 아닐 때
+            if(prefabList==floorPrefabs && !prefabList[index].name.Equals("floor_tile_large"))
+                SpawnEditorObject(prefabList[index], position,rotation,false);
+            else
+                SpawnEditorObject(prefabList[index], position, rotation);
         }
     }
 
@@ -153,7 +155,6 @@ public class DungeonGenerator : MonoBehaviour
         {
             Undo.DestroyObjectImmediate(child);
         }
-        
         objs.Clear();
         // 3. 기존에 생성된 콜라이더들 제거
         BoxCollider[] colliders = GetComponents<BoxCollider>();

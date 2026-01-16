@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour
 {
     private PlayerMovement _movement;
     private PlayerCombat _combat;
+    
     private Animator _animator;
     private Vector2 _inputVector;
     public enum PlayerState { Idle, Run,Attack,Dash}
@@ -20,20 +21,32 @@ public class PlayerController : MonoBehaviour
         _animator = GetComponent<Animator>();
     }
 
+    private void Start()
+    {
+        Managers.Input.OnAttack -= HandleAttackInput;
+        Managers.Input.OnAttack += HandleAttackInput;
+        
+        Managers.Input.OnDash -= HandleDashInput;
+        Managers.Input.OnDash += HandleDashInput;
+        
+    }
     private void FixedUpdate()
     {
+        _inputVector = Managers.Input.GetMoveInput();
+        
         Vector3 moveDir = CalculateCameraDirection();
         _movement.Move(_inputVector, moveDir);
         
-        if (_isAttackPressed && _combat.CanAttack)
+        if (Managers.Input.IsAttackPressed && _combat.CanAttack)
         {
             _combat.AddBuffer("Attack");
         }
         
         _combat.ProcessBuffer();
+        
         UpdateAnimation();
-        
-        
+
+
     }
 
     private Vector3 CalculateCameraDirection()
@@ -43,23 +56,21 @@ public class PlayerController : MonoBehaviour
         forward.y = 0; right.y = 0;
         return (forward * _inputVector.y + right * _inputVector.x).normalized;
     }
+    
 
-    public void OnMove(InputValue value) => _inputVector = value.Get<Vector2>();
-
-    public void OnAttack(InputValue value)
+    private void HandleAttackInput()
     {
-        _isAttackPressed = value.isPressed;
-
         // 누른 "순간" 즉시 첫 공격이 나가도록 처리
-        if (_isAttackPressed && _combat.CanAttack)
+        if (_combat.CanAttack)
         {
             _combat.AddBuffer("Attack");
         }
     }
 
-    public void OnDash()
+    private void HandleDashInput()
     {
         if (!_movement.CanMove) return;
+
         _movement.ExecuteDash(CalculateCameraDirection(), () => {
             _combat.ClearBuffer();
             _combat.ResetCombo();
@@ -68,7 +79,6 @@ public class PlayerController : MonoBehaviour
             _combat.CanAttack = false;
         });
     }
-
     private void UpdateAnimation()
     {
         if (!_movement.CanMove) return;
@@ -122,5 +132,14 @@ public class PlayerController : MonoBehaviour
             child.gameObject.layer = targetLayer;
         }
     }
-
+    
+    private void OnDestroy()
+    {
+        // 메모리 누수 방지를 위한 구독 해제
+        if (Managers.Input != null)
+        {
+            Managers.Input.OnAttack -= HandleAttackInput;
+            Managers.Input.OnDash -= HandleDashInput;
+        }
+    }
 }

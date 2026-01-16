@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class PlayerAttack : MonoBehaviour
 {
-    PlayerBase player;
+    PlayerUnit player;
     private void Awake()
     {
-        player = GetComponentInParent<PlayerBase>();
+        player = GetComponentInParent<PlayerUnit>();
     }
 
     void OnTriggerEnter(Collider other)

@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public float moveSpeed = 7f;
     public float rotationSpeed = 15f;
     public float dashForce = 20f;
     public float dashCooldown = 1.5f;
@@ -19,7 +18,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (input.sqrMagnitude > 0.01f)
         {
-            Vector3 targetVelocity = direction * moveSpeed;
+            Vector3 targetVelocity = direction * Managers.Player.data.moveSpeed.TotalValue;
             targetVelocity.y = _rb.linearVelocity.y;
             _rb.linearVelocity = targetVelocity;
 

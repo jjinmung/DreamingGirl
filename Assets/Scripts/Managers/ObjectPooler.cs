@@ -3,14 +3,7 @@ using UnityEngine;
 
 public class ObjectPooler : MonoBehaviour
 {
-    // 싱글톤 인스턴스
-    public static ObjectPooler Instance;
-
-    private void Awake()
-    {
-        Instance = this;
-    }
-
+    
     // 프리팹의 InstanceID를 키로 사용하여 풀을 관리합니다.
     private Dictionary<int, Queue<GameObject>> poolDictionary = new Dictionary<int, Queue<GameObject>>();
 
@@ -41,6 +34,7 @@ public class ObjectPooler : MonoBehaviour
         else
         {
             objectToSpawn = Instantiate(prefab);
+            objectToSpawn.transform.SetParent(transform);
             var pooledObject = objectToSpawn.GetComponent<PooledObject>();
             if (pooledObject == null)
                 pooledObject= objectToSpawn.AddComponent<PooledObject>();
