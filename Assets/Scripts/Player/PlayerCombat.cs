@@ -57,6 +57,17 @@ public class PlayerCombat : MonoBehaviour
     
     private void LookAtMouse()
     {
+        Vector3 mousePos = Input.mousePosition;
+        if (float.IsNaN(mousePos.x) || float.IsNaN(mousePos.y))
+            return;
+
+        // 화면 해상도 범위를 완전히 벗어난 값인지 체크
+        if (mousePos.x < 0 || mousePos.x > Screen.width || mousePos.y < 0 || mousePos.y > Screen.height)
+        {
+            // 화면 밖이면 무시하거나 직전의 정상적인 위치를 사용
+            return;
+        }
+        
         Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
         if (new Plane(Vector3.up, transform.position).Raycast(ray, out float dist))
         {

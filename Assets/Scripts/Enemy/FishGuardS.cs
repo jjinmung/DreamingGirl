@@ -10,12 +10,34 @@ public class FishGuardS : EnemyBase
     {
         _animator.SetTrigger("ATTACK");
     }
-    
 
+    public override void Init()
+    {
+        base.Init();
+        
+        takeDamageAction -= TakeDamageHandler;
+        takeDamageAction += TakeDamageHandler;
+        dieAcation -= DieHandler;
+        dieAcation += DieHandler;
+    }
     public override void TakeDamage(float damage)
     {
-        _navMeshAgent.isStopped = true;
         base.TakeDamage(damage);
+        takeDamageAction.Invoke(damage);
+    }
+
+   
+    
+    protected override void Die()
+    {
+        base.Die();
+        dieAcation.Invoke();
+    }
+
+    #region 이벤트 등록 함수
+    private void TakeDamageHandler(float damage)
+    {
+        _navMeshAgent.isStopped = true;
         hitEffect();
         
         if (!IsAttack)
@@ -28,16 +50,13 @@ public class FishGuardS : EnemyBase
         }
     }
 
-   
-    public override void Init()
+    private void DieHandler()
     {
-        base.Init();
-    }
-    protected override void Die()
-    {
-        base.Die();
         SetAttackArange(false);
     }
+    #endregion
+    
+    
     public void SetVpartrolPoints(List<GameObject> partrolPoints)
     {
         if(_behavior == null)
@@ -49,7 +68,9 @@ public class FishGuardS : EnemyBase
     {
         AttackRange.gameObject.SetActive(isAcive);
     }
-    //애니메이션 이벤트 함수
+
+    #region 애니메이션 이벤트 함수
+
     public void OffAttackArrange()
     {
         SetAttackArange(false);
@@ -63,6 +84,9 @@ public class FishGuardS : EnemyBase
     {
         _navMeshAgent.isStopped = false;
     }
+
+    #endregion
+   
 
     
 }

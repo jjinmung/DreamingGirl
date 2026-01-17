@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.Behavior;
 using UnityEngine;
 
 namespace MasterStylizedProjectile
@@ -88,7 +89,9 @@ namespace MasterStylizedProjectile
             
             if (CurEffect.StartParticles != null)
             {
-                var StartPar = Managers.Pool.SpawnFromPool(CurEffect.StartParticles.gameObject, StartNodeTrans.position, Quaternion.identity);
+                var StartPar = 
+                    Managers.Resource.Instantiate(Address.PurpleShoot_Start, 
+                        StartNodeTrans.position, Quaternion.identity);
                 StartPar.transform.forward = targetDir;
 
                 /*var onStart = StartPar.gameObject.AddComponent<AudioTrigger>();
@@ -100,12 +103,13 @@ namespace MasterStylizedProjectile
             }
             if (CurEffect.BulletParticles != null)
             {
-                var bulletObj = Managers.Pool.SpawnFromPool(CurEffect.BulletParticles.gameObject, StartNodeTrans.position, Quaternion.identity);
+                var bulletObj = 
+                    Managers.Resource.Instantiate(Address.PurpleShoot_Bullet, 
+                        StartNodeTrans.position, Quaternion.identity);
                 bulletObj.transform.forward = targetDir;
 
-                var bullet = bulletObj.gameObject.GetComponent<Bullet>();
-                if(bullet == null)
-                    bullet =bulletObj.gameObject.AddComponent<Bullet>();
+                var bullet = bulletObj.gameObject.GetOrAddComponent<Bullet>();
+                
                 //bullet.Speed = CurEffect.Speed;
                 bullet.Speed = Speed;
                 bullet.isTargeting = CurEffect.isTargeting;

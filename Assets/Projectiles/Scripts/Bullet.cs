@@ -38,7 +38,7 @@ namespace MasterStylizedProjectile
             {
                 Vector3 targetDirection = target.position - transform.position;
                 
-                // 如果平射，限制旋转只能在xz平面（不能上下旋转）
+                
                 if (isFlatShoot)
                 {
                     targetDirection.y = 0;
@@ -47,7 +47,7 @@ namespace MasterStylizedProjectile
                 
                 transform.forward = Vector3.RotateTowards(transform.forward, targetDirection, rotSpeed * Time.deltaTime, 0.0f);
                 
-                // 如果平射，确保forward的y分量为0（限制在xz平面）
+                
                 if (isFlatShoot)
                 {
                     Vector3 flatForward = transform.forward;
@@ -61,7 +61,7 @@ namespace MasterStylizedProjectile
             }
             else
             {
-                // 即使不追踪目标，如果平射也要确保forward的y分量为0
+                
                 if (isFlatShoot)
                 {
                     Vector3 flatForward = transform.forward;
@@ -74,11 +74,11 @@ namespace MasterStylizedProjectile
                 }
             }
             
-            // 移动（使用Space.Self，沿着物体的forward方向移动）
+            
             Vector3 forward = Vector3.forward;
             transform.Translate(forward * Speed * Time.deltaTime, Space.Self);
             
-            // 如果平射，强制保持y坐标不变（确保y轴速度为0）
+            
             if (isFlatShoot)
             {
                 Vector3 pos = transform.position;
@@ -90,7 +90,9 @@ namespace MasterStylizedProjectile
             if(other.gameObject.CompareTag("Enemy")) return;
             if (OnHitEffect != null)
             {
-                var onHitObj = Managers.Pool.SpawnFromPool(OnHitEffect.gameObject, transform.position, Quaternion.identity);
+                var onHitObj = 
+                    Managers.Resource.Instantiate(Address.PurpleShoot_Hit, 
+                    transform.position, Quaternion.identity);
                 
                 /*var onHit = onHitObj.gameObject.AddComponent<AudioTrigger>();
                 if (onHitClip != null)
@@ -99,7 +101,7 @@ namespace MasterStylizedProjectile
                 }*/
                 
             }
-            Managers.Pool.ReturnToPool(gameObject);
+            Managers.Resource.Destroy(gameObject);
         }
 
         private void Init()

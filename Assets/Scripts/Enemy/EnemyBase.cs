@@ -1,8 +1,10 @@
+using System;
 using System.Collections;
 using DG.Tweening;
 using Unity.Behavior;
 using UnityEngine;
 using UnityEngine.AI;
+using Action = System.Action;
 
 public abstract class EnemyBase : BaseUnit
 {
@@ -14,6 +16,8 @@ public abstract class EnemyBase : BaseUnit
     protected Rigidbody _rigidbody;
     public bool IsAttack=false;
     
+    public Action<float> takeDamageAction; //데미지 받았을 때 실행할 이벤트
+    public Action dieAcation;
     [SerializeField]private Material _originalMat;
     [SerializeField]private Material _hitMat;
     [SerializeField]private Material _deathMat;
@@ -66,7 +70,7 @@ public abstract class EnemyBase : BaseUnit
             .OnComplete(() => {
                 _skinnedMesh.material.SetFloat(transparentvalue, 0f);
                 _skinnedMesh.material=_originalMat;
-                Managers.Pool.ReturnToPool(gameObject);
+                Managers.Resource.Destroy(gameObject);
             });
     }
 }

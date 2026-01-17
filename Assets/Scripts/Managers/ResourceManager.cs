@@ -1,55 +1,103 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Unity.Behavior;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
-public class ResourceManager
+public class ResourceManager : MonoBehaviour
 {
-    public T Load<T>(string path) where T : Object
+    // 에셋 캐시 (Addressables)
+    private Dictionary<string, AsyncOperationHandle> _resources = new Dictionary<string, AsyncOperationHandle>();
+    
+    // 오브젝트 풀 (Pooling)
+    private Dictionary<string, Queue<GameObject>> _pools = new Dictionary<string, Queue<GameObject>>();
+
+    // [Load] 에셋 로드 (동기)
+    public T Load<T>(string address) where T : Object
     {
-        /*if (typeof(T) == typeof(GameObject))
-        {
-            string name = path;
-            int index = name.LastIndexOf('/');
-            if (index >= 0)
-                name = name.Substring(index + 1);
+        if (_resources.TryGetValue(address, out AsyncOperationHandle handle))
+            return handle.Result as T;
 
-            GameObject go = Managers.Pool.GetOriginal(name);
-            if (go != null)
-                return go as T;
-        }*/
+        var loadHandle = Addressables.LoadAssetAsync<T>(address);
+        loadHandle.WaitForCompletion();
 
-        return Resources.Load<T>(path);
+        _resources.Add(address, loadHandle);
+        return loadHandle.Result;
     }
 
-    public GameObject Instantiate(string path, Transform parent = null)
+    // [Instantiate / Spawn] 풀링을 포함한 생성
+    public GameObject Instantiate(string address, Vector3 position=default, Quaternion rotation=default,Transform parent = null)
     {
-        /*GameObject original = Load<GameObject>($"Prefabs/{path}");
-        if (original == null)
+        // 1. 풀에 남아있는게 있는지 확인
+        if (_pools.ContainsKey(address) && _pools[address].Count > 0)
         {
-            Debug.Log($"Failed to load prefab : {path}");
-            return null;
+            GameObject obj = _pools[address].Dequeue();
+            obj.SetActive(true);
+            obj.transform.SetParent(parent);
+            obj.transform.SetPositionAndRotation(position, rotation);
+            return obj;
         }
 
-        if (original.GetComponent<Poolable>() != null)
-            return Managers.Pool.Pop(original, parent).gameObject;
+        // 2. 없다면 새로 로드 및 생성
+        GameObject prefab = Load<GameObject>(address);
+        if (prefab == null) return null;
+
+        GameObject go = Object.Instantiate(prefab, parent);
         
-        GameObject go = Object.Instantiate(original, parent);
-        go.name = original.name;*/
-        return null;
+        go.transform.SetParent(parent);
+        go.transform.SetPositionAndRotation(position, rotation);
+        go.name = prefab.name;
+
+        // 풀링 정보 기입
+        PooledObject po = go.GetOrAddComponent<PooledObject>();
+        po.address = address;
+
+        return go;
     }
 
+    // [Destroy / Release] 풀로 반납
     public void Destroy(GameObject go)
     {
-        /*if (go == null)
-            return;
+        if (go == null) return;
 
-        Poolable poolable = go.GetComponent<Poolable>();
-        if (poolable != null)
+        PooledObject po = go.GetComponent<PooledObject>();
+        
+        // 풀링 대상이 아니면 그냥 파괴
+        if (po == null)
         {
-            Managers.Pool.Push(poolable);
+            Object.Destroy(go);
             return;
         }
 
-        Object.Destroy(go);*/
+        // 풀에 반납
+        if (!_pools.ContainsKey(po.address))
+            _pools.Add(po.address, new Queue<GameObject>());
+
+        _pools[po.address].Enqueue(go);
+        go.SetActive(false);
+        //go.transform.SetParent(transform);
+    }
+
+    public void Clear()
+    {
+        // 1. 풀에 저장된 실제 GameObject들을 모두 파괴
+        foreach (var queue in _pools.Values)
+        {
+            while (queue.Count > 0)
+            {
+                GameObject go = queue.Dequeue();
+                Object.Destroy(go);
+            }
+        }
+        _pools.Clear();
+
+        // 2. 에셋 참조 해제 (이제 원본을 안전하게 제거 가능)
+        foreach (var handle in _resources.Values)
+        {
+            Addressables.Release(handle);
+        }
+        _resources.Clear();
     }
 }
+
+

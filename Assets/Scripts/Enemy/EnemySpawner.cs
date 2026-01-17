@@ -33,7 +33,7 @@ public class EnemySpawner : MonoBehaviour
     {
         if (enemiesToSpawn.Length == 0 || PatrolPoints.Length == 0) return;
 
-        // 1. 가중치 기반 적 선택 로직 (기존 유지)
+        // 1. 가중치 기반 적 선택 로직 
         float totalWeight = enemiesToSpawn.Sum(data => data.spawnWeight);
         float pivot = Random.Range(0, totalWeight);
         float cumulative = 0;
@@ -56,9 +56,25 @@ public class EnemySpawner : MonoBehaviour
 
             if (finalSpawnPos != Vector3.zero)
             {
-                GameObject newEnemy = Managers.Pool.SpawnFromPool(selectedEnemy.enemyPrefab, finalSpawnPos, Quaternion.Euler(0, Random.Range(0, 360), 0));
-                   
-                EnemyInit(newEnemy);
+                //적 생성 및 ui바인딩
+                var newEnemy = Managers.Resource.Instantiate(Address.FishGuard_S, finalSpawnPos, Quaternion.Euler(0, Random.Range(0, 360), 0));
+                var hpBar = Managers.UI.MakeSubItem<UI_HPBar>(Address.Enemy_HP_BAR);
+                var enemyBase = newEnemy.GetComponent<EnemyBase>();
+                
+                hpBar.Init();
+                
+                
+                hpBar.SetMaxHP(enemyBase.maxHealth);
+                hpBar.GetComponentInChildren<HealthBarController>().targetMonster = newEnemy.transform;
+      
+                enemyBase.takeDamageAction-=hpBar.TakeDamage;
+                enemyBase.takeDamageAction+=hpBar.TakeDamage;
+                enemyBase.dieAcation -= hpBar.Destroy;
+                enemyBase.dieAcation += hpBar.Destroy;
+                
+                
+                if(newEnemy!=null)
+                    EnemyInit(newEnemy);
             }
             else
             {
