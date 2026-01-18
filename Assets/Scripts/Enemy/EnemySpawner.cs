@@ -58,14 +58,14 @@ public class EnemySpawner : MonoBehaviour
             {
                 //적 생성 및 ui바인딩
                 var newEnemy = Managers.Resource.Instantiate(Address.FishGuard_S, finalSpawnPos, Quaternion.Euler(0, Random.Range(0, 360), 0));
-                var hpBar = Managers.UI.MakeSubItem<UI_HPBar>(Address.Enemy_HP_BAR);
+                var hpBar = Managers.UI.MakeSubItem<UI_HPBar>(Address.Enemy_HP_BAR,Managers.UI.Root.transform);
                 var enemyBase = newEnemy.GetComponent<EnemyBase>();
                 
                 hpBar.Init();
                 
                 
                 hpBar.SetMaxHP(enemyBase.maxHealth);
-                hpBar.GetComponentInChildren<HealthBarController>().targetMonster = newEnemy.transform;
+                hpBar.GetComponentInChildren<HealthBarController>().target = newEnemy.transform;
       
                 enemyBase.takeDamageAction-=hpBar.TakeDamage;
                 enemyBase.takeDamageAction+=hpBar.TakeDamage;

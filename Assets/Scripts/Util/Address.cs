@@ -12,8 +12,8 @@ public static class Address
     public const string PurpleShoot_Hit = "Assets/Prefabs/Shoot_Purple/Par_PurpleShoot_Hit.prefab";
     
     // UI
-    public const string UI_HUD = "UI_MainHUD";
-    public const string Player_HP_BAR ="Assets/Prefabs/UI/PlayerHPBar.prefab";
     public const string Enemy_HP_BAR ="Assets/Prefabs/UI/EnemyHPBar.prefab";
+    public const string UI_Blood = "Assets/Prefabs/UI/UI_Bloode.prefab";
+    public const string UI_FloatingText = "Assets/Prefabs/UI/UI_FloatingText.prefab";
 }
 

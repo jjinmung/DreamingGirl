@@ -133,13 +133,4 @@ public class PlayerController : MonoBehaviour
         }
     }
     
-    private void OnDestroy()
-    {
-        // 메모리 누수 방지를 위한 구독 해제
-        if (Managers.Input != null)
-        {
-            Managers.Input.OnAttack -= HandleAttackInput;
-            Managers.Input.OnDash -= HandleDashInput;
-        }
-    }
 }

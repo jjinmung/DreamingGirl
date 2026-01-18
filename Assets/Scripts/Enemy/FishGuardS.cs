@@ -20,22 +20,9 @@ public class FishGuardS : EnemyBase
         dieAcation -= DieHandler;
         dieAcation += DieHandler;
     }
-    public override void TakeDamage(float damage)
-    {
-        base.TakeDamage(damage);
-        takeDamageAction.Invoke(damage);
-    }
-
-   
-    
-    protected override void Die()
-    {
-        base.Die();
-        dieAcation.Invoke();
-    }
 
     #region 이벤트 등록 함수
-    private void TakeDamageHandler(float damage)
+    protected override void TakeDamageHandler(float damage)
     {
         _navMeshAgent.isStopped = true;
         hitEffect();
@@ -50,7 +37,7 @@ public class FishGuardS : EnemyBase
         }
     }
 
-    private void DieHandler()
+    protected override void DieHandler()
     {
         SetAttackArange(false);
     }

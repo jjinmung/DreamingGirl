@@ -9,22 +9,36 @@ public class PlayerManager : MonoBehaviour
 
     // 데이터 변경 시 UI 업데이트 등을 위한 이벤트
     public event Action OnDataChanged;
-    public event Action OnPlayerDeath;
+    public event Action<float> takeDamageAction;
+    public event Action dieAcation;
     
-
+    private PlayerUnit player;
+    public void CreatePlayer()
+    {
+        var playerPrefab = Managers.Resource.Instantiate(Address.Player);
+        player= playerPrefab.GetComponent<PlayerUnit>();
+        
+        player.Init();
+        
+        Managers.Camera.Init();
+        Managers.Camera.SetTarget(playerPrefab.transform);
+    }
+    
     // --- 데이터 수정 메소드들 ---
 
-    public void TakeDamage(float amount)
+    public void TakeDamage(float damage)
     {
-        data.currentHp -= amount;
+        data.currentHp -= damage;
         data.currentHp = Mathf.Clamp(data.currentHp, 0, data.maxHp.TotalValue);
-        
-        OnDataChanged?.Invoke(); // UI 등에 변경 알림
-
-        if (data.currentHp <= 0)
+        if (data.currentHp > 0)
         {
-            OnPlayerDeath?.Invoke();
+            takeDamageAction.Invoke(damage);
         }
+    }
+
+    public void Die()
+    {
+        dieAcation.Invoke();
     }
 
     public void AddGold(int amount)
@@ -90,5 +104,6 @@ public class PlayerManager : MonoBehaviour
             _ => null
         };
     }
+    
     
 }

@@ -11,7 +11,15 @@ public class ResourceManager : MonoBehaviour
     
     // 오브젝트 풀 (Pooling)
     private Dictionary<string, Queue<GameObject>> _pools = new Dictionary<string, Queue<GameObject>>();
+    
+    GameObject _root;
 
+    public void Init()
+    {
+        _root = GameObject.Find("@Pool");
+        if(_root == null)
+            _root = new GameObject { name = "@Pool" };
+    }
     // [Load] 에셋 로드 (동기)
     public T Load<T>(string address) where T : Object
     {
@@ -33,7 +41,10 @@ public class ResourceManager : MonoBehaviour
         {
             GameObject obj = _pools[address].Dequeue();
             obj.SetActive(true);
-            obj.transform.SetParent(parent);
+            if(parent == null)
+                obj.transform.SetParent(_root.transform);
+            else
+                obj.transform.SetParent(parent);
             obj.transform.SetPositionAndRotation(position, rotation);
             return obj;
         }

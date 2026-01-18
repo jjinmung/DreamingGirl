@@ -44,7 +44,10 @@ public class Managers : MonoBehaviour
             _instance._ui = new UIManager();
             _instance._sound = new  SoundManager();
             
-            _instance._camera.Init();
+            
+            _instance._resource.Init();
+            _instance._player.CreatePlayer();
+            
         }
 
     }

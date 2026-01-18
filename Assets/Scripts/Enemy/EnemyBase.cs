@@ -16,8 +16,9 @@ public abstract class EnemyBase : BaseUnit
     protected Rigidbody _rigidbody;
     public bool IsAttack=false;
     
-    public Action<float> takeDamageAction; //데미지 받았을 때 실행할 이벤트
-    public Action dieAcation;
+    public event Action<float> takeDamageAction; //데미지 받았을 때 실행할 이벤트
+    public event Action dieAcation;
+    
     [SerializeField]private Material _originalMat;
     [SerializeField]private Material _hitMat;
     [SerializeField]private Material _deathMat;
@@ -36,15 +37,27 @@ public abstract class EnemyBase : BaseUnit
     }
     public abstract void Attack();
 
+    public override void TakeDamage(float damage)
+    {
+        base.TakeDamage(damage);
+        Managers.UI.ShowFloatingText(transform.position,$"-{damage}",Color.white,false);
+        takeDamageAction.Invoke(damage);
+    }
+
+    protected abstract void TakeDamageHandler(float damage);
+
     protected override void Die()
     {
         base.Die();
+        dieAcation.Invoke();
         gameObject.layer = LayerMask.NameToLayer("DeadBody");
         _animator.SetTrigger("DEATH");
         _behavior.SetVariableValue("IsDeath", true);
 
         StartCoroutine(DelayDie());
     }
+
+    protected abstract void DieHandler();
 
     protected void hitEffect()
     {

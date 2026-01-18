@@ -9,7 +9,6 @@ public class UIManager
 
     Stack<UI_Popup> _popupStack = new Stack<UI_Popup>();
     UI_Scene _sceneUI = null;
-
     public GameObject Root
     {
         get
@@ -38,7 +37,7 @@ public class UIManager
         }
     }
 
-	public T MakeSubItem<T>(string addrres, Transform parent = null) where T : UI_Base
+	public T MakeSubItem<T>(string addrres, Transform parent = null) where T : Component
 	{
 		GameObject go = Managers.Resource.Instantiate(addrres);
 		if (parent != null)
@@ -74,6 +73,16 @@ public class UIManager
 
 		return popup;
     }
+	
+	public void ShowFloatingText(Vector3 worldPos, string message, Color color,bool isCritical)
+	{
+		
+		// 1. 월드 좌표를 화면 좌표로 변환 (Screen Space Overlay 기준)
+		Vector3 screenPos = Camera.main.WorldToScreenPoint(worldPos);
+		// 2. ResourceManager를 통해 생성
+		var floatingText = MakeSubItem<UI_FloatingText>(Address.UI_FloatingText,Root.transform);
+		floatingText.GetComponent<UI_FloatingText>().Init(screenPos,message, color,isCritical);
+	}
 
     public void ClosePopupUI(UI_Popup popup)
     {

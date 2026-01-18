@@ -25,9 +25,13 @@ public abstract class BaseUnit : MonoBehaviour
             Die();
         }
     }
+
     
     protected virtual void Die()
     {
         isDead = true;
     }
+    
+    
+
 }

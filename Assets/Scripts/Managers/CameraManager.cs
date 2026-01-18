@@ -31,9 +31,12 @@ public class CameraManager : MonoBehaviour
 
         Managers.Input.OnChangeCamera -= ChanageCamera;
         Managers.Input.OnChangeCamera += ChanageCamera;
+        
         _isQuarterView = true;
+        
         _player= GameObject.FindGameObjectWithTag("Player").transform;
         _middleViewCam =_player.GetComponentInChildren<CinemachineCamera>();
+        RefreshCameras();
     }
 
     private void HandleCullingMaskForThirdPerson()
@@ -95,21 +98,11 @@ public class CameraManager : MonoBehaviour
         _quarterViewCam.Priority = 10;
         _middleViewCam.Priority = 10;
     }
-    public void ChangeToThirdPerson()
+
+    public void SetTarget(Transform target)
     {
-        if (_thirdPersonCam == null) RefreshCameras(); 
-
-        _thirdPersonCam.Priority = 20;
-        _quarterViewCam.Priority = 10;
-        OnSwitchedToThirdPerson?.Invoke();
-    }
-
-    public void ChangeToQuarterView()
-    {
-        if (_quarterViewCam == null) RefreshCameras();
-
-        _thirdPersonCam.Priority = 10;
-        _quarterViewCam.Priority = 20;
-        OnSwitchedToQuarterView?.Invoke();
+        _thirdPersonCam.Target.TrackingTarget= target;
+        _quarterViewCam.Target.TrackingTarget= target;
+        _middleViewCam.Target.TrackingTarget = target;
     }
 }

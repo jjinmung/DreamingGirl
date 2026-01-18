@@ -18,8 +18,8 @@ public class PlayerData
     // 기본 생성자 (초기값 설정)
     public PlayerData()
     {
-        maxHp = new Stat(100f);
-        currentHp = 100f;
+        maxHp = new Stat(650f);
+        currentHp = maxHp.TotalValue;
         level = 1;
         currentExp = 0;
         nextLevelExp = 100;

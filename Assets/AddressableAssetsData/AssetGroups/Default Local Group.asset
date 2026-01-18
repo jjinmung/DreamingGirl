@@ -15,13 +15,18 @@ MonoBehaviour:
   m_GroupName: Default Local Group
   m_GUID: b29214beaf4c3e4429517b4868df0061
   m_SerializeEntries:
+  - m_GUID: 33a9bc65857a364428a9dbd43a0131fa
+    m_Address: Assets/Prefabs/UI/UI_Bloode.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 3f77ae87816988e4e8ba3a88abd4dec5
     m_Address: Assets/Prefabs/UI/EnemyHPBar.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: bfd6276f705017c438aefaa88d59dd86
-    m_Address: Assets/Prefabs/UI/EnemyHPBar.prefab
+  - m_GUID: cb8f2ec0b52b62e47a857eb94d0da2c0
+    m_Address: Assets/Prefabs/UI/UI_FloatingText.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

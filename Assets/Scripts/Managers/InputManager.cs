@@ -4,9 +4,6 @@ using System;
 
 public class InputManager : MonoBehaviour
 {
-    // 싱글톤 인스턴스
-    public static InputManager Instance { get; private set; }
-
     // Generate된 C# 클래스
     private PlayerAction _playerAction;
 
