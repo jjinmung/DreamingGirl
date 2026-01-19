@@ -2,13 +2,21 @@ using UnityEngine;
 using System;
 using DG.Tweening;
 using Unity.Cinemachine;
+using UnityEngine.SceneManagement;
 
 public class CameraManager : MonoBehaviour
 {
+    //로비씬 카메라
+    private CinemachineCamera _defalutCam;
+    private CinemachineCamera _startCam;
+    
 
+    //전투씬 카메라
     private CinemachineCamera _thirdPersonCam;
     private CinemachineCamera _quarterViewCam;
     private CinemachineCamera _middleViewCam;
+    
+    
     public Action OnSwitchedToThirdPerson;
     public Action OnSwitchedToQuarterView;
 
@@ -18,7 +26,59 @@ public class CameraManager : MonoBehaviour
     private bool _isQuarterView;
     
     private Transform _player;
-    public void Init()
+
+
+    #region 로비씬 함수
+
+    public void LobyInit()
+    {
+        var parent =GameObject.Find("LobyCam");
+        var defaultcam = parent.transform.GetChild(0);
+        var startcam = parent.transform.GetChild(1);
+
+        if (defaultcam != null) _defalutCam = defaultcam.GetComponent<CinemachineCamera>();
+        if (startcam != null) _startCam = startcam.GetComponent<CinemachineCamera>();
+        _defalutCam.Priority = 10;
+        _startCam.Priority = 0;
+        
+    }
+
+    public void LobyToBattle()
+    {
+        Sequence camSeq = DOTween.Sequence();
+        camSeq.AppendInterval(1f);
+        
+        camSeq.AppendCallback(() => {
+            _defalutCam.Priority = 5;
+            _startCam.Priority = 10;
+        });
+
+        camSeq.AppendInterval(3f); 
+
+        camSeq.AppendCallback(() => {
+            SceneManager.sceneLoaded += OnBattleSceneLoaded;
+            SceneManager.LoadScene("BattleScene");
+        });
+    }
+
+    private void OnBattleSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "BattleScene")
+        {
+            var go = Managers.Player.CreatePlayer();
+            _player= go.transform;
+            Managers.Camera.BattleInit();
+            Managers.Camera.SetTarget(_player);
+            SceneManager.sceneLoaded -= OnBattleSceneLoaded;
+        }
+    }
+    #endregion
+    
+        
+    
+
+    #region 전투씬 함수
+public void BattleInit()
     {
         _mainCam = Camera.main;
         _ceilingLayer = LayerMask.NameToLayer("Ceiling"); 
@@ -33,8 +93,6 @@ public class CameraManager : MonoBehaviour
         Managers.Input.OnChangeCamera += ChanageCamera;
         
         _isQuarterView = true;
-        
-        _player= GameObject.FindGameObjectWithTag("Player").transform;
         _middleViewCam =_player.GetComponentInChildren<CinemachineCamera>();
         RefreshCameras();
     }
@@ -105,4 +163,8 @@ public class CameraManager : MonoBehaviour
         _quarterViewCam.Target.TrackingTarget= target;
         _middleViewCam.Target.TrackingTarget = target;
     }
+    
+
+    #endregion
+    
 }

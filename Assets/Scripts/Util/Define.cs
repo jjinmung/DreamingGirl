@@ -23,17 +23,15 @@ public class Define
     {
         Click,
         Drag,
+        Enter,
+        Exit,
     }
-
-    public enum MouseEvent
-    {
-        Press,
-        Click,
-    }
+    
 
     public enum CameraMode
     {
         QuarterView,
+        ThirdView,
     }
     
 }

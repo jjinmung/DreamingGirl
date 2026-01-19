@@ -25,6 +25,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6f764e08eadf080438fc845c64d2bb65
+    m_Address: Assets/Prefabs/UI/Scene/UI_LobyScene.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: cb8f2ec0b52b62e47a857eb94d0da2c0
     m_Address: Assets/Prefabs/UI/UI_FloatingText.prefab
     m_ReadOnly: 0

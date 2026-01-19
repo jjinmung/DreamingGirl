@@ -46,12 +46,12 @@ public class UIManager
 		return go.GetOrAddComponent<T>();
 	}
 
-	public T ShowSceneUI<T>(string name = null) where T : UI_Scene
+	public T ShowSceneUI<T>(string address=null) where T : UI_Scene
 	{
-		if (string.IsNullOrEmpty(name))
-			name = typeof(T).Name;
+		if (string.IsNullOrEmpty(address))
+			address = typeof(T).Name;
 
-		GameObject go = Managers.Resource.Instantiate($"UI/Scene/{name}");
+		GameObject go = Managers.Resource.Instantiate($"Assets/Prefabs/UI/Scene/{address}.prefab");
 		T sceneUI = go.GetOrAddComponent<T>();
         _sceneUI = sceneUI;
 
@@ -60,12 +60,12 @@ public class UIManager
 		return sceneUI;
 	}
 
-	public T ShowPopupUI<T>(string name = null) where T : UI_Popup
+	public T ShowPopupUI<T>(string address = null) where T : UI_Popup
     {
-        if (string.IsNullOrEmpty(name))
-            name = typeof(T).Name;
+        if (string.IsNullOrEmpty(address))
+	        address = typeof(T).Name;
 
-        GameObject go = Managers.Resource.Instantiate($"UI/Popup/{name}");
+        GameObject go = Managers.Resource.Instantiate($"Assets/Prefabs/UI/Popup/{address}.prefab");
         T popup = go.GetOrAddComponent<T>();
         _popupStack.Push(popup);
 

@@ -13,15 +13,13 @@ public class PlayerManager : MonoBehaviour
     public event Action dieAcation;
     
     private PlayerUnit player;
-    public void CreatePlayer()
+    public GameObject CreatePlayer()
     {
         var playerPrefab = Managers.Resource.Instantiate(Address.Player);
         player= playerPrefab.GetComponent<PlayerUnit>();
-        
         player.Init();
-        
-        Managers.Camera.Init();
-        Managers.Camera.SetTarget(playerPrefab.transform);
+
+        return playerPrefab;
     }
     
     // --- 데이터 수정 메소드들 ---

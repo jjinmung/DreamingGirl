@@ -12,13 +12,15 @@ public class ResourceManager : MonoBehaviour
     // 오브젝트 풀 (Pooling)
     private Dictionary<string, Queue<GameObject>> _pools = new Dictionary<string, Queue<GameObject>>();
     
-    GameObject _root;
-
-    public void Init()
+    public GameObject Pool
     {
-        _root = GameObject.Find("@Pool");
-        if(_root == null)
-            _root = new GameObject { name = "@Pool" };
+        get
+        {
+            GameObject root = GameObject.Find("@Pool");
+            if (root == null)
+                root = new GameObject { name = "@Pool" };
+            return root;
+        }
     }
     // [Load] 에셋 로드 (동기)
     public T Load<T>(string address) where T : Object
@@ -42,7 +44,7 @@ public class ResourceManager : MonoBehaviour
             GameObject obj = _pools[address].Dequeue();
             obj.SetActive(true);
             if(parent == null)
-                obj.transform.SetParent(_root.transform);
+                obj.transform.SetParent(Pool.transform);
             else
                 obj.transform.SetParent(parent);
             obj.transform.SetPositionAndRotation(position, rotation);
@@ -55,7 +57,10 @@ public class ResourceManager : MonoBehaviour
 
         GameObject go = Object.Instantiate(prefab, parent);
         
-        go.transform.SetParent(parent);
+        if(parent == null)
+            go.transform.SetParent(Pool.transform);
+        else
+            go.transform.SetParent(parent);
         go.transform.SetPositionAndRotation(position, rotation);
         go.name = prefab.name;
 
