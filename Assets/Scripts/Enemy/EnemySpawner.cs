@@ -14,22 +14,24 @@ public class SpawnData
 
 public class EnemySpawner : MonoBehaviour
 {
-    public SpawnData[] enemiesToSpawn; 
-    public GameObject[] PatrolPoints;    
-    public int spawnCount=10;
-    public float spawnRadius = 5f;        // 스폰 지점 주변 탐색 반경
+    public SpawnData[] enemiesToSpawn;
+    public GameObject[] PatrolPoints;
+    public int spawnCount = 10;
+    public float spawnRadius = 5f; // 스폰 지점 주변 탐색 반경
     public float overlapCheckRadius = 1f; // 적끼리 겹치지 않게 체크할 반경
-    public LayerMask enemyLayer;          // Enemy 레이어 설정 (인스펙터에서 선택)
-    public bool Draw =true;
-    
+    public LayerMask enemyLayer; // Enemy 레이어 설정 (인스펙터에서 선택)
+    public bool Draw = true;
 
-    private void Start()
+    private List<GameObject> enemies = new List<GameObject>();
+
+    public void SpawnEnemys()
     {
-        for(int i = 0; i < spawnCount; i++)
+        for (int i = 0; i < spawnCount; i++)
             SpawnEnemy();
     }
 
-    void SpawnEnemy()
+
+    private void SpawnEnemy()
     {
         if (enemiesToSpawn.Length == 0 || PatrolPoints.Length == 0) return;
 
@@ -57,24 +59,14 @@ public class EnemySpawner : MonoBehaviour
             if (finalSpawnPos != Vector3.zero)
             {
                 //적 생성 및 ui바인딩
-                var newEnemy = Managers.Resource.Instantiate(Address.FishGuard_S, finalSpawnPos, Quaternion.Euler(0, Random.Range(0, 360), 0));
-                var hpBar = Managers.UI.MakeSubItem<UI_HPBar>(Address.Enemy_HP_BAR,Managers.UI.Root.transform);
-                var enemyBase = newEnemy.GetComponent<EnemyBase>();
-                
-                hpBar.Init();
-                
-                
-                hpBar.SetMaxHP(enemyBase.maxHealth);
-                hpBar.GetComponentInChildren<HealthBarController>().target = newEnemy.transform;
-      
-                enemyBase.takeDamageAction-=hpBar.TakeDamage;
-                enemyBase.takeDamageAction+=hpBar.TakeDamage;
-                enemyBase.dieAcation -= hpBar.Destroy;
-                enemyBase.dieAcation += hpBar.Destroy;
-                
-                
-                if(newEnemy!=null)
+                var newEnemy = Managers.Resource.Instantiate(Address.FishGuard_S, finalSpawnPos,
+                    Quaternion.Euler(0, Random.Range(0, 360), 0));
+                enemies.Add(newEnemy);
+
+                if (newEnemy != null)
                     EnemyInit(newEnemy);
+
+
             }
             else
             {
@@ -106,6 +98,7 @@ public class EnemySpawner : MonoBehaviour
                 }
             }
         }
+
         return Vector3.zero; // 실패 시 zero 반환
     }
 
@@ -116,10 +109,40 @@ public class EnemySpawner : MonoBehaviour
         {
             fishGuardS.SetVpartrolPoints(PatrolPoints.ToList());
         }
+        
+        Transform[] allChildren = go.GetComponentsInChildren<Transform>(true);
+        foreach (Transform child in allChildren)
+        {
+            child.gameObject.layer = LayerMask.NameToLayer("Default");
+        }
+        
         enemy.Init();
     }
-    
-    private void OnDrawGizmos()
+
+    public void StartBattle()
+    {
+        int targetLayer = LayerMask.NameToLayer("Enemy");
+        foreach (var enemy in enemies)
+        {
+            Transform[] allChildren = enemy.GetComponentsInChildren<Transform>(true);
+            foreach (Transform child in allChildren)
+            {
+                child.gameObject.layer = targetLayer;
+            }
+            
+            var hpBar = Managers.UI.MakeSubItem<UI_EnemyHPBar>(Address.Enemy_HP_BAR, Managers.UI.Root.transform);
+            var enemyBase = enemy.GetComponent<EnemyBase>();
+            hpBar.SetMaxHP(enemyBase.maxHealth);
+            hpBar.GetComponentInChildren<HealthBarController>().target = enemy.transform;
+
+            enemyBase.takeDamageAction -= hpBar.TakeDamage;
+            enemyBase.takeDamageAction += hpBar.TakeDamage;
+            enemyBase.dieAcation -= hpBar.Destroy;
+            enemyBase.dieAcation += hpBar.Destroy;
+        }
+    }
+
+private void OnDrawGizmos()
     {
         if (!Draw) return;
 

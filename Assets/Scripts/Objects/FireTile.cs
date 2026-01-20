@@ -6,13 +6,15 @@ using UnityEngine;
 public class fireTile : MonoBehaviour
 {
     [SerializeField] private ParticleSystem _mainFire;
-    [SerializeField] private Light _light;
     private BoxCollider _collider;
     private WaitForSeconds _firedurationTime = new WaitForSeconds(2f);
     private WaitForSeconds _firestartTime = new WaitForSeconds(2f);
     private WaitForSeconds _beforeFiretime = new WaitForSeconds(2f);
     public float Damage = 5f;
     private CFXR_Effect effect;
+    
+    public float DamageInterval = 1.0f; // 데미지 주기 (1초)
+    private float _nextDamageTime = 0f;  // 다음 데미지 발생 시간 저
     private void Start()
     {
         _collider = GetComponent<BoxCollider>();
@@ -31,13 +33,13 @@ public class fireTile : MonoBehaviour
         while (true)
         {
             effect.enabled = false;
-            _light.intensity = 0;
             _mainFire.Play();
             _collider.enabled = false;
             
             yield return _beforeFiretime;
 
-            StartCoroutine(ActiveBeforeFire());
+            effect.enabled = true;
+
             
             yield return _firestartTime;
             
@@ -45,29 +47,37 @@ public class fireTile : MonoBehaviour
             
             yield return _firedurationTime;
             
-            _collider.enabled = true;
-            
+        }
+    }
+    
+    private void OnTriggerEnter(Collider other)
+    {
+        if (_collider.enabled && other.CompareTag("Player"))
+        {
+            if (other.TryGetComponent<BaseUnit>(out var unit))
+            {
+                unit.TakeDamage(Damage);
+                // 들어오자마자 데미지를 줬으니, 다음 데미지는 1초 뒤로 설정
+                _nextDamageTime = Time.time + DamageInterval;
+            }
         }
     }
 
-    IEnumerator ActiveBeforeFire()
+    private void OnTriggerStay(Collider other)
     {
-        float intensity = 0;
-        _light.intensity = intensity;
-        while (intensity<10)
+        if (_collider.enabled && other.CompareTag("Player"))
         {
-            intensity += 0.5f;
-            _light.intensity = intensity;
-            yield return null;
-        }
-        effect.enabled = true;
-        
-    }
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            other.GetComponent<BaseUnit>().TakeDamage(Damage);
+            // 현재 시간이 '다음 데미지 시간'보다 커졌는지 확인
+            if (Time.time >= _nextDamageTime)
+            {
+                if (other.TryGetComponent<BaseUnit>(out var unit))
+                {
+                    unit.TakeDamage(Damage);
+                
+                    // 다음 데미지 시간 갱신 (현재 시간 + 1초)
+                    _nextDamageTime = Time.time + DamageInterval;
+                }
+            }
         }
     }
 }

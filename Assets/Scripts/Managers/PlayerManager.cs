@@ -12,13 +12,29 @@ public class PlayerManager : MonoBehaviour
     public event Action<float> takeDamageAction;
     public event Action dieAcation;
     
+    //플레이어 관련 변수 
     private PlayerUnit player;
+    public Transform playerTrans => player.transform;
+    public Animator playerAnim => player.GetComponent<Animator>();
+
+    private Vector3 StartPos = new Vector3(12f, 0f, 5f);
+    private GameObject playerHpBar;
+    
     public GameObject CreatePlayer()
     {
+        StartPos = GameObject.Find("SpawnPlayer").transform.position;
         var playerPrefab = Managers.Resource.Instantiate(Address.Player);
+        playerPrefab.transform.position = StartPos;
         player= playerPrefab.GetComponent<PlayerUnit>();
         player.Init();
-
+        
+        playerHpBar = player.GetComponentInChildren<UI_PlayerHPBar>().gameObject;
+        playerHpBar.SetActive(false);
+        
+        Managers.Stage.ExitRoom += ExitRoomHandler;
+        Managers.Stage.ExitRoom += ExitRoomHandler;
+        
+        
         return playerPrefab;
     }
     
@@ -102,6 +118,28 @@ public class PlayerManager : MonoBehaviour
             _ => null
         };
     }
+
+    private void ExitRoomHandler()
+    {
+        player.GetComponent<CapsuleCollider>().enabled = false;
+        player.GetComponent<Rigidbody>().useGravity = false;
+        var controller = player.GetComponent<PlayerController>();
+        controller.StopDashPhysics();
+        controller.ChangeLayer("Default");
+        controller.CurrentState = PlayerController.PlayerState.Idle;
+        controller.enabled = false;
+        
+        playerAnim.SetFloat("MOVE",0);
+        playerHpBar.SetActive(false);
+    }
     
+    public void EnterRoom()
+    {
+        player.GetComponent<CapsuleCollider>().enabled = true;
+        player.GetComponent<Rigidbody>().useGravity = true;
+        player.GetComponent<PlayerController>().ChangeLayer("Char");
+        player.GetComponent<PlayerController>().enabled = true;
+        playerHpBar.SetActive(true);
+    }
     
 }

@@ -137,13 +137,8 @@ namespace MasterStylizedProjectile
                 }
 
 
-                var collider = bulletObj.gameObject.GetComponent<SphereCollider>();
-                if (collider == null)
-                {
-                    collider =bulletObj.gameObject.AddComponent<SphereCollider>();
-                    collider.isTrigger = true;
-                    collider.radius = 0.6f;
-                }
+                var collider = bulletObj.gameObject.GetOrAddComponent<SphereCollider>();
+                collider.isTrigger = true;
                
             }
       

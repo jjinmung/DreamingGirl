@@ -15,7 +15,7 @@ public class CameraManager : MonoBehaviour
     private CinemachineCamera _thirdPersonCam;
     private CinemachineCamera _quarterViewCam;
     private CinemachineCamera _middleViewCam;
-    
+    private CinemachineCamera _StoreCam;
     
     public Action OnSwitchedToThirdPerson;
     public Action OnSwitchedToQuarterView;
@@ -69,6 +69,7 @@ public class CameraManager : MonoBehaviour
             _player= go.transform;
             Managers.Camera.BattleInit();
             Managers.Camera.SetTarget(_player);
+            Managers.Stage.Init();
             SceneManager.sceneLoaded -= OnBattleSceneLoaded;
         }
     }
@@ -78,7 +79,7 @@ public class CameraManager : MonoBehaviour
     
 
     #region 전투씬 함수
-public void BattleInit()
+    public void BattleInit()
     {
         _mainCam = Camera.main;
         _ceilingLayer = LayerMask.NameToLayer("Ceiling"); 
@@ -95,11 +96,12 @@ public void BattleInit()
         _isQuarterView = true;
         _middleViewCam =_player.GetComponentInChildren<CinemachineCamera>();
         RefreshCameras();
+        
     }
 
     private void HandleCullingMaskForThirdPerson()
     {
-        _player.DOScale(new Vector3(1.5f, 1.5f, 1.5f), 2f);
+        _player.DOScale(new Vector3(1f, 1f, 1f), 2f);
     }
 
     private void HandleCullingMaskForQuarterView()
@@ -111,9 +113,12 @@ public void BattleInit()
         var parent =GameObject.Find("Cameras");
         var qvObj = parent.transform.GetChild(0);
         var tpObj = parent.transform.GetChild(1);
-
-        if (tpObj != null) _thirdPersonCam = tpObj.GetComponent<CinemachineCamera>();
+        var storeObj = parent.transform.GetChild(2);
+        
         if (qvObj != null) _quarterViewCam = qvObj.GetComponent<CinemachineCamera>();
+        if (tpObj != null) _thirdPersonCam = tpObj.GetComponent<CinemachineCamera>();
+        if (storeObj != null) _StoreCam = storeObj.GetComponent<CinemachineCamera>();
+        
         
     }
 
@@ -137,7 +142,7 @@ public void BattleInit()
             _middleViewCam.Priority = 30; // 1단계: 중간 카메라로
         });
 
-        camSeq.AppendInterval(1f); // 2단계: 중간에서 대기 (혹은 블렌딩 시간)
+        camSeq.AppendInterval(0.9f); // 2단계: 중간에서 대기 (혹은 블렌딩 시간)
 
         camSeq.AppendCallback(() => {
             if(_isQuarterView)
@@ -155,6 +160,7 @@ public void BattleInit()
         _thirdPersonCam.Priority = 10;
         _quarterViewCam.Priority = 10;
         _middleViewCam.Priority = 10;
+        _StoreCam.Priority = 10;
     }
 
     public void SetTarget(Transform target)
@@ -163,7 +169,20 @@ public void BattleInit()
         _quarterViewCam.Target.TrackingTarget= target;
         _middleViewCam.Target.TrackingTarget = target;
     }
-    
+
+    public void SetStoreCam(bool isStore)
+    {
+        if (isStore)
+        {
+            ResetAllPriorities();
+            _StoreCam.Priority = 20;
+        }
+        else
+        {
+            ResetAllPriorities();
+            _quarterViewCam.Priority = 20;
+        }
+    }
 
     #endregion
     

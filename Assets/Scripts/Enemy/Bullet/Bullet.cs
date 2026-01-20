@@ -87,7 +87,8 @@ namespace MasterStylizedProjectile
         }
         private void OnTriggerEnter(Collider other)
         {
-            if(other.gameObject.CompareTag("Enemy")) return;
+            if(other.gameObject.CompareTag("Enemy") ||other.gameObject.CompareTag("IgnoreBullet")) return;
+            
             if(other.gameObject.CompareTag("Player"))
                 other.gameObject.GetComponent<BaseUnit>().TakeDamage(Damage);
             if (OnHitEffect != null)
@@ -118,6 +119,7 @@ namespace MasterStylizedProjectile
                 audio.clip = bulletClip;
                 audio.Play();
             }
+            Managers.Resource.Destroy(gameObject,5f);
         }
         
 

@@ -11,12 +11,14 @@ public class Managers : MonoBehaviour
     private UIManager _ui;
     private ResourceManager _resource;
     private SoundManager _sound;
+    private StageManager _stage;
     public static CameraManager Camera => Instance._camera;
     public static InputManager Input => Instance._input;
     public static PlayerManager Player => Instance._player;
     public static UIManager UI => Instance._ui;
     public static ResourceManager Resource => Instance._resource;
     public static SoundManager Sound => Instance._sound;
+    public static StageManager Stage => Instance._stage;
 
     void Awake()
     {
@@ -41,6 +43,7 @@ public class Managers : MonoBehaviour
             _instance._input = go.GetComponentInChildren<InputManager>();
             _instance._player = go.GetComponentInChildren<PlayerManager>();
             _instance._resource = go.GetComponentInChildren<ResourceManager>();
+            _instance._stage  = go.GetComponentInChildren<StageManager>();
             _instance._ui = new UIManager();
             _instance._sound = new  SoundManager();
             

@@ -340,6 +340,7 @@ GameObject:
   m_Component:
   - component: {fileID: 936800473913639712}
   - component: {fileID: 8535380169202908726}
+  - component: {fileID: 8485003483336515062}
   m_Layer: 5
   m_Name: EnemyHPBar
   m_TagString: Untagged
@@ -390,6 +391,18 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &8485003483336515062
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4808908029423691508}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c51900b6adfb24429a3e45b395f9036, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4993633912270106781
 GameObject:
   m_ObjectHideFlags: 0
@@ -466,7 +479,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 0}
   m_FillRect: {fileID: 7612194562419075562}
   m_HandleRect: {fileID: 0}
@@ -570,7 +583,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &4948878002349417735
 RectTransform:
   m_ObjectHideFlags: 0
@@ -770,7 +783,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 0}
   m_FillRect: {fileID: 2320733067605841021}
   m_HandleRect: {fileID: 0}

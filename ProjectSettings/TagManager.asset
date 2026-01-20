@@ -7,6 +7,7 @@ TagManager:
   - FxTemporaire
   - Enemy
   - Attack
+  - IgnoreBullet
   layers:
   - Default
   - TransparentFX
@@ -22,7 +23,7 @@ TagManager:
   - DeadBody
   - Attack
   - HPBar
-  - 
+  - PostProcess
   - 
   - 
   - 

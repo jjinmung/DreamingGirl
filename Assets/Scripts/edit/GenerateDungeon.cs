@@ -21,14 +21,26 @@ public class DungeonGenerator : MonoBehaviour
     [Header("Prefabs Lists")]
     public List<GameObject> floorPrefabs;
     public List<GameObject> wallPrefabs;
+    public GameObject ceilingPrefab;
     public GameObject doorPrefab;
     public GameObject cornerPrefab;
     List<GameObject> objs = new List<GameObject>();
     private bool isDoor;
+    public GameObject Ceiling
+    {
+        get
+        {
+            GameObject root = GameObject.Find("Ceiling");
+            if (root == null)
+                root = new GameObject { name = "Ceiling" };
+            root.layer = LayerMask.NameToLayer("Ceiling");
+            return root;
+        }
+    }
     public void GenerateDungeon()
     {
         DeleteGO();
-
+        GetComponent<Room>().doors.Clear();
         for (int x = 0; x < width; x++)
         {
             for (int z = 0; z < height; z++)
@@ -37,6 +49,10 @@ public class DungeonGenerator : MonoBehaviour
                 //바닥 생성
                 SpawnRandomPrefab(floorPrefabs, center, Quaternion.identity);
                 
+                //천장 생성
+                var go =SpawnEditorObject(ceilingPrefab, center+new Vector3(0,4,0), Quaternion.identity);
+                go.transform.SetParent(Ceiling.transform);
+                objs.Add(go);
                 if (x == 0 || x == width - 1 || z == 0 || z == height - 1)
                 {
                     
@@ -98,9 +114,9 @@ public class DungeonGenerator : MonoBehaviour
         }
     }
 
-    void SpawnEditorObject(GameObject prefab, Vector3 position, Quaternion rotation,bool Parent=true)
+    GameObject SpawnEditorObject(GameObject prefab, Vector3 position, Quaternion rotation,bool Parent=true)
     {
-        if (prefab == null) return;
+        if (prefab == null) return null;
 #if UNITY_EDITOR
         GameObject go = (GameObject)PrefabUtility.InstantiatePrefab(prefab);
         go.transform.position = position;
@@ -108,30 +124,44 @@ public class DungeonGenerator : MonoBehaviour
         if(Parent) go.transform.SetParent(this.transform);
         else objs.Add(go);
         Undo.RegisterCreatedObjectUndo(go, "Create Dungeon Object");
+        return go;
 #endif
     }
 
     bool IsDoorPosition(int x, int z,Vector3 center)
     {
-        
+        var room = GetComponent<Room>();
+        GameObject go;
         if (LeftDoor&&(x == 0 && z == height /2)) 
         {
-            SpawnEditorObject(doorPrefab, center + Vector3.left * tileSize * 0.5f, Quaternion.Euler(0,90,0),false);
+            go =SpawnEditorObject(doorPrefab, center + Vector3.left * tileSize * 0.5f, Quaternion.Euler(0,90,0),false);
+            var door = go.GetComponent<Door>();
+            door.dir = new Vector3(0,-90,0);
+            room.doors.Add(door);
             return true;
         }
         if (RightDoor&&(x == width -1 && z == height/2)) 
         {
-            SpawnEditorObject(doorPrefab, center + Vector3.right * tileSize * 0.5f, Quaternion.Euler(0,-90,0),false);
+            go = SpawnEditorObject(doorPrefab, center + Vector3.right * tileSize * 0.5f, Quaternion.Euler(0,-90,0),false);
+            var door = go.GetComponent<Door>();
+            door.dir = new Vector3(0,90,0);
+            room.doors.Add(door);
             return true;
         }
         if (ForwardDoor&&(x == width / 2 && z == height - 1)) 
         {
-            SpawnEditorObject(doorPrefab, center + Vector3.forward * tileSize * 0.5f, Quaternion.Euler(0,180,0),false);
+            go =SpawnEditorObject(doorPrefab, center + Vector3.forward * tileSize * 0.5f, Quaternion.Euler(0,180,0),false);
+            var door = go.GetComponent<Door>();
+            door.dir = Vector3.zero;
+            room.doors.Add(door);
             return true;
         }
         if (BackDoor&&(x == width / 2 && z == 0)) 
         {
-            SpawnEditorObject(doorPrefab, center + Vector3.back * tileSize * 0.5f, Quaternion.identity,false);
+            go = SpawnEditorObject(doorPrefab, center + Vector3.back * tileSize * 0.5f, Quaternion.identity,false);
+            var door = go.GetComponent<Door>();
+            door.dir = Vector3.zero;
+            room.doors.Add(door);
             return true;
         }
         return false;
@@ -154,6 +184,14 @@ public class DungeonGenerator : MonoBehaviour
         foreach (GameObject child in children) 
         {
             Undo.DestroyObjectImmediate(child);
+        }
+
+        if (objs.Count>0)
+        {
+            foreach (GameObject child in objs) 
+            {
+                Undo.DestroyObjectImmediate(child);
+            }
         }
         objs.Clear();
         // 3. 기존에 생성된 콜라이더들 제거
@@ -187,7 +225,7 @@ public class DungeonGenerator : MonoBehaviour
         PrefabUtility.SaveAsPrefabAssetAndConnect(gameObject, fileName, InteractionMode.UserAction);
         
         
-
+        objs.Clear();
         Debug.Log($"프리팹이 저장되었습니다: {fileName}");
 #endif
     }

@@ -5,7 +5,7 @@ public class LobyMap : MonoBehaviour
     public float speed = 1f; // 이동 속도
     private Vector3 pos;
     
-    private float minZ = -16f; // 최소 지점
+    private float minZ = -15.8f; // 최소 지점
     private float maxZ = 8f;   // 시작 지점
     
     private Animator anim;

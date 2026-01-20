@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour
 {
     private PlayerMovement _movement;
     private PlayerCombat _combat;
-    
+    private SphereCollider _attackcollider;
     private Animator _animator;
     private Vector2 _inputVector;
     public enum PlayerState { Idle, Run,Attack,Dash}
@@ -19,6 +19,8 @@ public class PlayerController : MonoBehaviour
         _movement = GetComponent<PlayerMovement>();
         _combat = GetComponent<PlayerCombat>();
         _animator = GetComponent<Animator>();
+        _attackcollider= GetComponentInChildren<SphereCollider>();
+        _attackcollider.enabled = false;
     }
 
     private void Start()
@@ -110,6 +112,14 @@ public class PlayerController : MonoBehaviour
     {
         _combat.CanAttack = true;
         StopDashPhysics();
+        _attackcollider.enabled = false;
+    }
+
+    public void PlayAttack(int index)
+    {
+        _combat.PlayAttackEffect(index);
+        _attackcollider.enabled = true;
+        
     }
     public void StopDashPhysics() => _movement.StopVelocity();
     

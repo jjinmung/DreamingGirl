@@ -20,7 +20,7 @@ public class UI_FloatingText : MonoBehaviour
         // 1. 초기화 및 기존 트윈 제거 
         _text.DOKill();
         _text.transform.position = pos;
-        Debug.Log(_text.transform.position);
+
         _text.text = message;
         _text.color = color;
         _text.alpha = 1f;

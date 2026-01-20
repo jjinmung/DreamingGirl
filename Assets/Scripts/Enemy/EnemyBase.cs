@@ -33,7 +33,10 @@ public abstract class EnemyBase : BaseUnit
         _rigidbody = GetComponent<Rigidbody>();
         
         gameObject.layer = LayerMask.NameToLayer("Enemy");
+        
+        _behavior.Restart();
         _behavior.SetVariableValue("Target",_player);
+        _behavior.SetVariableValue("IsDeath",false);
     }
     public abstract void Attack();
 

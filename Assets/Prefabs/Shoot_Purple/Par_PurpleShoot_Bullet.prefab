@@ -4903,6 +4903,7 @@ GameObject:
   - component: {fileID: 3353930492869173016}
   - component: {fileID: 1588069679898883835}
   - component: {fileID: 4271285191934733060}
+  - component: {fileID: 3074720735121985034}
   m_Layer: 0
   m_Name: Par_PurpleShoot_Bullet
   m_TagString: Untagged
@@ -9797,7 +9798,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 713ae95199c329d45bcba0b628262611, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefabKey: 0
+  address: 
+--- !u!135 &3074720735121985034
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2580380945974098950}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.5118202
+  m_Center: {x: 0, y: 0, z: -0.46625626}
 --- !u!1 &5654705770243433400
 GameObject:
   m_ObjectHideFlags: 0

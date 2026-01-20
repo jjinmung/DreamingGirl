@@ -11,6 +11,8 @@ public class InputManager : MonoBehaviour
     public event Action OnAttack;
     public event Action OnDash;
     public event Action OnChangeCamera;
+
+    public event Action OnInteract;
     public bool IsAttackPressed { get; private set; }
     private void Awake()
     {
@@ -31,6 +33,9 @@ public class InputManager : MonoBehaviour
         _playerAction.Player.Dash.performed += ctx => OnDash?.Invoke();
         
         _playerAction.Player.ChangeCamera.performed += ctx => OnChangeCamera?.Invoke();
+        
+        _playerAction.Player.Interact.performed += ctx => OnInteract?.Invoke();
+        
     }
 
     private void OnDisable()

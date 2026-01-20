@@ -59,7 +59,7 @@ public class cdc_MeshCombine : MonoBehaviour
         // 4. 매쉬 프리펩 저장
         if (!Application.isPlaying)
         {
-            string path = "Assets/CombinedMesh/CombinedMesh_" + System.DateTime.Now.Ticks + ".asset";
+            string path = "Assets/Meshes/CombinedMesh/CombinedMesh_" + System.DateTime.Now.Ticks + ".asset";
             AssetDatabase.CreateAsset(finalMesh, path);
             AssetDatabase.SaveAssets();
             Debug.Log("메쉬가 저장되었습니다: " + path);

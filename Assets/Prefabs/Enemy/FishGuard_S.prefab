@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 469322847807804390}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: FishGuard_S:prefix_Neck_M
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -41,7 +41,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1452396761458780276}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: FishGuard_S:prefix_MiddleFinger4_L
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -73,7 +73,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2271082058711604989}
   - component: {fileID: 3718069523968430240}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: FishGuard_S:Fishguard_S
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -180,7 +180,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5562585472805502519}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: FishGuard_S:prefix_Root_M
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -214,7 +214,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8793560909500132977}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: FishGuard_S:prefix_Knee_R
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -246,7 +246,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2369124969350967547}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: FishGuard_S:prefix_Scapula_R
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -278,7 +278,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1149799879890019495}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: FishGuard_S:prefix_Shoulder_L
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -310,7 +310,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7963551630993762950}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: FishGuard_S:prefix_HeadEnd_M
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -341,7 +341,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3975367512850405440}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: FishGuard_S:prefix_MiddleFinger1_L
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -373,7 +373,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4924153641904497391}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: FishGuard_S:prefix_Toes_L
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -405,7 +405,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6419951952532386180}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: FishGuard_S:prefix_Wrist_L
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -437,7 +437,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3366748275647097818}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: FishGuard_S:prefix_Wrist_R
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -469,7 +469,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4738722049764363127}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: FishGuard_S:prefix_Ankle_R
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -501,7 +501,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3387606075574812754}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: FishGuard_S:prefix_ToesEnd_L
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -532,7 +532,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5225746800630343489}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: FishGuard_S:prefix_MiddleFinger4_R
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -563,7 +563,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2236630822610618239}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: FishGuard_S:prefix_Ankle_L
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -595,7 +595,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5403312476407585187}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: FishGuard_S:prefix_Spine1_M
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -628,7 +628,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3273144400843850637}
   - component: {fileID: 6017698788270561202}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: Projector
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -683,7 +683,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8992963434699678808}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: FishGuard_S:prefix_Knee_L
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -715,7 +715,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3313575874398309501}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: FishGuard_S:prefix_Hip_L
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -747,7 +747,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6297109473689213439}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: StartTrans
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -778,7 +778,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 790954469038609417}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: FishGuard_S:prefix_Root
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -810,7 +810,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5979455340321665897}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: FishGuard_S:prefix_Head_M
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -842,7 +842,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6808625037605705448}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: FishGuard_S:prefix_Hip_R
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -882,7 +882,7 @@ GameObject:
   - component: {fileID: 4795987098736670926}
   - component: {fileID: 4958460325671323963}
   - component: {fileID: 9126237720410480222}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: FishGuard_S
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -1047,7 +1047,7 @@ MonoBehaviour:
   _originalMat: {fileID: 2100000, guid: 233777f676c33ac4d94c9bbb423ce306, type: 2}
   _hitMat: {fileID: 2100000, guid: f52077039f072704d9fe4ccf6cbae467, type: 2}
   _deathMat: {fileID: 2100000, guid: 47a69bee996ee8f41b3902ccfc97f294, type: 2}
-  AttackRange: {fileID: 5111986420520062550}
+  AttackRange: {fileID: 6017698788270561202}
 --- !u!114 &4795987098736670926
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1109,7 +1109,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 725100626626878036}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: FishGuard_S:prefix_Elbow_L
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -1141,7 +1141,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7012115277820774024}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: FishGuard_S:prefix_Shoulder_R
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -1173,7 +1173,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6584077379448567323}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: FishGuard_S:prefix_Elbow_R
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -1205,7 +1205,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7440252744569037817}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: FishGuard_S:prefix_Chest_M
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -1239,7 +1239,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5500584653749379564}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: FishGuard_S:prefix_ToesEnd_R
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -1270,7 +1270,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6810459131609388211}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: FishGuard_S:prefix_Scapula_L
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -1302,7 +1302,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5907317137981400920}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: FishGuard_S:prefix_Toes_R
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -1334,7 +1334,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8273854437480039229}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: FishGuard_S:prefix_MiddleFinger1_R
   m_TagString: Enemy
   m_Icon: {fileID: 0}

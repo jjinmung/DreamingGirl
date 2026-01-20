@@ -1,10 +1,12 @@
+using System;
 using System.Collections.Generic;
 using Unity.Behavior;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class FishGuardS : EnemyBase
 {
-    [SerializeField]private GameObject AttackRange;
+    [SerializeField]private DecalProjector AttackRange;
     
     public override void Attack()
     {
@@ -37,6 +39,21 @@ public class FishGuardS : EnemyBase
         }
     }
 
+    private void Update()
+    {
+        float maxDistance = 70f; 
+        RaycastHit hit;
+        Debug.DrawRay(transform.position, transform.forward, Color.red);
+        // 레이어 마스크를 사용해 바닥(Ground) 레이어만 감지하는 것이 좋습니다.
+        if (Physics.Raycast(transform.position, transform.forward, out hit, maxDistance,LayerMask.GetMask("Map")))
+        {
+            Vector3 newSize = AttackRange.size;
+            newSize.y = hit.distance * 2f; 
+            AttackRange.size= newSize;
+            Debug.DrawLine(transform.position, hit.point, Color.green);
+        }
+    }
+
     protected override void DieHandler()
     {
         SetAttackArange(false);
@@ -53,6 +70,19 @@ public class FishGuardS : EnemyBase
 
     public void SetAttackArange(bool isAcive)
     {
+        if (isAcive)
+        {
+            float maxDistance = 70f; 
+            RaycastHit hit;
+            
+            // 레이어 마스크를 사용해 바닥(Ground) 레이어만 감지하는 것이 좋습니다.
+            if (Physics.Raycast(transform.position, transform.forward, out hit, maxDistance,LayerMask.GetMask("Map")))
+            {
+                Vector3 newSize = AttackRange.size;
+                newSize.y = hit.distance; 
+                AttackRange.size= newSize;
+            }
+        }
         AttackRange.gameObject.SetActive(isAcive);
     }
 

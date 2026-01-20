@@ -10,6 +10,7 @@ public abstract class BaseUnit : MonoBehaviour
     public virtual void Init()
     {
         currentHealth = maxHealth;
+        isDead=false;
     }
 
     // 데미지를 입는 공통 로직
