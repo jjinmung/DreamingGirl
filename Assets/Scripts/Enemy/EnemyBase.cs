@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using Action = System.Action;
 
-public abstract class EnemyBase : BaseUnit
+public abstract class EnemyBase : MonoBehaviour,IDamageable
 {
     protected GameObject _player;
     protected BehaviorGraphAgent _behavior;
@@ -14,17 +14,20 @@ public abstract class EnemyBase : BaseUnit
     protected NavMeshAgent _navMeshAgent;
     protected SkinnedMeshRenderer _skinnedMesh;
     protected Rigidbody _rigidbody;
-    public bool IsAttack=false;
     
+    protected int ID;
+    public EnemyStat stat; 
+    public bool IsAttack=false;
+    public bool isDead=false;
     public event Action<float> takeDamageAction; //데미지 받았을 때 실행할 이벤트
     public event Action dieAcation;
     
     [SerializeField]private Material _originalMat;
     [SerializeField]private Material _hitMat;
     [SerializeField]private Material _deathMat;
-    public override void Init()
+    public virtual void Init()
     {
-        base.Init();
+        stat=new EnemyStat(Managers.Data.MonsterDict[1]);
         _player = GameObject.FindGameObjectWithTag("Player");
         _behavior = GetComponent<BehaviorGraphAgent>();
         _animator = GetComponent<Animator>();
@@ -37,21 +40,42 @@ public abstract class EnemyBase : BaseUnit
         _behavior.Restart();
         _behavior.SetVariableValue("Target",_player);
         _behavior.SetVariableValue("IsDeath",false);
+        
+        takeDamageAction -= TakeDamageHandler;
+        takeDamageAction += TakeDamageHandler;
+        dieAcation -= DieHandler;
+        dieAcation += DieHandler;
+
+        isDead = false;
     }
+
+    private void OnEnable()
+    {
+        isDead = false;
+        stat.currentHp = stat.MaxHp;
+    }
+
     public abstract void Attack();
 
-    public override void TakeDamage(float damage)
+    public void TakeDamage(float damage)
     {
-        base.TakeDamage(damage);
+        if (isDead) return;
         Managers.UI.ShowFloatingText(transform.position,$"-{damage}",Color.white,false);
+        stat.currentHp -= damage;
+        
+        if (stat.currentHp <= 0)
+        {
+            Die();
+        }
+       
         takeDamageAction.Invoke(damage);
     }
 
     protected abstract void TakeDamageHandler(float damage);
 
-    protected override void Die()
+    protected void Die()
     {
-        base.Die();
+        isDead = true;
         dieAcation.Invoke();
         gameObject.layer = LayerMask.NameToLayer("DeadBody");
         _animator.SetTrigger("DEATH");

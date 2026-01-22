@@ -30,6 +30,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 766ca916eb61c0c42afe638202aea042
+    m_Address: Assets/Json/StaticData.json
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: cb8f2ec0b52b62e47a857eb94d0da2c0
     m_Address: Assets/Prefabs/UI/UI_FloatingText.prefab
     m_ReadOnly: 0

@@ -132,7 +132,7 @@ public class EnemySpawner : MonoBehaviour
             
             var hpBar = Managers.UI.MakeSubItem<UI_EnemyHPBar>(Address.Enemy_HP_BAR, Managers.UI.Root.transform);
             var enemyBase = enemy.GetComponent<EnemyBase>();
-            hpBar.SetMaxHP(enemyBase.maxHealth);
+            hpBar.SetMaxHP(enemyBase.stat.MaxHp);
             hpBar.GetComponentInChildren<HealthBarController>().target = enemy.transform;
 
             enemyBase.takeDamageAction -= hpBar.TakeDamage;

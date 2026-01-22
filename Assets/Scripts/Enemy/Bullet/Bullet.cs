@@ -90,7 +90,7 @@ namespace MasterStylizedProjectile
             if(other.gameObject.CompareTag("Enemy") ||other.gameObject.CompareTag("IgnoreBullet")) return;
             
             if(other.gameObject.CompareTag("Player"))
-                other.gameObject.GetComponent<BaseUnit>().TakeDamage(Damage);
+                other.gameObject.GetComponent<IDamageable>().TakeDamage(Damage);
             if (OnHitEffect != null)
             {
                 var onHitObj = 

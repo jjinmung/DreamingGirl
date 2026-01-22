@@ -115,7 +115,7 @@ namespace MasterStylizedProjectile
                 bullet.isTargeting = CurEffect.isTargeting;
                 bullet.isFlatShoot = CurEffect.isFlatShoot;
                 bullet.OnHitEffect = CurEffect.HitParticles;
-                bullet.Damage = GetComponent<BaseUnit>().damage;
+                bullet.Damage = GetComponent<EnemyBase>().stat.Damage;
                 if (CurEffect.isTargeting)
                 {
                     var target = FindNearestTarget("Respawn");

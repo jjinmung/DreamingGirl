@@ -4,41 +4,28 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerUnit : BaseUnit
+public class PlayerUnit : MonoBehaviour,IDamageable
 {
-    
-    public override void Init()
+    public float Damage =>Managers.Player.data.damage.TotalValue;
+    private bool isDead;
+    public void Init()
     {
-        // 1. 매니저에 저장된 영구 데이터를 BaseUnit의 변수에 동기화
-        maxHealth = Managers.Player.data.maxHp.TotalValue;
-        currentHealth = Managers.Player.data.currentHp;
-        damage = Managers.Player.data.attackPower.TotalValue;
-        
         var hpBar = GetComponentInChildren<UI_PlayerHPBar>();
         hpBar.Init();
-        hpBar.SetMaxHP(maxHealth);
-        
-        
+        hpBar.SetMaxHP(Managers.Player.data.maxHp.TotalValue);
         
         isDead = false;
         Debug.Log("플레이어 데이터 동기화 완료");
     }
     
     
-    public override void TakeDamage(float damage)
+    public void TakeDamage(float damage)
     {
-        base.TakeDamage(damage);
         ShowBloodEffect();
         Managers.UI.ShowFloatingText(transform.position,$"-{damage}",Color.red,false);
         Managers.Player.TakeDamage(damage);
     }
     
-
-    protected override void Die()
-    {
-        base.Die();
-        Managers.Player.Die();
-    }
 
     private void ShowBloodEffect()
     {

@@ -1,3 +1,5 @@
+using Data;
+
 [System.Serializable]
 public class PlayerData
 {
@@ -11,21 +13,25 @@ public class PlayerData
 
     // 전투 스탯 (스킬 선택에 의해 변동됨)
     public Stat maxHp;
-    public Stat attackPower;
+    public Stat damage;
     public Stat moveSpeed;
+    public Stat dashCooldown;
     public Stat criticalChance;
+    public Stat attackSpeed;
 
     // 기본 생성자 (초기값 설정)
-    public PlayerData()
+    public PlayerData(PlayerBasicStat basicStat)
     {
-        maxHp = new Stat(650f);
+        maxHp = new Stat(basicStat.MaxHp);
         currentHp = maxHp.TotalValue;
         level = 1;
         currentExp = 0;
         nextLevelExp = 100;
         gold = 0;
-        attackPower = new Stat(10f);
-        moveSpeed = new Stat(5f);
-        criticalChance = new Stat(0.5f);
+        damage = new Stat(basicStat.Damage);
+        moveSpeed = new Stat(basicStat.Speed);
+        dashCooldown= new Stat(basicStat.DashCooldown);
+        criticalChance = new Stat(basicStat.CritChance);
+        attackSpeed = new  Stat(basicStat.AttackSpeed);
     }
 }

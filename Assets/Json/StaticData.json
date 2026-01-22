@@ -1,0 +1,31 @@
+{
+  "monsters": [
+    {
+      "ID": "1",
+      "Name": "sharkman",
+      "MaxHp": "100",
+      "Damage": "50",
+      "Speed": "5",
+      "AttackDelay": "5"
+    },
+    {
+      "ID": "2",
+      "Name": "skeleton",
+      "MaxHp": "120",
+      "Damage": "45",
+      "Speed": "5",
+      "AttackDelay": "5"
+    }
+  ],
+  "PlayerBasicStat": [
+    {
+      "ID": "1",
+      "MaxHp": "300",
+      "Damage": "30",
+      "Speed": "5",
+      "DashCooldown": "5",
+      "CritChance": "10",
+      "AttackSpeed": "1"
+    }
+  ]
+}

@@ -7,7 +7,7 @@ using UnityEngine.Rendering.Universal;
 public class FishGuardS : EnemyBase
 {
     [SerializeField]private DecalProjector AttackRange;
-    
+    private int enemyID = 1;
     public override void Attack()
     {
         _animator.SetTrigger("ATTACK");
@@ -15,12 +15,8 @@ public class FishGuardS : EnemyBase
 
     public override void Init()
     {
+        ID = enemyID;
         base.Init();
-        
-        takeDamageAction -= TakeDamageHandler;
-        takeDamageAction += TakeDamageHandler;
-        dieAcation -= DieHandler;
-        dieAcation += DieHandler;
     }
 
     #region 이벤트 등록 함수

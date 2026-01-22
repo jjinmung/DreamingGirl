@@ -16,15 +16,14 @@ public class PlayerManager : MonoBehaviour
     private PlayerUnit player;
     public Transform playerTrans => player.transform;
     public Animator playerAnim => player.GetComponent<Animator>();
-
-    private Vector3 StartPos = new Vector3(12f, 0f, 5f);
+    
     private GameObject playerHpBar;
     
     public GameObject CreatePlayer()
     {
-        StartPos = GameObject.Find("SpawnPlayer").transform.position;
+        data=new PlayerData(Managers.Data.PlayerBasicStat[1]);
         var playerPrefab = Managers.Resource.Instantiate(Address.Player);
-        playerPrefab.transform.position = StartPos;
+        playerPrefab.transform.position = Managers.Data.SaveData.player.position;
         player= playerPrefab.GetComponent<PlayerUnit>();
         player.Init();
         
@@ -44,9 +43,10 @@ public class PlayerManager : MonoBehaviour
     {
         data.currentHp -= damage;
         data.currentHp = Mathf.Clamp(data.currentHp, 0, data.maxHp.TotalValue);
-        if (data.currentHp > 0)
+        takeDamageAction.Invoke(damage);
+        if (data.currentHp <= 0)
         {
-            takeDamageAction.Invoke(damage);
+            Die();
         }
     }
 
@@ -92,7 +92,7 @@ public class PlayerManager : MonoBehaviour
         switch (type)
         {
             case StatType.Attack:
-                data.attackPower.addValue += amount;
+                data.damage.addValue += amount;
                 break;
             case StatType.MaxHP:
                 data.maxHp.addValue += amount;
@@ -111,7 +111,7 @@ public class PlayerManager : MonoBehaviour
     {
         return type switch
         {
-            StatType.Attack => data.attackPower,
+            StatType.Attack => data.damage,
             StatType.MaxHP => data.maxHp,
             StatType.MoveSpeed => data.moveSpeed,
             StatType.Critical=>data.criticalChance,

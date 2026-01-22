@@ -54,7 +54,7 @@ public class fireTile : MonoBehaviour
     {
         if (_collider.enabled && other.CompareTag("Player"))
         {
-            if (other.TryGetComponent<BaseUnit>(out var unit))
+            if (other.TryGetComponent<IDamageable>(out var unit))
             {
                 unit.TakeDamage(Damage);
                 // 들어오자마자 데미지를 줬으니, 다음 데미지는 1초 뒤로 설정
@@ -70,7 +70,7 @@ public class fireTile : MonoBehaviour
             // 현재 시간이 '다음 데미지 시간'보다 커졌는지 확인
             if (Time.time >= _nextDamageTime)
             {
-                if (other.TryGetComponent<BaseUnit>(out var unit))
+                if (other.TryGetComponent<IDamageable>(out var unit))
                 {
                     unit.TakeDamage(Damage);
                 
