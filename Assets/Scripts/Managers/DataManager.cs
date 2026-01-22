@@ -206,7 +206,7 @@ public class DataManager
         string json = File.ReadAllText(path);
         SaveData data = JsonConvert.DeserializeObject<SaveData>(json);
 
-        // 슬롯에 표시될 텍스트 예시: "마지막 접속 시간 : 2023-10-27 15:30 \n 플레이 시간 : 00:00:00 \n 레벨 : 5 골드 : 100"
+        // 슬롯에 표시될 텍스트 예시: "마지막 접속 시간 : 2023-10-27 15:30 \n 플레이 시간 : 00:00:00 \n 현재 골드 : 100"
         return $" 마지막 접속 시간 : {data.settings.lastSaveDate}\n 플레이 시간 : {GetFormattedPlayTime()}\n " +
                $"현재 골드 : {data.player.gold}";
     }
