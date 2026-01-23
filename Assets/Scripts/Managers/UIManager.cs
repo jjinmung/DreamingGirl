@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using Unity.Behavior;
 using UnityEngine;
 
@@ -69,7 +70,24 @@ public class UIManager
         T popup = go.GetOrAddComponent<T>();
         _popupStack.Push(popup);
 
-        go.transform.SetParent(Root.transform);
+        go.transform.SetParent(_sceneUI.transform);
+        RectTransform rect = go.GetComponent<RectTransform>();
+        if (rect != null)
+        {
+	        // 1. 앵커를 중앙으로 설정 (부모의 중앙 기준)
+	        rect.anchorMin = new Vector2(0.5f, 0.5f);
+	        rect.anchorMax = new Vector2(0.5f, 0.5f);
+	        rect.pivot = new Vector2(0.5f, 0.5f);
+
+	        // 2. 위치 좌표를 0,0으로 (중앙 정렬)
+	        rect.anchoredPosition = Vector2.zero;
+        
+	        // 3. Scale이나 Z값도 필요하다면 초기화
+	        rect.localScale = Vector3.zero; // 이후 DOTween으로 1.0f까지 커짐
+        }
+        
+        go.transform.localScale = Vector3.zero;
+        go.transform.DOScale(1.0f, 0.3f).SetEase(Ease.OutBack);
 
 		return popup;
     }
@@ -100,13 +118,18 @@ public class UIManager
 
     public void ClosePopupUI()
     {
-        if (_popupStack.Count == 0)
-            return;
+	    if (_popupStack.Count == 0)
+		    return;
+	    
+	    UI_Popup popup = _popupStack.Pop();
+	    _order--;
+	    
+	    popup.transform.DOScale(0.0f, 0.2f).SetEase(Ease.InBack).SetUpdate(true).OnComplete(() =>
+	    {
+		    Managers.Resource.Destroy(popup.gameObject);
+		    popup = null;
 
-        UI_Popup popup = _popupStack.Pop();
-        Managers.Resource.Destroy(popup.gameObject);
-        popup = null;
-        _order--;
+	    });
     }
 
     public void CloseAllPopupUI()
@@ -118,6 +141,7 @@ public class UIManager
     public void Clear()
     {
         CloseAllPopupUI();
+        Managers.Resource.Destroy(_sceneUI.gameObject);
         _sceneUI = null;
     }
 }

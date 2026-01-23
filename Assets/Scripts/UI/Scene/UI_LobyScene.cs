@@ -18,7 +18,6 @@ public class UI_LobyScene : UI_Scene
     enum Images
     {
         BtnBGImange,
-        Title
     }
 
     enum GameObjects
@@ -54,34 +53,35 @@ public class UI_LobyScene : UI_Scene
             go.BindEvent(OnExit,Define.UIEvent.Exit);
         }
         
-        go = GetText((int)Texts.PlayNewText).gameObject;
-        go.BindEvent(OnClickedPlay);
+        GetText((int)Texts.PlayNewText).gameObject.BindEvent(OnClickedPlay);
+        GetText((int)Texts.PlayContinueText).gameObject.BindEvent((data) =>
+        {
+            Managers.UI.ShowPopupUI<UI_SaveData>();
+        });
        
         
     }
     
     private void OnClickedPlay(PointerEventData eventData)
     {
-        GetImage((int)Images.Title).gameObject.SetActive(false);
-        GetImage((int)Images.BtnBGImange).gameObject.SetActive(false);
-        GetObject((int)GameObjects.Btns).SetActive(false);
+        Managers.Data.LoadGame(true);
+        Managers.UI.Clear();
         Managers.Camera.LobyToBattle();
     }
     
     
 
-    private void OnEnter(PointerEventData eventData)
+    protected override void OnEnter(PointerEventData eventData)
     {
-        eventData.pointerEnter.transform.localScale = new Vector3(1.2f, 1.2f, 1.2f);
-        
+        base.OnEnter(eventData);
         var go = GetImage((int)Images.BtnBGImange).gameObject;
         go.SetActive(true);
         go.transform.position = eventData.pointerEnter.transform.position+new Vector3(0,10f,0);
 
     }
-    private void OnExit(PointerEventData eventData)
+    protected override void OnExit(PointerEventData eventData)
     {
-        eventData.pointerEnter.transform.localScale = Vector3.one;
+        base.OnExit(eventData);
         GetImage((int)Images.BtnBGImange).gameObject.SetActive(false);
     }
 }

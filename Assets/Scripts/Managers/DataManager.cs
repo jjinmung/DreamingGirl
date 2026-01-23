@@ -90,7 +90,6 @@ public class DataManager
 
     // [동적 데이터 (세이브)]
     public SaveData SaveData { get; private set; } = new SaveData();
-    private int savedataCount;
     // 현재 선택된 슬롯 (1~4)
     private int _saveDataIndex = 1;
     public int SaveDataIndex 
@@ -119,14 +118,7 @@ public class DataManager
         // 플레이어 기본 스탯 딕셔너리 채우기
         PlayerBasicStat = new Dictionary<int, PlayerBasicStat>();
         foreach (var p in root.PlayerBasicStat) PlayerBasicStat.Add(p.ID, p);
-
-        savedataCount = 0;
-        //슬롯 갯수세기
-        for (int i = 1; i <= 4; i++)
-        {
-            if (HasSaveFile(i)) savedataCount++;
-            else break;
-        }
+        
     }
     // 슬롯 변경 및 해당 데이터 로드
     public void ChangeSlot(int index)
@@ -164,8 +156,16 @@ public class DataManager
     {
         if (!File.Exists(CurrentSavePath) || isNew)
         {
-            savedataCount++;
-            _saveDataIndex = savedataCount;
+            _saveDataIndex = 4;
+            for (int i = 1; i <= 4; i++)
+            {
+                if (!HasSaveFile(i))
+                {
+                    _saveDataIndex = i;
+                    break;
+                } 
+            }
+                
             // 신규 세이브 데이터 생성 (새 데이터 만들기)
             SaveData = new SaveData();
         
@@ -193,7 +193,6 @@ public class DataManager
         if (File.Exists(path))
         {
             File.Delete(path);
-            savedataCount--;
             Debug.Log($"Slot {index} Deleted.");
         }
     }
@@ -214,7 +213,7 @@ public class DataManager
     public string GetFormattedPlayTime()
     {
         // 누적 시간 + 현재 세션 진행 시간
-        float totalSeconds = SaveData.settings.playTime + (Time.unscaledTime - _sessionStartTime);
+        float totalSeconds = SaveData.settings.playTime;
         
         TimeSpan t = TimeSpan.FromSeconds(totalSeconds);
         return string.Format("{0:D2}:{1:D2}:{2:D2}", 

@@ -43,7 +43,6 @@ public abstract class UI_Base : MonoBehaviour
 	protected TextMeshProUGUI GetText(int idx) { return Get<TextMeshProUGUI>(idx); }
 	protected Button GetButton(int idx) { return Get<Button>(idx); }
 	protected Image GetImage(int idx) { return Get<Image>(idx); }
-
 	public static void BindEvent(GameObject go, Action<PointerEventData> action, Define.UIEvent type = Define.UIEvent.Click)
 	{
 		UI_EventHandler evt = go.GetOrAddComponent<UI_EventHandler>();
@@ -67,5 +66,15 @@ public abstract class UI_Base : MonoBehaviour
 				evt.OnExitHandler += action;
 				break;
 		}
+	}
+	
+	protected virtual void OnEnter(PointerEventData eventData)
+	{
+		eventData.pointerEnter.transform.localScale = new Vector3(1.2f, 1.2f, 1.2f);
+		
+	}
+	protected virtual void OnExit(PointerEventData eventData)
+	{
+		eventData.pointerEnter.transform.localScale = Vector3.one;
 	}
 }
