@@ -12,7 +12,7 @@ public class Store : MonoBehaviour,IInteractable
     public void OnInteract()
     {
         Managers.Camera.SetStoreCam(!IsInteracting);
-        Managers.Player.playerTrans.GetComponent<PlayerController>().enabled = IsInteracting;
+        Managers.Player.PlayerControl.InputActive(IsInteracting);
         //Managers.UI.ShowPopupUI<>()
         if (!IsInteracting)
         {

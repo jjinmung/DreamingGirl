@@ -1,15 +1,23 @@
 [System.Serializable]
 public class Stat
 {
-    public float baseValue; // 캐릭터 고유 기본값
-    public float addValue;  // 레벨업, 장비, 버프로 인한 추가값
+    public float baseValue;        // 기본값
+    public float flatBonus;        // 고정 증가 (+)
+    public float percentBonus;     // 배율 증가 (%)
 
-    // 최종 스탯 반환 (Read-only)
-    public float TotalValue => baseValue + addValue;
+    // 최종값
+    public float TotalValue
+    {
+        get
+        {
+            return (baseValue + flatBonus) * (1f + percentBonus);
+        }
+    }
 
     public Stat(float baseValue)
     {
         this.baseValue = baseValue;
-        this.addValue = 0;
+        flatBonus = 0f;
+        percentBonus = 0f;
     }
 }

@@ -11,6 +11,8 @@ public class DataManager
 {
     public Dictionary<int, MonsterStat> MonsterDict { get; private set; }
     public Dictionary<int, PlayerBasicStat> PlayerBasicStat { get; private set; }
+    
+    public Dictionary<Define.PassiveSkillID, PassiveData> PassiveDict { get; private set; }
 
     private int playerIndex = 1;
 
@@ -33,7 +35,7 @@ public class DataManager
     private Vector3 StartPos = new Vector3(12f, 0f, 5f);
     public void Init()
     {
-        // 1. 정적 데이터 로드
+        // 1. 정적 데이터 json파일 로드
         StaticDataRoot root = LoadStaticData("StaticData");
         if (root == null) return;
 
@@ -44,6 +46,18 @@ public class DataManager
         // 플레이어 기본 스탯 딕셔너리 채우기
         PlayerBasicStat = new Dictionary<int, PlayerBasicStat>();
         foreach (var p in root.PlayerBasicStat) PlayerBasicStat.Add(p.ID, p);
+        
+        //패시브 스킬 딕셔너리 채우기
+        PassiveDict = new Dictionary<Define.PassiveSkillID, PassiveData>();
+        PassiveData[] passiveDatas = Managers.Resource.LoadAll<PassiveData>("PassiveSkill");
+        if (passiveDatas != null)
+        {
+            foreach (var data in passiveDatas)
+            {
+                if (!PassiveDict.ContainsKey(data.skillID))
+                    PassiveDict.Add(data.skillID, data);
+            }
+        }
         
     }
     // 슬롯 변경 및 해당 데이터 로드

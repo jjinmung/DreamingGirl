@@ -15,6 +15,7 @@ public class PlayerAttack : MonoBehaviour
         if (other.gameObject.CompareTag("Enemy"))
         {
             other.gameObject.GetComponent<IDamageable>().TakeDamage(player.Damage);
+            Managers.Player.OnDamageDealt?.Invoke(player.Damage);
         }
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using static Define;
 
 namespace Data
 {
@@ -48,7 +49,7 @@ namespace Data
         public float currentHp;
         public int gold;
         public SerializableVector3 position;
-        public List<Define.PassiveSkillID> ownedPassives = new();
+        public List<PassiveSkillID> ownedPassives = new();
         // 초기화를 위한 메서드
         public void ResetStats(float maxHp,Vector3 pos)
         {
@@ -57,7 +58,7 @@ namespace Data
             position = pos;
         }
         
-        public bool HasPassive(Define.PassiveSkillID skillID)
+        public bool HasPassive(PassiveSkillID skillID)
         {
             foreach (var passiveSkill in ownedPassives)
                 if(passiveSkill==skillID )

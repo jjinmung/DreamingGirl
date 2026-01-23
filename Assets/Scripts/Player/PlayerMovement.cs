@@ -4,8 +4,8 @@ public class PlayerMovement : MonoBehaviour
 {
     public float rotationSpeed = 15f;
     public float dashForce = 20f;
-    private float dashCooldown => Managers.Player.data.dashCooldown.TotalValue;
-    private float movementSpeed =>Managers.Player.data.moveSpeed.TotalValue;
+    private float dashCooldown => Managers.Player.GetStat(Define.PlayerStat.DashCooldown).TotalValue;
+    private float movementSpeed =>Managers.Player.GetStat(Define.PlayerStat.MoveSpeed).TotalValue;
 
     private Rigidbody _rb;
     private float _lastDashTime = -999f;

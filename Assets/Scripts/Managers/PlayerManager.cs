@@ -1,71 +1,65 @@
 using UnityEngine;
 using System;
+using static Define;
 
 public class PlayerManager : MonoBehaviour
 {
-    
     [Header("Player Data")]
-    public PlayerData data;
+    private PlayerData data;
 
-    // 데이터 변경 시 UI 업데이트 등을 위한 이벤트
     public event Action OnDataChanged;
-    public event Action<float> takeDamageAction;
-    public event Action dieAcation;
-    
-    //플레이어 관련 변수 
-    private PlayerUnit player;
-    public Transform playerTrans => player.transform;
+    public event Action<float> TakeDamageAction;
+    public Action<float> OnDamageDealt;
+    public event Action DieAcation;
+
+    // 캐싱용 필드
+    private PlayerUnit _playerUnit;
     private Animator _playerAnim;
-    public Animator PlayerAnim
-    {
-        get
-        {
-            if (_playerAnim == null)
-                _playerAnim = player.GetComponent<Animator>();
-            return _playerAnim;
-        }
-    }
-    
-    private GameObject playerHpBar;
-    
+    private PlayerController _playerController;
+    private Rigidbody _playerRb;
+    private CapsuleCollider _playerCollider;
+    private GameObject _playerHpBar;
+
+    // 프로퍼티 (Null 체크 없이 즉시 반환하도록 개선)
+    public Transform PlayerTrans => _playerUnit.transform;
+    public Animator PlayerAnim => _playerAnim;
+    public PlayerController PlayerControl => _playerController;
+
     public GameObject CreatePlayer()
     {
-        data=new PlayerData(Managers.Data.PlayerBasicStat[1]);
+        data = new PlayerData(Managers.Data.PlayerBasicStat[1]);
         var playerPrefab = Managers.Resource.Instantiate(Address.Player);
         playerPrefab.transform.position = Managers.Data.SaveData.player.position;
-        player= playerPrefab.GetComponent<PlayerUnit>();
-        _playerAnim=playerPrefab.GetComponent<Animator>();
-        _playerAnim.SetFloat("AttackSpeed",data.attackSpeed.TotalValue);
-        player.Init();
+
+        // 생성 시점에 모든 컴포넌트를 한 번만 캐싱
+        _playerUnit = playerPrefab.GetComponent<PlayerUnit>();
+        _playerAnim = playerPrefab.GetComponent<Animator>();
+        _playerController = playerPrefab.GetComponent<PlayerController>();
+        _playerRb = playerPrefab.GetComponent<Rigidbody>();
+        _playerCollider = playerPrefab.GetComponent<CapsuleCollider>();
         
+        _playerHpBar = _playerUnit.GetComponentInChildren<UI_PlayerHPBar>(true).gameObject;
         
-        playerHpBar = player.GetComponentInChildren<UI_PlayerHPBar>().gameObject;
-        playerHpBar.SetActive(false);
-        
+
+        _playerAnim.SetFloat("AttackSpeed", data.attackSpeed.TotalValue);
+        _playerUnit.Init();
+
+        // 중복 구독 방지 (이미 등록되어 있을 수 있으므로 -= 후 +=)
+        Managers.Stage.ExitRoom -= ExitRoomHandler;
         Managers.Stage.ExitRoom += ExitRoomHandler;
-        Managers.Stage.ExitRoom += ExitRoomHandler;
-        
-        
+
         return playerPrefab;
     }
-    
-    // --- 데이터 수정 메소드들 ---
 
+    // --- 데이터 수정 메소드들 ---
     public void TakeDamage(float damage)
     {
-        data.currentHp -= damage;
-        data.currentHp = Mathf.Clamp(data.currentHp, 0, data.maxHp.TotalValue);
-        takeDamageAction.Invoke(damage);
-        if (data.currentHp <= 0)
-        {
-            Die();
-        }
+        data.currentHp = Mathf.Clamp(data.currentHp - damage, 0, data.maxHp.TotalValue);
+        TakeDamageAction?.Invoke(damage);
+        if (data.currentHp <= 0) Die();
     }
 
-    public void Die()
-    {
-        dieAcation.Invoke();
-    }
+    public void Die() => DieAcation?.Invoke();
 
     public void AddGold(int amount)
     {
@@ -76,7 +70,7 @@ public class PlayerManager : MonoBehaviour
     public void AddExp(int amount)
     {
         data.currentExp += amount;
-        if (data.currentExp >= data.nextLevelExp)
+        while (data.currentExp >= data.nextLevelExp) // if 대신 while 사용 (연속 레벨업 대응)
         {
             LevelUp();
         }
@@ -87,78 +81,78 @@ public class PlayerManager : MonoBehaviour
     {
         data.level++;
         data.currentExp -= data.nextLevelExp;
-        data.nextLevelExp = Mathf.RoundToInt(data.nextLevelExp * 1.2f); // 레벨업 필요량 증가
-        
-        // 레벨업 시 풀피 회복 등 로직
+        data.nextLevelExp = Mathf.RoundToInt(data.nextLevelExp * 1.2f);
         data.currentHp = data.maxHp.TotalValue;
-        
-        Debug.Log("Level Up! 현재 레벨: " + data.level);
-        
+        Debug.Log($"Level Up! 현재 레벨: {data.level}");
     }
-    
-    public enum StatType { Attack, MaxHP, MoveSpeed, Critical,DashCooldown,attackSpeed }
 
-    // 스탯을 영구적으로 강화하는 메소드 (레벨업 보상 등)
-    public void AddPermanentStat(StatType type, float amount)
+    public void AddPermanentStat(PlayerStat type, float amount, bool isPercent = false)
     {
-        switch (type)
-        {
-            case StatType.Attack:
-                data.damage.addValue += amount;
-                break;
-            case StatType.MaxHP:
-                data.maxHp.addValue += amount;
-                break;
-            case StatType.MoveSpeed:
-                data.moveSpeed.addValue += amount;
-                break;
-            case StatType.Critical:
-                data.criticalChance.addValue += amount;
-                break;
-            case StatType.DashCooldown:
-                data.dashCooldown.addValue += amount;
-                break;
-            case StatType.attackSpeed:
-                data.attackSpeed.addValue += amount;
-                _playerAnim.SetFloat("AttackSpeed", data.attackSpeed.TotalValue);
-                break;
-        }
-        Debug.Log($"{type} 스탯이 {amount}만큼 증가했습니다! 현재: {GetStat(type).TotalValue}");
+        Stat targetStat = GetStat(type);
+        if (targetStat == null) return;
+
+        if (isPercent) targetStat.percentBonus += amount;
+        else targetStat.flatBonus += amount;
+
+        // 공격 속도일 경우 애니메이터 즉시 갱신
+        if (type == PlayerStat.attackSpeed)
+            _playerAnim.SetFloat("AttackSpeed", data.attackSpeed.TotalValue);
     }
 
-    public Stat GetStat(StatType type)
+    public Stat GetStat(PlayerStat type)
     {
         return type switch
         {
-            StatType.Attack => data.damage,
-            StatType.MaxHP => data.maxHp,
-            StatType.MoveSpeed => data.moveSpeed,
-            StatType.Critical=>data.criticalChance,
+            PlayerStat.Attack => data.damage,
+            PlayerStat.MaxHP => data.maxHp,
+            PlayerStat.MoveSpeed => data.moveSpeed,
+            PlayerStat.Critical => data.criticalChance,
+            PlayerStat.DashCooldown => data.dashCooldown,
+            PlayerStat.attackSpeed => data.attackSpeed,
             _ => null
         };
     }
 
+    public void Heal(float amount)
+    {
+        data.currentHp = Mathf.Clamp(data.currentHp + amount, 0, data.maxHp.TotalValue);
+        TakeDamageAction?.Invoke(-amount); // 기존 로직 유지
+        Managers.UI.ShowFloatingText(PlayerTrans.position, $"+{amount}", Color.green, false);
+    }
+
+    // --- 상태 제어 메소드 (클린 코드) ---
+
     private void ExitRoomHandler()
     {
-        player.GetComponent<CapsuleCollider>().enabled = false;
-        player.GetComponent<Rigidbody>().useGravity = false;
-        var controller = player.GetComponent<PlayerController>();
-        controller.StopDashPhysics();
-        controller.gameObject.SetLayerRecursively("Default");
-        controller.CurrentState = PlayerController.PlayerState.Idle;
-        controller.enabled = false;
-        
-        _playerAnim.SetFloat("MOVE",0);
-        playerHpBar.SetActive(false);
+        SetPlayerActiveState(false);
     }
-    
+
     public void EnterRoom()
     {
-        player.GetComponent<CapsuleCollider>().enabled = true;
-        player.GetComponent<Rigidbody>().useGravity = true;
-        player.GetComponent<PlayerController>().gameObject.SetLayerRecursively("Char");
-        player.GetComponent<PlayerController>().enabled = true;
-        playerHpBar.SetActive(true);
+        SetPlayerActiveState(true);
     }
-    
+
+    /// <summary>
+    /// 플레이어의 물리 및 컨트롤러 상태를 일괄 제어
+    /// </summary>
+    private void SetPlayerActiveState(bool isActive)
+    {
+        _playerCollider.enabled = isActive;
+        _playerRb.useGravity = isActive;
+        _playerHpBar.SetActive(isActive);
+        
+        if (isActive)
+        {
+            _playerController.gameObject.SetLayerRecursively("Char");
+            _playerController.InputActive(true);
+        }
+        else
+        {
+            _playerController.StopDashPhysics();
+            _playerController.gameObject.SetLayerRecursively("Default");
+            _playerController.CurrentState = PlayerController.PlayerState.Idle;
+            _playerAnim.SetFloat("MOVE", 0);
+            _playerController.InputActive(false);
+        }
+    }
 }

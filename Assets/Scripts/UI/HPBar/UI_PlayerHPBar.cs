@@ -32,10 +32,10 @@ public class UI_PlayerHPBar : UI_Base
         Bind<Slider>(typeof(Sliders));
         Bind<GameObject>(typeof(GameObjects));
         
-        Managers.Player.takeDamageAction-=TakeDamage;
-        Managers.Player.takeDamageAction+=TakeDamage;
-        Managers.Player.dieAcation -= Destroy;
-        Managers.Player.dieAcation  += Destroy;
+        Managers.Player.TakeDamageAction-=TakeDamage;
+        Managers.Player.TakeDamageAction+=TakeDamage;
+        Managers.Player.DieAcation -= Destroy;
+        Managers.Player.DieAcation  += Destroy;
        
         
     }

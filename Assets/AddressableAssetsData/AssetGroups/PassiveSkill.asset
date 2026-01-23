@@ -1,0 +1,95 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: PassiveSkill
+  m_EditorClassIdentifier: 
+  m_GroupName: PassiveSkill
+  m_GUID: 0cd21800fd991f64586a6c1e4220a170
+  m_SerializeEntries:
+  - m_GUID: 0d82708005bda2c4e9c3dfd37f64b2ed
+    m_Address: Assets/So/PassiveSkill/PowerAwakening.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PassiveSkill
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 441d354155b789d4bb9f7b0fa1e43836
+    m_Address: Assets/So/PassiveSkill/DecisiveStrike.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PassiveSkill
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 62daedf855171114294db872bb05c150
+    m_Address: Assets/So/PassiveSkill/CriticalSense.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PassiveSkill
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 65825bb78d63c494fb65392f63eface6
+    m_Address: Assets/So/PassiveSkill/LastChance.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PassiveSkill
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 78c455447b952aa469412c8471e75176
+    m_Address: Assets/So/PassiveSkill/FireSpirit.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PassiveSkill
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 843d5090aae77ed469249cbecde66c05
+    m_Address: Assets/So/PassiveSkill/UnyieldingVitality.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PassiveSkill
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9ed49755875288f47a1cee4b5d55fb10
+    m_Address: Assets/So/PassiveSkill/FateChoice.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PassiveSkill
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a04e6f9d19e6ad444a7d83d67b0121c3
+    m_Address: Assets/So/PassiveSkill/WaterSpirit.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PassiveSkill
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a88b548e18c44e3459d2c1a2cb0e3e6d
+    m_Address: Assets/So/PassiveSkill/DungeonBreath.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PassiveSkill
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d1686c8073dbffa44818427baf153faf
+    m_Address: Assets/So/PassiveSkill/HasteInstinct.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PassiveSkill
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d2144fcd5936bb54b8db7342a86fbe16
+    m_Address: Assets/So/PassiveSkill/LifeDrain.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PassiveSkill
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d30a19c183eabe94ebfc8b5b7d367548
+    m_Address: Assets/So/PassiveSkill/SwiftBoots.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - PassiveSkill
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 920b87acde3acff468f42abc87154c6f, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 242f489ecae625049b4889bc78fb608c, type: 2}
+    - {fileID: 11400000, guid: 3a7cf38f427535f4d897b3019ec6d36c, type: 2}

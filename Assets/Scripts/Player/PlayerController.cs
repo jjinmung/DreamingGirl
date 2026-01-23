@@ -96,14 +96,14 @@ public class PlayerController : MonoBehaviour
     }
 
     // 애니메이션 이벤트 브릿지
-    public void OnAnimationFinished() { 
-        _movement.CanMove = true; 
-        _combat.CanAttack = true;
+    public void OnAnimationFinished()
+    {
+        InputActive(true);
         _combat.ResetCombo();
     }
-    public void OnAnimationStart() { 
-        _movement.CanMove = false; 
-        _combat.CanAttack = false;
+    public void OnAnimationStart()
+    {
+        InputActive(false);
     }
     
     //애니메이션 이벤트 함수
@@ -121,6 +121,10 @@ public class PlayerController : MonoBehaviour
         
     }
     public void StopDashPhysics() => _movement.StopVelocity();
-    
-    
+
+    public void InputActive(bool isActive)
+    {
+        _movement.CanMove = isActive; 
+        _combat.CanAttack = isActive;
+    }
 }

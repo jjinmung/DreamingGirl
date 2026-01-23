@@ -36,6 +36,34 @@ public class ResourceManager : MonoBehaviour
         _resources.Add(address, loadHandle);
         return loadHandle.Result;
     }
+    public T[] LoadAll<T>(string label) where T : Object
+    {
+        // Addressables에서 라벨로 에셋 위치 목록을 가져옴
+        var handle = Addressables.LoadAssetsAsync<T>(label, null);
+        handle.WaitForCompletion();
+
+        if (handle.Status == AsyncOperationStatus.Succeeded)
+        {
+            IList<T> resultList = handle.Result;
+        
+            // 내부 캐시에 개별적으로 등록 (나중에 개별 Load 시 중복 로드 방지)
+            // 주의: 라벨 로드 자체의 핸들은 따로 관리하거나, 개별 에셋 핸들을 추적해야 합니다.
+            // 여기서는 단순화를 위해 결과 리스트를 반환합니다.
+        
+            T[] array = new T[resultList.Count];
+            resultList.CopyTo(array, 0);
+        
+            // 캐싱 로직: 개별 에셋의 주소를 알 수 있다면 좋지만, 
+            // 라벨 로드 시에는 보통 핸들 전체를 관리하는 전용 딕셔너리를 하나 더 두는 것이 좋습니다.
+            if (!_resources.ContainsKey(label))
+                _resources.Add(label, handle);
+
+            return array;
+        }
+
+        Debug.LogError($"[ResourceManager] Failed to load assets with label: {label}");
+        return null;
+    }
 
     // [Instantiate / Spawn] 풀링을 포함한 생성
     public GameObject Instantiate(string address, Vector3 position = default, Quaternion rotation = default, Transform parent = null)

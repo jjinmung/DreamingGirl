@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class Define
+﻿public class Define
 {
     public enum Scene
     {
@@ -51,6 +47,16 @@ public class Define
         FireSpirit,        // 불의 정령
         WaterSpirit,       // 물의 정령
         FateChoice         // 운명의 선택
+    }
+
+    public enum PlayerStat
+    {
+        Attack, 
+        MaxHP, 
+        MoveSpeed, 
+        Critical,
+        DashCooldown,
+        attackSpeed
     }
     
 }

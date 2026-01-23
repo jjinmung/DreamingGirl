@@ -6,14 +6,14 @@ using UnityEngine.UI;
 
 public class PlayerUnit : MonoBehaviour,IDamageable
 {
-    public float Damage =>Managers.Player.data.damage.TotalValue;
+    public float Damage =>Managers.Player.GetStat(Define.PlayerStat.Attack).TotalValue;
     private bool isDead;
     public void Init()
     {
         var hpBar = GetComponentInChildren<UI_PlayerHPBar>();
         hpBar.Init();
-        hpBar.SetMaxHP(Managers.Player.data.maxHp.TotalValue);
-        
+        hpBar.SetMaxHP(Managers.Player.GetStat(Define.PlayerStat.MaxHP).TotalValue);
+        hpBar.gameObject.SetActive(false);
         isDead = false;
         Debug.Log("플레이어 데이터 동기화 완료");
     }

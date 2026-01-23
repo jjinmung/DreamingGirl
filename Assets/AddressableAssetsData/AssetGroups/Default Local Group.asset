@@ -50,6 +50,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b6a0703867fc74447a31e58de1d2cc2f
+    m_Address: Assets/Prefabs/UI/Popup/UI_PassiveSkill.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: cb8f2ec0b52b62e47a857eb94d0da2c0
     m_Address: Assets/Prefabs/UI/UI_FloatingText.prefab
     m_ReadOnly: 0

@@ -50,7 +50,7 @@ public class StageManager : MonoBehaviour
     {
         Managers.Camera.ChanageCamera();
         Managers.Player.PlayerAnim.SetFloat("MOVE",0.5f);
-        var player = Managers.Player.playerTrans;
+        var player = Managers.Player.PlayerTrans;
         player.DOMove(exitDoor.ExitPos.position, 1f);
         player.DORotate(exitDoor.dir, 1f);
         yield return new WaitForSeconds(1f); 
@@ -75,7 +75,7 @@ public class StageManager : MonoBehaviour
             enemySpawner = nextRoom.GetComponentInChildren<EnemySpawner>();
             
             Transform spawnPoint = nextRoom.SpawnPos;
-            Managers.Player.playerTrans.position = spawnPoint.position;
+            Managers.Player.PlayerTrans.position = spawnPoint.position;
         }
         yield return new WaitForSeconds(1f); 
         EnterRoom.Invoke();
@@ -112,7 +112,7 @@ public class StageManager : MonoBehaviour
         var currentRoom = rooms[currentRoomIndex];
         currentRoom.EnterDoor.EnterRoomOpen();
        
-        var player = Managers.Player.playerTrans;
+        var player = Managers.Player.PlayerTrans;
         player.rotation = Quaternion.Euler(0, 0, 0);
         player.DOMove(targetPosition, 2f)
             .SetEase(Ease.Linear); 
