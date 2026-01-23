@@ -10,4 +10,15 @@ public static class Extension
 	{
 		UI_Base.BindEvent(go, action, type);
 	}
+	
+	public static void SetLayerRecursively(this GameObject obj, string layer)
+	{
+		var newLayer = LayerMask.NameToLayer(layer);
+		if(!obj.CompareTag("Attack"))
+			obj.layer = newLayer;
+		foreach (Transform child in obj.transform)
+		{
+			child.gameObject.SetLayerRecursively(layer);
+		}
+	}
 }

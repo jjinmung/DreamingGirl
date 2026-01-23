@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using DG.Tweening;
 using Unity.Behavior;
 using UnityEngine;
@@ -8,14 +9,22 @@ using Action = System.Action;
 
 public abstract class EnemyBase : MonoBehaviour,IDamageable
 {
-    protected GameObject _player;
-    protected BehaviorGraphAgent _behavior;
-    protected Animator _animator;
-    protected NavMeshAgent _navMeshAgent;
-    protected SkinnedMeshRenderer _skinnedMesh;
-    protected Rigidbody _rigidbody;
+    //lazy cashing
+    protected GameObject _player=> _playerCache ??= GameObject.FindGameObjectWithTag("Player");
     
-    protected int ID;
+    protected BehaviorGraphAgent _behavior=> _behaviorCache ??= GetComponent<BehaviorGraphAgent>();
+    protected Animator _animator=> _animatorCache ??= GetComponent<Animator>();
+    protected NavMeshAgent _navMeshAgent=> _navMeshAgentCache ??= GetComponent<NavMeshAgent>();
+    protected SkinnedMeshRenderer _skinnedMesh=> _skinnedMeshCache ??= GetComponentInChildren<SkinnedMeshRenderer>();
+    protected Rigidbody _rigidbody=> _rigidbodyCache ??= GetComponent<Rigidbody>();
+
+    private GameObject _playerCache;
+    private BehaviorGraphAgent _behaviorCache;
+    private Animator _animatorCache;
+    private NavMeshAgent _navMeshAgentCache;
+    private SkinnedMeshRenderer _skinnedMeshCache;
+    private Rigidbody _rigidbodyCache;
+    
     public EnemyStat stat; 
     public bool IsAttack=false;
     public bool isDead=false;
@@ -25,35 +34,35 @@ public abstract class EnemyBase : MonoBehaviour,IDamageable
     [SerializeField]private Material _originalMat;
     [SerializeField]private Material _hitMat;
     [SerializeField]private Material _deathMat;
-    public virtual void Init()
+
+    
+    public virtual void Init(int id)
     {
-        stat=new EnemyStat(Managers.Data.MonsterDict[1]);
-        _player = GameObject.FindGameObjectWithTag("Player");
-        _behavior = GetComponent<BehaviorGraphAgent>();
-        _animator = GetComponent<Animator>();
-        _navMeshAgent =  GetComponent<NavMeshAgent>();
-        _skinnedMesh = GetComponentInChildren<SkinnedMeshRenderer>();
-        _rigidbody = GetComponent<Rigidbody>();
-        
-        gameObject.layer = LayerMask.NameToLayer("Enemy");
-        
+        // 데이터 로드
+        stat = new EnemyStat(Managers.Data.MonsterDict[id]);
+        isDead = false;
+
+        // Behavior 트리 설정
         _behavior.Restart();
-        _behavior.SetVariableValue("Target",_player);
-        _behavior.SetVariableValue("IsDeath",false);
-        
-        takeDamageAction -= TakeDamageHandler;
-        takeDamageAction += TakeDamageHandler;
-        dieAcation -= DieHandler;
-        dieAcation += DieHandler;
+        _behavior.SetVariableValue("Target", _player);
+        _behavior.SetVariableValue("IsDeath", false);
+        _behavior.SetVariableValue("AttackDelay", stat.AttackDelay);
 
-        isDead = false;
+        // 이벤트 클린업 및 등록
+        ResetEvents();
+
+        //이름 변경
+        name = stat.Name;
     }
 
-    private void OnEnable()
+    private void ResetEvents()
     {
-        isDead = false;
-        stat.currentHp = stat.MaxHp;
+        takeDamageAction = null;
+        dieAcation = null;
+        takeDamageAction += TakeDamageHandler;
+        dieAcation += DieHandler;
     }
+    
 
     public abstract void Attack();
 
@@ -76,6 +85,7 @@ public abstract class EnemyBase : MonoBehaviour,IDamageable
     protected void Die()
     {
         isDead = true;
+        Managers.Stage.checkClear();
         dieAcation.Invoke();
         gameObject.layer = LayerMask.NameToLayer("DeadBody");
         _animator.SetTrigger("DEATH");
@@ -113,4 +123,6 @@ public abstract class EnemyBase : MonoBehaviour,IDamageable
                 Managers.Resource.Destroy(gameObject);
             });
     }
+    
+    public virtual void SetAdditionalData(List<GameObject> patrolPoints) { }
 }

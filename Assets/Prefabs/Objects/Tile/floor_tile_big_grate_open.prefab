@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 3795015832877417450}
   m_Layer: 0
   m_Name: floor_tile_big_grate_open
-  m_TagString: Untagged
+  m_TagString: IgnoreBullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -123,7 +123,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mainFire: {fileID: 6108564910913760139}
-  _light: {fileID: 7728040612333441060}
   Damage: 10
   DamageInterval: 1
 --- !u!1 &3456879887080769401

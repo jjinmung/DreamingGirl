@@ -13,11 +13,7 @@ public class FishGuardS : EnemyBase
         _animator.SetTrigger("ATTACK");
     }
 
-    public override void Init()
-    {
-        ID = enemyID;
-        base.Init();
-    }
+
 
     #region 이벤트 등록 함수
     protected override void TakeDamageHandler(float damage)
@@ -57,11 +53,9 @@ public class FishGuardS : EnemyBase
     #endregion
     
     
-    public void SetVpartrolPoints(List<GameObject> partrolPoints)
+    public override void SetAdditionalData(List<GameObject> patrolPoints) 
     {
-        if(_behavior == null)
-            _behavior = GetComponent<BehaviorGraphAgent>();
-        _behavior.SetVariableValue("PatrolPoints",partrolPoints);
+        _behavior.SetVariableValue("PatrolPoints", patrolPoints);
     }
 
     public void SetAttackArange(bool isAcive)

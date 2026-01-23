@@ -12,7 +12,8 @@ public class StageManager : MonoBehaviour
     private Room[] rooms;
     private int currentRoomIndex;
     private EnemySpawner enemySpawner;
-    
+
+    private int KillCount;
 
     public void Init()
     {
@@ -25,14 +26,12 @@ public class StageManager : MonoBehaviour
         currentRoomIndex = 0;
         rooms[currentRoomIndex].gameObject.SetActive(true);
         
-        var btn = GameObject.Find("Btn").GetComponent<Button>();
-        btn.onClick.AddListener(ClearRoom);
-        
         ExitRoom -= ExitToNextRoom;
         ExitRoom += ExitToNextRoom;
 
         EnterRoom -= EnterToNetxtRoom;
         EnterRoom += EnterToNetxtRoom;
+        KillCount = 0;
     }
 
     private Door exitDoor;
@@ -50,7 +49,7 @@ public class StageManager : MonoBehaviour
     IEnumerator ExitToNextRoomCoroutine()
     {
         Managers.Camera.ChanageCamera();
-        Managers.Player.playerAnim.SetFloat("MOVE",0.5f);
+        Managers.Player.PlayerAnim.SetFloat("MOVE",0.5f);
         var player = Managers.Player.playerTrans;
         player.DOMove(exitDoor.ExitPos.position, 1f);
         player.DORotate(exitDoor.dir, 1f);
@@ -82,6 +81,17 @@ public class StageManager : MonoBehaviour
         EnterRoom.Invoke();
     }
 
+    public void checkClear()
+    {
+        KillCount++;
+        if (KillCount == enemySpawner.spawnCount)
+        {
+            ClearRoom();
+            KillCount = 0;
+        }
+            
+    }
+    
     public void ClearRoom()
     {
         foreach (var door in rooms[currentRoomIndex].doors)
@@ -110,7 +120,7 @@ public class StageManager : MonoBehaviour
         yield return new WaitForSeconds(2f); 
         
         currentRoom.EnterDoor.Close();
-        Managers.Player.playerAnim.SetFloat("MOVE",0f);
+        Managers.Player.PlayerAnim.SetFloat("MOVE",0f);
         yield return new WaitForSeconds(0.5f);
         
         Managers.Camera.ChanageCamera();

@@ -15,7 +15,16 @@ public class PlayerManager : MonoBehaviour
     //플레이어 관련 변수 
     private PlayerUnit player;
     public Transform playerTrans => player.transform;
-    public Animator playerAnim => player.GetComponent<Animator>();
+    private Animator _playerAnim;
+    public Animator PlayerAnim
+    {
+        get
+        {
+            if (_playerAnim == null)
+                _playerAnim = player.GetComponent<Animator>();
+            return _playerAnim;
+        }
+    }
     
     private GameObject playerHpBar;
     
@@ -25,7 +34,10 @@ public class PlayerManager : MonoBehaviour
         var playerPrefab = Managers.Resource.Instantiate(Address.Player);
         playerPrefab.transform.position = Managers.Data.SaveData.player.position;
         player= playerPrefab.GetComponent<PlayerUnit>();
+        _playerAnim=playerPrefab.GetComponent<Animator>();
+        _playerAnim.SetFloat("AttackSpeed",data.attackSpeed.TotalValue);
         player.Init();
+        
         
         playerHpBar = player.GetComponentInChildren<UI_PlayerHPBar>().gameObject;
         playerHpBar.SetActive(false);
@@ -84,7 +96,7 @@ public class PlayerManager : MonoBehaviour
         
     }
     
-    public enum StatType { Attack, MaxHP, MoveSpeed, Critical }
+    public enum StatType { Attack, MaxHP, MoveSpeed, Critical,DashCooldown,attackSpeed }
 
     // 스탯을 영구적으로 강화하는 메소드 (레벨업 보상 등)
     public void AddPermanentStat(StatType type, float amount)
@@ -102,6 +114,13 @@ public class PlayerManager : MonoBehaviour
                 break;
             case StatType.Critical:
                 data.criticalChance.addValue += amount;
+                break;
+            case StatType.DashCooldown:
+                data.dashCooldown.addValue += amount;
+                break;
+            case StatType.attackSpeed:
+                data.attackSpeed.addValue += amount;
+                _playerAnim.SetFloat("AttackSpeed", data.attackSpeed.TotalValue);
                 break;
         }
         Debug.Log($"{type} 스탯이 {amount}만큼 증가했습니다! 현재: {GetStat(type).TotalValue}");
@@ -125,11 +144,11 @@ public class PlayerManager : MonoBehaviour
         player.GetComponent<Rigidbody>().useGravity = false;
         var controller = player.GetComponent<PlayerController>();
         controller.StopDashPhysics();
-        controller.ChangeLayer("Default");
+        controller.gameObject.SetLayerRecursively("Default");
         controller.CurrentState = PlayerController.PlayerState.Idle;
         controller.enabled = false;
         
-        playerAnim.SetFloat("MOVE",0);
+        _playerAnim.SetFloat("MOVE",0);
         playerHpBar.SetActive(false);
     }
     
@@ -137,7 +156,7 @@ public class PlayerManager : MonoBehaviour
     {
         player.GetComponent<CapsuleCollider>().enabled = true;
         player.GetComponent<Rigidbody>().useGravity = true;
-        player.GetComponent<PlayerController>().ChangeLayer("Char");
+        player.GetComponent<PlayerController>().gameObject.SetLayerRecursively("Char");
         player.GetComponent<PlayerController>().enabled = true;
         playerHpBar.SetActive(true);
     }

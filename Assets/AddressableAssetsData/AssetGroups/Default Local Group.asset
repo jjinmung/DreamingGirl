@@ -15,6 +15,16 @@ MonoBehaviour:
   m_GroupName: Default Local Group
   m_GUID: b29214beaf4c3e4429517b4868df0061
   m_SerializeEntries:
+  - m_GUID: 1b7c7e48eb4bd434bb863f8c634b9695
+    m_Address: Assets/Prefabs/Enemy/1.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 32116cdd87cbb8345a90063d3a5d6c34
+    m_Address: Assets/Prefabs/UI/Scene/UI_BattleScene.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 33a9bc65857a364428a9dbd43a0131fa
     m_Address: Assets/Prefabs/UI/UI_Bloode.prefab
     m_ReadOnly: 0

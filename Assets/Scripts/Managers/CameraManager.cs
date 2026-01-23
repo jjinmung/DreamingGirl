@@ -70,6 +70,7 @@ public class CameraManager : MonoBehaviour
             Managers.Camera.BattleInit();
             Managers.Camera.SetTarget(_player);
             Managers.Stage.Init();
+            Managers.UI.ShowSceneUI<UI_BattleScene>();
             SceneManager.sceneLoaded -= OnBattleSceneLoaded;
         }
     }

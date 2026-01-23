@@ -8,7 +8,7 @@ using Random = UnityEngine.Random;
 [System.Serializable]
 public class SpawnData
 {
-    public GameObject enemyPrefab; 
+    public int ID; 
     public float spawnWeight;      
 }
 
@@ -16,7 +16,7 @@ public class EnemySpawner : MonoBehaviour
 {
     public SpawnData[] enemiesToSpawn;
     public GameObject[] PatrolPoints;
-    public int spawnCount = 10;
+    public int spawnCount;
     public float spawnRadius = 5f; // 스폰 지점 주변 탐색 반경
     public float overlapCheckRadius = 1f; // 적끼리 겹치지 않게 체크할 반경
     public LayerMask enemyLayer; // Enemy 레이어 설정 (인스펙터에서 선택)
@@ -33,46 +33,23 @@ public class EnemySpawner : MonoBehaviour
 
     private void SpawnEnemy()
     {
-        if (enemiesToSpawn.Length == 0 || PatrolPoints.Length == 0) return;
+        // 1. 가중치 기반 선택 (로직 분리 추천)
+        SpawnData selectedEnemy = GetWeightedRandomEnemy();
+        if (selectedEnemy == null) return;
 
-        // 1. 가중치 기반 적 선택 로직 
-        float totalWeight = enemiesToSpawn.Sum(data => data.spawnWeight);
-        float pivot = Random.Range(0, totalWeight);
-        float cumulative = 0;
-        SpawnData selectedEnemy = null;
+        // 2. 위치 검색
+        Vector3 spawnPos = GetValidSpawnPosition();
+        if (spawnPos == Vector3.zero) return;
 
-        foreach (var data in enemiesToSpawn)
-        {
-            cumulative += data.spawnWeight;
-            if (pivot <= cumulative)
-            {
-                selectedEnemy = data;
-                break;
-            }
-        }
-
-        if (selectedEnemy != null)
-        {
-            // 2. NavMesh 위의 랜덤한 빈 위치 찾기
-            Vector3 finalSpawnPos = GetValidSpawnPosition();
-
-            if (finalSpawnPos != Vector3.zero)
-            {
-                //적 생성 및 ui바인딩
-                var newEnemy = Managers.Resource.Instantiate(Address.FishGuard_S, finalSpawnPos,
-                    Quaternion.Euler(0, Random.Range(0, 360), 0));
-                enemies.Add(newEnemy);
-
-                if (newEnemy != null)
-                    EnemyInit(newEnemy);
-
-
-            }
-            else
-            {
-                Debug.LogWarning("적절한 스폰 위치를 찾지 못했습니다 (공간 부족).");
-            }
-        }
+        // 3. 생성 및 초기화
+        string path = $"Assets/Prefabs/Enemy/{selectedEnemy.ID}.prefab";
+        GameObject go = Managers.Resource.Instantiate(path, spawnPos, Quaternion.identity);
+        var enemy = go.GetComponent<EnemyBase>();
+        enemy.Init(selectedEnemy.ID);
+        enemy.SetAdditionalData(PatrolPoints.ToList()); 
+    
+        go.SetLayerRecursively("Default");
+        enemies.Add(go);
     }
 
     // NavMesh 위에서 겹치지 않는 좌표를 반환하는 함수
@@ -101,23 +78,7 @@ public class EnemySpawner : MonoBehaviour
 
         return Vector3.zero; // 실패 시 zero 반환
     }
-
-    void EnemyInit(GameObject go)
-    {
-        var enemy = go.GetComponent<EnemyBase>();
-        if (enemy is FishGuardS fishGuardS)
-        {
-            fishGuardS.SetVpartrolPoints(PatrolPoints.ToList());
-        }
-        
-        Transform[] allChildren = go.GetComponentsInChildren<Transform>(true);
-        foreach (Transform child in allChildren)
-        {
-            child.gameObject.layer = LayerMask.NameToLayer("Default");
-        }
-        
-        enemy.Init();
-    }
+    
 
     public void StartBattle()
     {
@@ -130,7 +91,7 @@ public class EnemySpawner : MonoBehaviour
                 child.gameObject.layer = targetLayer;
             }
             
-            var hpBar = Managers.UI.MakeSubItem<UI_EnemyHPBar>(Address.Enemy_HP_BAR, Managers.UI.Root.transform);
+            var hpBar = Managers.UI.MakeSubItem<UI_EnemyHPBar>(Address.Enemy_HP_BAR);
             var enemyBase = enemy.GetComponent<EnemyBase>();
             hpBar.SetMaxHP(enemyBase.stat.MaxHp);
             hpBar.GetComponentInChildren<HealthBarController>().target = enemy.transform;
@@ -142,7 +103,30 @@ public class EnemySpawner : MonoBehaviour
         }
     }
 
-private void OnDrawGizmos()
+    private SpawnData GetWeightedRandomEnemy()
+    {
+        if (enemiesToSpawn.Length == 0) return null;
+
+        // 1. 가중치 기반 적 선택 로직 
+        float totalWeight = enemiesToSpawn.Sum(data => data.spawnWeight);
+        float pivot = Random.Range(0, totalWeight);
+        float cumulative = 0;
+        SpawnData selectedEnemy = null;
+
+        foreach (var data in enemiesToSpawn)
+        {
+            cumulative += data.spawnWeight;
+            if (pivot <= cumulative)
+            {
+                selectedEnemy = data;
+                break;
+            }
+        }
+
+        return selectedEnemy;
+    }
+
+    private void OnDrawGizmos()
     {
         if (!Draw) return;
 

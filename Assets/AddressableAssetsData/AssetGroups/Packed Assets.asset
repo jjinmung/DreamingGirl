@@ -21,12 +21,6 @@ MonoBehaviour:
     m_SerializedLabels:
     - default
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 1b7c7e48eb4bd434bb863f8c634b9695
-    m_Address: Assets/Prefabs/Enemy/FishGuard_S.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - default
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7cc12c50c22900a4e9300c490ccbc351
     m_Address: Assets/Prefabs/Player.prefab
     m_ReadOnly: 0

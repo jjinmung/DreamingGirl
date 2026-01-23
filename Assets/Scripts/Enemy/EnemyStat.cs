@@ -1,5 +1,7 @@
+using System;
 using Data;
 
+[Serializable]
 public class EnemyStat
 {
     public int ID;

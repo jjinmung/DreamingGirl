@@ -427,7 +427,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemiesToSpawn:
-  - enemyPrefab: {fileID: 6289261040990989459, guid: 1b7c7e48eb4bd434bb863f8c634b9695, type: 3}
+  - ID: 1
     spawnWeight: 5
   PatrolPoints:
   - {fileID: 1297836920787346571}

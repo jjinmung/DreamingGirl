@@ -122,24 +122,5 @@ public class PlayerController : MonoBehaviour
     }
     public void StopDashPhysics() => _movement.StopVelocity();
     
-    public void ChangeLayer(string layer) 
-    {
-        int targetLayer = LayerMask.NameToLayer(layer);
-
-        // 만약 레이어 설정에 "char"가 없다면 경고를 띄웁니다.
-        if (targetLayer == -1)
-        {
-            Debug.LogWarning("'char' 레이어가 존재하지 않습니다. 레이어 설정을 확인하세요!");
-            return;
-        }
-        
-        Transform[] allChildren = GetComponentsInChildren<Transform>(true);
-
-        foreach (Transform child in allChildren)
-        {
-            if(child.gameObject.CompareTag("Attack")) continue;
-            child.gameObject.layer = targetLayer;
-        }
-    }
     
 }

@@ -43,7 +43,9 @@ public class UIManager
 		GameObject go = Managers.Resource.Instantiate(addrres);
 		if (parent != null)
 			go.transform.SetParent(parent);
-
+		else
+			go.transform.SetParent(_sceneUI.transform);
+		
 		return go.GetOrAddComponent<T>();
 	}
 
@@ -98,7 +100,7 @@ public class UIManager
 		// 1. 월드 좌표를 화면 좌표로 변환 (Screen Space Overlay 기준)
 		Vector3 screenPos = Camera.main.WorldToScreenPoint(worldPos);
 		// 2. ResourceManager를 통해 생성
-		var floatingText = MakeSubItem<UI_FloatingText>(Address.UI_FloatingText,Root.transform);
+		var floatingText = MakeSubItem<UI_FloatingText>(Address.UI_FloatingText);
 		floatingText.GetComponent<UI_FloatingText>().Init(screenPos,message, color,isCritical);
 	}
 

@@ -4,7 +4,8 @@ public class PlayerMovement : MonoBehaviour
 {
     public float rotationSpeed = 15f;
     public float dashForce = 20f;
-    public float dashCooldown = 1.5f;
+    private float dashCooldown => Managers.Player.data.dashCooldown.TotalValue;
+    private float movementSpeed =>Managers.Player.data.moveSpeed.TotalValue;
 
     private Rigidbody _rb;
     private float _lastDashTime = -999f;
@@ -18,7 +19,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (input.sqrMagnitude > 0.01f)
         {
-            Vector3 targetVelocity = direction * Managers.Player.data.moveSpeed.TotalValue;
+            Vector3 targetVelocity = direction * movementSpeed;
             targetVelocity.y = _rb.linearVelocity.y;
             _rb.linearVelocity = targetVelocity;
 
