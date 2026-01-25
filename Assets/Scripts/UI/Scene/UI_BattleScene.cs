@@ -5,9 +5,10 @@ using UnityEngine.UI;
 
 public class UI_BattleScene : UI_Scene
 {
+    private float _currentGold = 0;
     enum Texts
     {
-        
+        GoldText
     }
     
 
@@ -42,8 +43,15 @@ public class UI_BattleScene : UI_Scene
         
         GetImage((int)Images.FadeOut).color = new Color(0, 0, 0, 1);
         GetImage((int)Images.FadeOut).DOFade(0f, 4f).SetEase(Ease.InQuad);
-    }
+        
+        // 1. 이벤트 구독 (데이터가 바뀔 때마다 UpdateGold 실행)
+        Managers.Player.OnDataChanged -= RefreshUI;
+        Managers.Player.OnDataChanged += RefreshUI;
 
+        // 2. 초기 데이터 반영
+        RefreshUI();
+    }
+    
     private void FadeOut()
     {
         Sequence FadeSeq = DOTween.Sequence();
@@ -58,5 +66,23 @@ public class UI_BattleScene : UI_Scene
     {
         GetImage((int)Images.FadeOut).DOFade(0f, 1f).SetEase(Ease.InQuad);
     }
+
+    private void RefreshUI()
+    {
+        // Managers.Player를 통해 현재 골드 값을 전달
+        UpdateGold(Managers.Player.GetGold()); 
+    }
+
+    public void UpdateGold(float targetGold)
+    {
+        // 이전 답변에서 알려드린 DOTween 코드를 여기에 작성
+        DOTween.To(() => _currentGold, x => _currentGold = x, targetGold, 1f)
+            .OnUpdate(() =>
+            {
+                GetText((int)Texts.GoldText).text = $"{(int)_currentGold}";
+            });
+    }
+    
+    
 }
 

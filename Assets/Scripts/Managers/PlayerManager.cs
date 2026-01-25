@@ -27,9 +27,9 @@ public class PlayerManager : MonoBehaviour
 
     public GameObject CreatePlayer()
     {
-        data = new PlayerData(Managers.Data.PlayerBasicStat[1]);
+        data = new PlayerData(Managers.Data.PlayerBasicStat[1],Managers.Data.SaveData.player);
         var playerPrefab = Managers.Resource.Instantiate(Address.Player);
-        playerPrefab.transform.position = Managers.Data.SaveData.player.position;
+        playerPrefab.transform.position = data.position;
 
         // 생성 시점에 모든 컴포넌트를 한 번만 캐싱
         _playerUnit = playerPrefab.GetComponent<PlayerUnit>();
@@ -65,6 +65,11 @@ public class PlayerManager : MonoBehaviour
     {
         data.gold += amount;
         OnDataChanged?.Invoke();
+    }
+    
+    public int GetGold()
+    {
+        return data != null ? data.gold : 0;
     }
 
     public void AddExp(int amount)

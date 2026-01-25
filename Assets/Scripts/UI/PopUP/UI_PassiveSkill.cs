@@ -67,7 +67,12 @@ public class UI_PassiveSkill : UI_Popup
     {
         Init();
     }
-    
+
+    private void OnEnable()
+    {
+        Managers.Player.PlayerControl.InputActive(false);
+    }
+
     public override void Init()
     {
         base.Init();
@@ -105,6 +110,8 @@ public class UI_PassiveSkill : UI_Popup
         
         // 4. 구매버튼 이벤트
         GetObject((int)GameObjects.Skill_InActive).BindEvent(BuyPassive);
+        GetObject((int)GameObjects.Skill_InActive).BindEvent(OnEnter, UIEvent.Enter);
+        GetObject((int)GameObjects.Skill_InActive).BindEvent(OnExit, UIEvent.Exit);
     }
 
     private void RefreshUI()
@@ -158,7 +165,33 @@ public class UI_PassiveSkill : UI_Popup
 
     private void BuyPassive(PointerEventData data)
     {
+        if (Managers.Data.SaveData.player.HasPassive(selectedSkillID)) return;
+
+        var skillData = Managers.Data.PassiveDict[selectedSkillID];
+        int currentGold = Managers.Data.SaveData.player.gold;
+
+        if (currentGold >= skillData.price)
+        {
+            // 1. 재화 차감 및 데이터 추가
+            Managers.Player.AddGold(-skillData.price);
+            Managers.Data.SaveData.player.ownedPassives.Add(selectedSkillID);
         
+            // 2. 패시브 효과 즉시 적용 (Player에게 알림)
+            //skillData.GetEffect().Apply();
+
+            // 3. UI 갱신
+            RefreshUI();
+            ShowInfo(selectedSkillID);
+        
+            // 4. 저장
+            Managers.Data.SaveGame();
+            Debug.Log($"{selectedSkillID} 구매 성공!");
+        }
+        else
+        {
+            Debug.Log("골드가 부족합니다.");
+            // TODO: "골드 부족" 팝업이나 텍스트 연출
+        }
     }
     
     

@@ -4,6 +4,8 @@ public class PlayerInteraction : MonoBehaviour
 {
     private IInteractable _currentInteractable; // 현재 범위 안에 있는 상호작용 대상
     public GameObject InteractUI;
+
+    public bool CanInteract = true;
     private void Start()
     {
         // 인풋 매니저에 F키 이벤트 연결
@@ -15,7 +17,7 @@ public class PlayerInteraction : MonoBehaviour
     private void HandleInteractInput()
     {
         // 범위 안에 있을 때만 실행
-        if (_currentInteractable != null)
+        if (_currentInteractable != null&&CanInteract)
         {
             _currentInteractable.OnInteract();
         }

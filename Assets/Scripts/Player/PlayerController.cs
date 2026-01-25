@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour
 {
     private PlayerMovement _movement;
     private PlayerCombat _combat;
+    private PlayerInteraction _interaction;
     private SphereCollider _attackcollider;
     private Animator _animator;
     private Vector2 _inputVector;
@@ -17,8 +18,10 @@ public class PlayerController : MonoBehaviour
     {
         _movement = GetComponent<PlayerMovement>();
         _combat = GetComponent<PlayerCombat>();
+        _interaction= GetComponentInChildren<PlayerInteraction>();
         _animator = GetComponent<Animator>();
         _attackcollider= GetComponentInChildren<SphereCollider>();
+        
         _attackcollider.enabled = false;
     }
 
@@ -126,5 +129,6 @@ public class PlayerController : MonoBehaviour
     {
         _movement.CanMove = isActive; 
         _combat.CanAttack = isActive;
+        _interaction.CanInteract = isActive;
     }
 }
