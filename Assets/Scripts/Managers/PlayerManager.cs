@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using System.Collections.Generic;
 using static Define;
 
 public class PlayerManager : MonoBehaviour
@@ -25,6 +26,8 @@ public class PlayerManager : MonoBehaviour
     public Animator PlayerAnim => _playerAnim;
     public PlayerController PlayerControl => _playerController;
 
+    
+    
     public GameObject CreatePlayer()
     {
         data = new PlayerData(Managers.Data.PlayerBasicStat[1],Managers.Data.SaveData.player);

@@ -1,0 +1,83 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Ability
+  m_EditorClassIdentifier: 
+  m_GroupName: Ability
+  m_GUID: 83f1d62bff6281a48aa8ce528e55e337
+  m_SerializeEntries:
+  - m_GUID: 1fc7f6651be54bf4794628dcc1ece4af
+    m_Address: Assets/So/Ability/Thunderflash.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Ability
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 332476954d459cb4aa688626c87a24e7
+    m_Address: Assets/So/Ability/Flurry_Slash.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Ability
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6a3d413b98b37dd44bbe140792f1edc5
+    m_Address: Assets/So/Ability/Enhanced_Vitality.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Ability
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 75d80a5d1d690114d8ad9228a8e4b925
+    m_Address: Assets/So/Ability/Frost.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Ability
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7cfd3b5e5e199e94881c457b95e5bfbf
+    m_Address: Assets/So/Ability/Enhanced_Strength.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Ability
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 88fd26c82d31dc449b5f956009eb3cc2
+    m_Address: Assets/So/Ability/Divine_Orbs.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Ability
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8942bd7663f332f4a82c258b68a9d534
+    m_Address: Assets/So/Ability/Swift_Execution.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Ability
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b9a77a6dc7193384c84e85793c509693
+    m_Address: Assets/So/Ability/Fire.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Ability
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e018f71b8085a064781d70229c317ec7
+    m_Address: Assets/So/Ability/Pact_Abyss.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Ability
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f16e1261558dc0c4d81b5e667b23a94c
+    m_Address: Assets/So/Ability/Chain_Instinct.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Ability
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 920b87acde3acff468f42abc87154c6f, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 056f6f75b699d514bb87581e49ed5273, type: 2}
+    - {fileID: 11400000, guid: 321646c304f6ce844b82d5eebaed00fb, type: 2}

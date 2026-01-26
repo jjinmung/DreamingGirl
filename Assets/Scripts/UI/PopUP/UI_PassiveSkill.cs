@@ -34,7 +34,7 @@ public class UI_PassiveSkill : UI_Popup
 
         SwiftBoots_Icon,        
         FireSpirit_Icon,       
-        WaterSpirit_Icon,       
+        IceSpirit_Icon,       
         FateChoice_Icon,
         
         Background,
@@ -55,7 +55,7 @@ public class UI_PassiveSkill : UI_Popup
 
         SwiftBoots,        
         FireSpirit,        
-        WaterSpirit,       
+        IceSpirit,       
         FateChoice,
         
         SKill_Info,

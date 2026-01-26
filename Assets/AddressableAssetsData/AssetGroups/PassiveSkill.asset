@@ -57,12 +57,6 @@ MonoBehaviour:
     m_SerializedLabels:
     - PassiveSkill
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: a04e6f9d19e6ad444a7d83d67b0121c3
-    m_Address: Assets/So/PassiveSkill/WaterSpirit.asset
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - PassiveSkill
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a88b548e18c44e3459d2c1a2cb0e3e6d
     m_Address: Assets/So/PassiveSkill/DungeonBreath.asset
     m_ReadOnly: 0

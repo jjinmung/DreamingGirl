@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ffe6d707b7044b0b9b3e65ff1c8c9400, type: 3}
+  m_Name: Divine_Orbs
+  m_EditorClassIdentifier: 
+  abilityID: 6
+  abilityName: "\uC2E0\uC758 \uAC00\uD638"
+  description: "\uC8FC\uBCC0\uC5D0 \uC801\uC744 \uACF5\uACA9\uD558\uB294 \uAD6C\uCCB4\uAC00
+    \uC0DD\uC131\uB429\uB2C8\uB2E4."
+  icon: {fileID: 21300000, guid: 4ea2bef35cc28cb4892e307267da9285, type: 3}
+  maxStack: 5

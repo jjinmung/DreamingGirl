@@ -4,6 +4,7 @@ using System.IO;
 using UnityEngine;
 using Newtonsoft.Json; 
 using Data;
+using static Define;
 
 
 
@@ -12,7 +13,8 @@ public class DataManager
     public Dictionary<int, MonsterStat> MonsterDict { get; private set; }
     public Dictionary<int, PlayerBasicStat> PlayerBasicStat { get; private set; }
     
-    public Dictionary<Define.PassiveSkillID, PassiveData> PassiveDict { get; private set; }
+    public Dictionary<PassiveSkillID, PassiveData> PassiveDict { get; private set; }
+    public Dictionary<AbilityID, AbilityInstance> AbilityDict { get; private set; }
 
     private int playerIndex = 1;
 
@@ -48,7 +50,7 @@ public class DataManager
         foreach (var p in root.PlayerBasicStat) PlayerBasicStat.Add(p.ID, p);
         
         //패시브 스킬 딕셔너리 채우기
-        PassiveDict = new Dictionary<Define.PassiveSkillID, PassiveData>();
+        PassiveDict = new Dictionary<PassiveSkillID, PassiveData>();
         PassiveData[] passiveDatas = Managers.Resource.LoadAll<PassiveData>("PassiveSkill");
         if (passiveDatas != null)
         {
@@ -56,6 +58,18 @@ public class DataManager
             {
                 if (!PassiveDict.ContainsKey(data.skillID))
                     PassiveDict.Add(data.skillID, data);
+            }
+        }
+        
+        //어빌리티 스킬 딕셔너리 채우기
+        AbilityDict = new Dictionary<AbilityID, AbilityInstance>();
+        AbilityData[] abilityDatas = Managers.Resource.LoadAll<AbilityData>("Ability");
+        if (abilityDatas != null)
+        {
+            foreach (var data in abilityDatas)
+            {
+                if (!AbilityDict.ContainsKey(data.abilityID))
+                    AbilityDict.Add(data.abilityID, new AbilityInstance(data));
             }
         }
         
