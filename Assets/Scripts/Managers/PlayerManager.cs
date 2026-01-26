@@ -163,4 +163,5 @@ public class PlayerManager : MonoBehaviour
             _playerController.InputActive(false);
         }
     }
+    
 }

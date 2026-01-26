@@ -1503,7 +1503,7 @@ GameObject:
   - component: {fileID: 468891114475470182}
   - component: {fileID: 2870066192510762271}
   m_Layer: 0
-  m_Name: Lind
+  m_Name: Line
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

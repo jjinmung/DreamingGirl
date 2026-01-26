@@ -85,7 +85,7 @@ public abstract class EnemyBase : MonoBehaviour,IDamageable
     protected void Die()
     {
         isDead = true;
-        Managers.Stage.checkClear();
+        Managers.Stage.CheckClear();
         dieAcation.Invoke();
         gameObject.layer = LayerMask.NameToLayer("DeadBody");
         _animator.SetTrigger("DEATH");

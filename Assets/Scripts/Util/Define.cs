@@ -75,4 +75,5 @@
         Swift_Execution//속전속결
     }
     
+    public enum RoomType { Monster, Event, Boss }
 }

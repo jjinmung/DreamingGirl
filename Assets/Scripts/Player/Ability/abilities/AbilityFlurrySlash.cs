@@ -1,4 +1,4 @@
-public class AbilityFrost:AbilityEffect
+public class AbilityFlurrySlash :AbilityEffect
 {
     public override void Apply(int stack)
     {

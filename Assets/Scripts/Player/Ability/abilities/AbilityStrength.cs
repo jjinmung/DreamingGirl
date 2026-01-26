@@ -1,4 +1,4 @@
-public class AbilityFrost:AbilityEffect
+public class AbilityStrength : AbilityEffect
 {
     public override void Apply(int stack)
     {
