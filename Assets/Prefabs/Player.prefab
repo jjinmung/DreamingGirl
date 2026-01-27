@@ -5956,7 +5956,7 @@ GameObject:
   - component: {fileID: 3353744361143116026}
   m_Layer: 7
   m_Name: InteractRange
-  m_TagString: Untagged
+  m_TagString: IgnoreBullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

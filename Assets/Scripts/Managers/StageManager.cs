@@ -1,25 +1,45 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using Unity.AI.Navigation;
 using static Define;
+using Random = UnityEngine.Random;
+
 public class StageManager : MonoBehaviour
 {
     public event System.Action ExitRoom;
     public event System.Action EnterRoom;
 
-    [Header("Settings")]
-    [SerializeField] private string[] roomAddresses; // Addressables에 등록된 방 프리팹 주소들
+    private List<List<RoomNode>> stageMap = new();
     
-    private List<List<RoomNode>> stageMap = new List<List<RoomNode>>();
     private RoomNode currentRoomNode;
-    private int currentDepth = 0;
+    private RoomNode lobyNode;
+    private int currentDepth;
+    private NavMeshSurface  surface;
     
     private Room currentRoom;
     private EnemySpawner enemySpawner;
     private int killCount;
     private Door currentExitDoor;
-
+    private int doorIndex;
+    private UI_BattleScene _battleUI;
+    
+    private WaitForSeconds waitForOne = new WaitForSeconds(1f);
+    private WaitForSeconds waitForTwo = new WaitForSeconds(2f);
+    private WaitForSeconds waitForHalf = new WaitForSeconds(0.5f);
+    
+    public GameObject Root
+    {
+        get
+        {
+            GameObject root = GameObject.Find("@Map_Root");
+            if (root == null)
+                root = new GameObject { name = "@Map_Root" };
+            return root;
+        }
+    }
     public void Init()
     {
         killCount = 0;
@@ -29,55 +49,39 @@ public class StageManager : MonoBehaviour
         ExitRoom += ExitToNextRoom;
         EnterRoom -= EnterToNextRoom;
         EnterRoom += EnterToNextRoom;
-
-        // 첫 번째 스테이지 생성
-        SpawnRandomRoom();
-    }
-
-    private void SpawnRandomRoom(string address = null)
-    {
-        // 1. 기존 방이 있다면 제거 (ResourceManager의 Destroy 활용)
-        if (currentRoom != null)
-        {
-            Managers.Resource.Destroy(currentRoom.gameObject);
-        }
-
-        string randomAddress;
-        // 2. 랜덤 주소 선택
-        if (address != null)
-            randomAddress=address;
-        else 
-            randomAddress = roomAddresses[Random.Range(0, roomAddresses.Length)];
-
-        // 3. ResourceManager를 통한 동적 생성
-        // 위치는 (0,0,0)으로 고정하거나 필요에 따라 오프셋을 줄 수 있습니다.
-        GameObject roomObj = Managers.Resource.Instantiate(randomAddress, Vector3.zero, Quaternion.identity);
-        currentRoom = roomObj.GetComponent<Room>();
         
-        // 4. 컴포넌트 캐싱
-        enemySpawner = currentRoom.GetComponentInChildren<EnemySpawner>();
+        
+        lobyNode = new RoomNode { 
+            index = -1, 
+            type = RoomType.Loby,
+            address = GetAddressByType(RoomType.Loby)
+        };
+        GenerateMap();
+        surface =GameObject.Find("NavMesh").GetComponent<NavMeshSurface>();
+        _battleUI = Managers.UI.LoadScene<UI_BattleScene>();
     }
+
+    
     
     public void GenerateMap()
     {
+        currentDepth = 0;
         stageMap.Clear();
         // 1. 노드 생성 (총 10단계)
-        for (int i = 0; i <= 9; i++)
+        for (int i = 0; i < 10; i++)
         {
             List<RoomNode> layer = new List<RoomNode>();
-            int doorCount = (i==0||i == 9) ? 1 : Random.Range(1, 4); //0층(로비),9층은 문 1개
+            int roomCount = (i==0||i == 9) ? 1 : Random.Range(1, 4); //0층,9층은 방 1개
 
-            for (int j = 0; j < doorCount; j++)
+            for (int j = 0; j < roomCount; j++)
             {
                 RoomNode node = new RoomNode { index = i };
                 
                 // 타입 결정
                 if (i == 0) node.type = RoomType.Monster;
                 else if(i==9) node.type = RoomType.Boss;
-                else node.type = (Random.value > 0.8f) ? RoomType.Event : RoomType.Monster;
+                else node.type = (Random.value > 0.2f) ? RoomType.Event : RoomType.Monster;
                 
-                // 주소 할당 (Addressables)
-                node.address = GetAddressByType(node.type,doorCount);
                 layer.Add(node);
             }
             stageMap.Add(layer);
@@ -88,6 +92,8 @@ public class StageManager : MonoBehaviour
         {
             foreach (var curr in stageMap[i])
             {
+                //다음 층 방의 개수에 맞는 문 개수의 방 주소
+                curr.address = GetAddressByType(curr.type,stageMap[i + 1].Count);
                 // 다음 층의 방들 중 최소 하나는 연결
                 foreach (var next in stageMap[i + 1])
                 {
@@ -95,18 +101,53 @@ public class StageManager : MonoBehaviour
                 }
             }
         }
-        
-        currentRoomNode = stageMap[0][0];
+        //로비방 로드
+        lobyNode.nextNodes.Add(stageMap[0][0]);
+        currentRoomNode = lobyNode;
+        currentRoom = Managers.Resource.Instantiate(lobyNode.address,Vector3.zero,default,Root.transform).GetComponent<Room>();
     }
+    
 
-    private string GetAddressByType(RoomType type,int count)
+    public void ChangeRoom()
+    {
+        //풀링을 위해 다시 닫아놓는다.
+        foreach (var door in currentRoom.doors)
+        {
+            door.CloseImmediately();
+        }
+        
+        Managers.Resource.Destroy(currentRoom.gameObject);
+        currentRoomNode = currentRoomNode.nextNodes[doorIndex];
+        currentDepth++;
+        currentRoom = Managers.Resource.Instantiate(currentRoomNode.address, Vector3.zero,default,Root.transform).GetComponent<Room>();
+        if (currentRoomNode.type == RoomType.Monster)
+        {
+            var enemyroom = currentRoom as EnemyRoom;
+            if(enemyroom!=null)
+                enemySpawner = enemyroom.Spawner;
+        }
+        
+        if (surface != null)
+        {
+            // 실시간으로 맵 데이터에 맞춰 NavMesh를 다시 계산합니다.
+            surface.BuildNavMesh();
+        }
+        else
+        {
+            surface = GameObject.Find("NavMesh").GetComponent<NavMeshSurface>();
+            surface?.BuildNavMesh();
+        }
+
+    }
+    private string GetAddressByType(RoomType type,int count=1)
     {
         // 몬스터방 주소 리스트, 이벤트방 주소 리스트 중 랜덤 반환
         return type switch
         {
-            RoomType.Monster => $"{count}DoorMonsterRoom_" + Random.Range(1, 3),
-            RoomType.Event => $"{count}EventRoom_1",
-            RoomType.Boss => "BossRoom_Final",
+            RoomType.Monster => $"Assets/Prefabs/Map/{count}DoorMonsterRoom_{Random.Range(1, 4)}.prefab" ,
+            RoomType.Event => $"Assets/Prefabs/Map/{count}DoorEventRoom_1.prefab",
+            RoomType.Boss => "Assets/Prefabs/Map/BossRoom_Final.prefab",
+            RoomType.Loby => "Assets/Prefabs/Map/LobyMap.prefab",
             _ => ""
         };
     }
@@ -114,6 +155,7 @@ public class StageManager : MonoBehaviour
     public void OnExitRoom(Door exitDoor)
     {
         currentExitDoor = exitDoor;
+        doorIndex = currentRoom.doors.IndexOf(exitDoor);
         ExitRoom?.Invoke();
     }
 
@@ -128,24 +170,29 @@ public class StageManager : MonoBehaviour
         Managers.Camera.ChanageCamera();
         Managers.Player.PlayerAnim.SetFloat("MOVE", 0.5f);
         
+        if (_battleUI == null) _battleUI = Managers.UI.LoadScene<UI_BattleScene>();
+        _battleUI.AllUIActive(false);
+        
         var player = Managers.Player.PlayerTrans;
         player.DOMove(currentExitDoor.ExitPos.position, 1f);
         player.DORotate(currentExitDoor.dir, 1f);
-        yield return new WaitForSeconds(1f);
+        yield return waitForOne;
 
         // 문 밖으로 나가는 연출
         Vector3 targetPosition = player.position + (player.forward * 4f);
         player.DOMove(targetPosition, 1f).SetEase(Ease.Linear);
-        yield return new WaitForSeconds(1.1f);
-
-        // --- 핵심: 다음 방 동적 교체 ---
-        SpawnRandomRoom();
+        yield return waitForOne;
+        
+        //다음 방 동적 교체 ---
+        ChangeRoom();
+        yield return waitForOne;
+        
 
         // 플레이어를 새 방의 스폰 포인트로 순간이동
         player.position = currentRoom.SpawnPos.position;
         // ------------------------------
 
-        yield return new WaitForSeconds(1f);
+        yield return waitForOne;
         EnterRoom?.Invoke();
     }
 
@@ -174,8 +221,15 @@ public class StageManager : MonoBehaviour
 
     IEnumerator EnterToNextRoomCoroutine()
     {
-        enemySpawner.SpawnEnemys();
-
+        if(currentRoomNode.type == RoomType.Monster)
+            enemySpawner.SpawnEnemys();
+        else if (currentRoomNode.type == RoomType.Event)
+        {
+            var eventRoom = currentRoom as EventRoom;
+            if (eventRoom != null)
+                eventRoom.ClearEvent();
+        }
+            
         var enterDoor = currentRoom.EnterDoor;
         enterDoor.EnterRoomOpen();
 
@@ -184,16 +238,26 @@ public class StageManager : MonoBehaviour
         
         // 새 방의 입구 안쪽으로 이동
         player.DOMove(enterDoor.ExitPos.position, 2f).SetEase(Ease.Linear);
-        yield return new WaitForSeconds(2f);
+        
+        yield return waitForTwo;
 
         enterDoor.Close();
         Managers.Player.PlayerAnim.SetFloat("MOVE", 0f);
-        yield return new WaitForSeconds(0.5f);
+        
+        yield return waitForHalf;
 
         Managers.Camera.ChanageCamera();
-        yield return new WaitForSeconds(2f);
         
-        enemySpawner.StartBattle();
+        yield return waitForTwo;
+        
+        
+        if (_battleUI == null) _battleUI = Managers.UI.LoadScene<UI_BattleScene>();
+        _battleUI.AllUIActive(true);
+        
+        if (currentRoomNode.type == RoomType.Monster)
+            enemySpawner.StartBattle();
+        
         Managers.Player.EnterRoom();
+        _battleUI.SetMap(currentRoomNode.nextNodes);
     }
 }

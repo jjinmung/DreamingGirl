@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 5122805869908223813}
   - component: {fileID: 4246113889579795282}
   - component: {fileID: 6718438480504619022}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: floor_tile_large_rocks
-  m_TagString: Untagged
+  m_TagString: IgnoreBullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

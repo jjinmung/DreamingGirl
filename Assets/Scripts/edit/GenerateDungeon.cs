@@ -161,7 +161,7 @@ public class DungeonGenerator : MonoBehaviour
             go = SpawnEditorObject(doorPrefab, center + Vector3.back * tileSize * 0.5f, Quaternion.identity,false);
             var door = go.GetComponent<Door>();
             door.dir = Vector3.zero;
-            room.doors.Add(door);
+            room.EnterDoor = door;
             return true;
         }
         return false;

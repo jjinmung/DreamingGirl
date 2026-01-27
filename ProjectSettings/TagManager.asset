@@ -23,7 +23,7 @@ TagManager:
   - DeadBody
   - Attack
   - HPBar
-  - PostProcess
+  - IgnoreBullet
   - 
   - 
   - 

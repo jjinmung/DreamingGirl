@@ -1,0 +1,108 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: MapPrefebs
+  m_EditorClassIdentifier: 
+  m_GroupName: MapPrefebs
+  m_GUID: 2a81ce4773e5b5d41a958a9588bb8887
+  m_SerializeEntries:
+  - m_GUID: 00453b460eba3f64e95f56b3612a030c
+    m_Address: Assets/Prefabs/Map/1DoorMonsterRoom_4.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0935c84604f42c146b273bb9161ff83f
+    m_Address: Assets/Prefabs/Map/3DoorMonsterRoom_2.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1308a7e1e379fe144864f5ac90c2cd56
+    m_Address: Assets/Prefabs/Map/1DoorMonsterRoom_3.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 27703dfbf5bb40944ace0d3e9c912085
+    m_Address: Assets/Prefabs/Map/LobyMap.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3ccbde4b477f202449943d07761002d6
+    m_Address: Assets/Prefabs/Map/3DoorEventRoom_1.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 44923d0c524796f4293e219405e08098
+    m_Address: Assets/Prefabs/Map/2DoorMonsterRoom_4.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4ef26d6dda85a664b9331eb661951304
+    m_Address: Assets/Prefabs/Map/1DoorMonsterRoom_2.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5bf242e598f90a24e887fff1c096acc1
+    m_Address: Assets/Prefabs/Map/2DoorEventRoom_1.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8cabcda9f34700647aecebe6dbbf4379
+    m_Address: Assets/Prefabs/Map/3DoorMonsterRoom_1.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a4d38e05394016642a4baadc598c08e1
+    m_Address: Assets/Prefabs/Map/2DoorMonsterRoom_3.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a68a0bd7ffa027a4385fc77c6dac2d17
+    m_Address: Assets/Prefabs/Map/2DoorMonsterRoom_1.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b3d1606db4f542f4686b86bb38505743
+    m_Address: Assets/Prefabs/Map/1DoorMonsterRoom_1.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: beb99d1ccb44833489d778aa855e64fa
+    m_Address: Assets/Prefabs/Map/2DoorMonsterRoom_2.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dbf0c0a067cb5e34f97a77f53068b1f5
+    m_Address: Assets/Prefabs/Map/3DoorMonsterRoom_4.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e5ec1888a40c8b345a67f0fb4a620d1d
+    m_Address: Assets/Prefabs/Map/3DoorMonsterRoom_3.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f6c02a01f6d928d4099a7c563a03aeb1
+    m_Address: Assets/Prefabs/Map/1DoorEventRoom_1.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fd0c1300cb54bf04e904111e9340df95
+    m_Address: Assets/Prefabs/Map/BossRoom_Final.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 920b87acde3acff468f42abc87154c6f, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 20729fbd8c6c9044685d7d63a25e0b40, type: 2}
+    - {fileID: 11400000, guid: 3a485df0de2dc4c419c972f6f2cfc4b2, type: 2}

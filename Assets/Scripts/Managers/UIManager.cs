@@ -63,6 +63,16 @@ public class UIManager
 		return sceneUI;
 	}
 
+	public T LoadScene<T>(string address = null) where T : UI_Scene
+	{
+		// 1. 만약 이미 로드된 씬 UI가 있다면 반환
+		if (_sceneUI != null && _sceneUI is T sceneUI)
+			return sceneUI;
+
+		// 2. 만약 로드된 게 없거나 타입이 다르다면 null
+		return null;
+	}
+
 	public T ShowPopupUI<T>(string address = null) where T : UI_Popup
     {
         if (string.IsNullOrEmpty(address))

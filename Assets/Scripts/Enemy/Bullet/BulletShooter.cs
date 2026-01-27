@@ -38,7 +38,17 @@ namespace MasterStylizedProjectile
         public float ShootInterval = 0.2f;
         float LastShootTime = 0;
          // Start is called before the first frame update
+         private EnemyBase enemy;
 
+         public float damage
+         {
+             get
+             {
+                 if (enemy == null)
+                     enemy = GetComponent<EnemyBase>();
+                 return enemy.stat.Damage;
+             }
+         }
 
         public void Shoot()
         {
@@ -115,7 +125,7 @@ namespace MasterStylizedProjectile
                 bullet.isTargeting = CurEffect.isTargeting;
                 bullet.isFlatShoot = CurEffect.isFlatShoot;
                 bullet.OnHitEffect = CurEffect.HitParticles;
-                bullet.Damage = GetComponent<EnemyBase>().stat.Damage;
+                bullet.Damage = damage;
                 if (CurEffect.isTargeting)
                 {
                     var target = FindNearestTarget("Respawn");

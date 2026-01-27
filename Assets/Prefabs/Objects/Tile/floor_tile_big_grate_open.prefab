@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8343571046493493377}
   - component: {fileID: 4278123329865666543}
   - component: {fileID: 3795015832877417450}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: floor_tile_big_grate_open
   m_TagString: IgnoreBullet
   m_Icon: {fileID: 0}
@@ -136,7 +136,7 @@ GameObject:
   - component: {fileID: 310005825040115846}
   - component: {fileID: 7728040612333441060}
   - component: {fileID: 8012980189926902592}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Point Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -257,7 +257,7 @@ GameObject:
   - component: {fileID: 4645664781352595533}
   - component: {fileID: 4645664781352595531}
   - component: {fileID: 4645664781352595532}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Smoke
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4923,7 +4923,7 @@ GameObject:
   - component: {fileID: 6108564910913760139}
   - component: {fileID: 6108564910913760138}
   - component: {fileID: 4020530145210851328}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: CFXR Fire
   m_TagString: Untagged
   m_Icon: {fileID: 0}

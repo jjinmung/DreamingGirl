@@ -15,6 +15,16 @@ MonoBehaviour:
   m_GroupName: Default Local Group
   m_GUID: b29214beaf4c3e4429517b4868df0061
   m_SerializeEntries:
+  - m_GUID: 084e72d6c450366488c55708e35b5078
+    m_Address: Assets/Textures/UI/EventMap.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0ebb5488216ce0f40a777b5bdcbae289
+    m_Address: Assets/Textures/UI/BossMap.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 1b7c7e48eb4bd434bb863f8c634b9695
     m_Address: Assets/Prefabs/Enemy/1.prefab
     m_ReadOnly: 0
@@ -32,6 +42,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 3f77ae87816988e4e8ba3a88abd4dec5
     m_Address: Assets/Prefabs/UI/EnemyHPBar.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6e76c4feccec0cd4c9e4b3f394e4e585
+    m_Address: Assets/Textures/UI/EnemyMap.png
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

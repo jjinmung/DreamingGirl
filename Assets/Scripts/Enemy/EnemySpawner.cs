@@ -17,7 +17,8 @@ public class EnemySpawner : MonoBehaviour
     public SpawnData[] enemiesToSpawn;
     public GameObject[] PatrolPoints;
     public int spawnCount;
-    public float spawnRadius = 5f; // 스폰 지점 주변 탐색 반경
+    public float spawnWidth = 10f; // 가로 길이 (X축)
+    public float spawnDepth = 5f;  // 세로 길이 (Z축)
     public float overlapCheckRadius = 1f; // 적끼리 겹치지 않게 체크할 반경
     public LayerMask enemyLayer; // Enemy 레이어 설정 (인스펙터에서 선택)
     public bool Draw = true;
@@ -43,7 +44,7 @@ public class EnemySpawner : MonoBehaviour
 
         // 3. 생성 및 초기화
         string path = $"Assets/Prefabs/Enemy/{selectedEnemy.ID}.prefab";
-        GameObject go = Managers.Resource.Instantiate(path, spawnPos, Quaternion.identity);
+        GameObject go = Managers.Resource.Instantiate(path, spawnPos, Quaternion.Euler(0, Random.Range(0, 360), 0));
         var enemy = go.GetComponent<EnemyBase>();
         enemy.Init(selectedEnemy.ID);
         enemy.SetAdditionalData(PatrolPoints.ToList()); 
@@ -55,20 +56,22 @@ public class EnemySpawner : MonoBehaviour
     // NavMesh 위에서 겹치지 않는 좌표를 반환하는 함수
     Vector3 GetValidSpawnPosition()
     {
-        // 랜덤하게 스폰 포인트 하나 선택
-        Transform basePoint = transform;
+        Vector3 basePosition = transform.position;
 
-        for (int i = 0; i < 15; i++) // 최대 15번 시도
+        for (int i = 0; i < 15; i++)
         {
-            // 선택한 포인트 주변 랜덤 좌표 생성
-            Vector3 randomDirection = Random.insideUnitSphere * spawnRadius;
-            randomDirection += basePoint.position;
+            // [수정 포인트] 원형이 아닌 직사각형 범위 내 랜덤 좌표 생성
+            // 중심점에서 -Range ~ +Range 사이의 값을 가짐
+            float randomX = Random.Range(-spawnWidth / 2f, spawnWidth / 2f);
+            float randomZ = Random.Range(-spawnDepth / 2f, spawnDepth / 2f);
+            
+            Vector3 randomPos = basePosition + new Vector3(randomX, 0, randomZ);
 
             NavMeshHit hit;
-            // NavMesh 위의 가장 가까운 점을 찾음
-            if (NavMesh.SamplePosition(randomDirection, out hit, spawnRadius, NavMesh.AllAreas))
+            // NavMesh 위의 점인지 확인
+            if (NavMesh.SamplePosition(randomPos, out hit, 2.0f, NavMesh.AllAreas))
             {
-                // 해당 위치에 이미 다른 적이 있는지 원형 체크
+                // 겹침 체크
                 if (!Physics.CheckSphere(hit.position, overlapCheckRadius, enemyLayer))
                 {
                     return hit.position;
@@ -76,7 +79,7 @@ public class EnemySpawner : MonoBehaviour
             }
         }
 
-        return Vector3.zero; // 실패 시 zero 반환
+        return Vector3.zero;
     }
     
 
@@ -130,11 +133,11 @@ public class EnemySpawner : MonoBehaviour
     {
         if (!Draw) return;
 
-        // 기즈모 색상 설정 (반투명한 하늘색)
-        Gizmos.color = new Color(1, 1, 1, 0.3f);
-        Gizmos.DrawSphere(transform.position, spawnRadius);
+        Gizmos.color = new Color(0, 1, 0, 0.3f);
+        // 직사각형 큐브 형태로 표시 (높이는 0.1 정도로 얇게)
+        Gizmos.DrawCube(transform.position, new Vector3(spawnWidth, 0.1f, spawnDepth));
         
         Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(transform.position, spawnRadius);
+        Gizmos.DrawWireCube(transform.position, new Vector3(spawnWidth, 0.1f, spawnDepth));
     }
 }

@@ -7,6 +7,7 @@ using UnityEngine.Rendering.Universal;
 public class FishGuardS : EnemyBase
 {
     [SerializeField]private DecalProjector AttackRange;
+    
     private int enemyID = 1;
     public override void Attack()
     {

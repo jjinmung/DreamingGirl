@@ -19,7 +19,7 @@ namespace MasterStylizedProjectile
         public Transform target;
         public float rotSpeed = 0;
         public bool isFlatShoot = false;
-        public float Damage=0f;
+        public float Damage;
         private float initialYPosition;
         
         private void Start()
@@ -88,15 +88,14 @@ namespace MasterStylizedProjectile
         private void OnTriggerEnter(Collider other)
         {
             if(other.gameObject.CompareTag("Enemy") ||other.gameObject.CompareTag("IgnoreBullet")) return;
-            
             if(other.gameObject.CompareTag("Player"))
                 other.gameObject.GetComponent<IDamageable>().TakeDamage(Damage);
+            
             if (OnHitEffect != null)
             {
                 var onHitObj = 
                     Managers.Resource.Instantiate(Address.PurpleShoot_Hit, 
                     transform.position, Quaternion.identity);
-                
                 
                 /*var onHit = onHitObj.gameObject.AddComponent<AudioTrigger>();
                 if (onHitClip != null)
