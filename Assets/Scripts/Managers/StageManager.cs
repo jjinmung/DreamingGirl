@@ -9,16 +9,17 @@ using Random = UnityEngine.Random;
 
 public class StageManager : MonoBehaviour
 {
-    public event System.Action ExitRoom;
-    public event System.Action EnterRoom;
+    public event Action ExitRoom;
+    public event Action EnterRoom;
 
     private List<List<RoomNode>> stageMap = new();
-    
+    public int StageCount = 10;
+    [Range(0, 1f)]
+    public float MonsterMapPercent = 0.5f;
     private RoomNode currentRoomNode;
     private RoomNode lobyNode;
     private int currentDepth;
     private NavMeshSurface  surface;
-    
     private Room currentRoom;
     private EnemySpawner enemySpawner;
     private int killCount;
@@ -68,10 +69,10 @@ public class StageManager : MonoBehaviour
         currentDepth = 0;
         stageMap.Clear();
         // 1. 노드 생성 (총 10단계)
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < StageCount; i++)
         {
             List<RoomNode> layer = new List<RoomNode>();
-            int roomCount = (i==0||i == 9) ? 1 : Random.Range(1, 4); //0층,9층은 방 1개
+            int roomCount = (i==0||i == StageCount-1) ? 1 : Random.Range(1, 4); //0층,9층은 방 1개
 
             for (int j = 0; j < roomCount; j++)
             {
@@ -79,8 +80,8 @@ public class StageManager : MonoBehaviour
                 
                 // 타입 결정
                 if (i == 0) node.type = RoomType.Monster;
-                else if(i==9) node.type = RoomType.Boss;
-                else node.type = (Random.value > 0.2f) ? RoomType.Event : RoomType.Monster;
+                else if(i==StageCount-1) node.type = RoomType.Boss;
+                else node.type = (Random.value > MonsterMapPercent) ? RoomType.Event : RoomType.Monster;
                 
                 layer.Add(node);
             }
@@ -101,6 +102,8 @@ public class StageManager : MonoBehaviour
                 }
             }
         }
+        //보스맵 주소 바인딩
+        stageMap[stageMap.Count - 1][0].address = GetAddressByType(RoomType.Boss);
         //로비방 로드
         lobyNode.nextNodes.Add(stageMap[0][0]);
         currentRoomNode = lobyNode;
@@ -110,16 +113,13 @@ public class StageManager : MonoBehaviour
 
     public void ChangeRoom()
     {
-        //풀링을 위해 다시 닫아놓는다.
-        foreach (var door in currentRoom.doors)
-        {
-            door.CloseImmediately();
-        }
+        
         
         Managers.Resource.Destroy(currentRoom.gameObject);
         currentRoomNode = currentRoomNode.nextNodes[doorIndex];
         currentDepth++;
         currentRoom = Managers.Resource.Instantiate(currentRoomNode.address, Vector3.zero,default,Root.transform).GetComponent<Room>();
+        
         if (currentRoomNode.type == RoomType.Monster)
         {
             var enemyroom = currentRoom as EnemyRoom;
@@ -258,6 +258,6 @@ public class StageManager : MonoBehaviour
             enemySpawner.StartBattle();
         
         Managers.Player.EnterRoom();
-        _battleUI.SetMap(currentRoomNode.nextNodes);
+        _battleUI.SetMap(currentRoomNode.nextNodes, currentDepth);
     }
 }

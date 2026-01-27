@@ -6,19 +6,15 @@ using UnityEngine.UI;
 
 public class PlayerUnit : MonoBehaviour,IDamageable
 {
-    public float Damage =>Managers.Player.GetStat(Define.PlayerStat.Attack).TotalValue;
+    public float Damage => Managers.Player.Data.damage.TotalValue;
     private bool isDead;
-    public void Init()
+
+    private void OnEnable()
     {
-        var hpBar = GetComponentInChildren<UI_PlayerHPBar>();
-        hpBar.Init();
-        hpBar.SetMaxHP(Managers.Player.GetStat(Define.PlayerStat.MaxHP).TotalValue);
-        hpBar.gameObject.SetActive(false);
         isDead = false;
-        Debug.Log("플레이어 데이터 동기화 완료");
     }
-    
-    
+
+
     public void TakeDamage(float damage)
     {
         ShowBloodEffect();

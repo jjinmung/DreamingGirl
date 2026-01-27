@@ -99,19 +99,19 @@ public class UIManager
         }
         
         go.transform.localScale = Vector3.zero;
-        go.transform.DOScale(1.0f, 0.3f).SetEase(Ease.OutBack);
+        go.transform.DOScale(1.0f, 0.3f).SetEase(Ease.OutBack).SetUpdate(true);
 
 		return popup;
     }
 	
-	public void ShowFloatingText(Vector3 worldPos, string message, Color color,bool isCritical)
+	public void ShowFloatingText(Vector3 worldPos, string message, Color color,bool isCritical,float duration=1f)
 	{
 		
 		// 1. 월드 좌표를 화면 좌표로 변환 (Screen Space Overlay 기준)
 		Vector3 screenPos = Camera.main.WorldToScreenPoint(worldPos);
 		// 2. ResourceManager를 통해 생성
 		var floatingText = MakeSubItem<UI_FloatingText>(Address.UI_FloatingText);
-		floatingText.GetComponent<UI_FloatingText>().Init(screenPos,message, color,isCritical);
+		floatingText.GetComponent<UI_FloatingText>().Init(screenPos,message, color,isCritical,duration);
 	}
 
     public void ClosePopupUI(UI_Popup popup)

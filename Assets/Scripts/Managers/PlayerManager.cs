@@ -1,14 +1,18 @@
 using UnityEngine;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using static Define;
 
 public class PlayerManager : MonoBehaviour
 {
     [Header("Player Data")]
+    [SerializeField]
     private PlayerData data;
 
+    public PlayerData Data => data;
     public event Action OnDataChanged;
+    public event Action<int> OnLevelUp;
     public event Action<float> TakeDamageAction;
     public Action<float> OnDamageDealt;
     public event Action DieAcation;
@@ -19,7 +23,7 @@ public class PlayerManager : MonoBehaviour
     private PlayerController _playerController;
     private Rigidbody _playerRb;
     private CapsuleCollider _playerCollider;
-    private GameObject _playerHpBar;
+    private UI_PlayerHPBar _playerHpBar;
 
     // 프로퍼티 (Null 체크 없이 즉시 반환하도록 개선)
     public Transform PlayerTrans => _playerUnit.transform;
@@ -41,19 +45,27 @@ public class PlayerManager : MonoBehaviour
         _playerRb = playerPrefab.GetComponent<Rigidbody>();
         _playerCollider = playerPrefab.GetComponent<CapsuleCollider>();
         
-        _playerHpBar = _playerUnit.GetComponentInChildren<UI_PlayerHPBar>(true).gameObject;
-        
+        _playerHpBar = _playerUnit.GetComponentInChildren<UI_PlayerHPBar>(true);
+        _playerHpBar.Init();
+        _playerHpBar.SetMaxHP(data.maxHp.TotalValue,data.currentHp);
+        _playerHpBar.gameObject.SetActive(false);
 
         _playerAnim.SetFloat("AttackSpeed", data.attackSpeed.TotalValue);
-        _playerUnit.Init();
 
-        // 중복 구독 방지 (이미 등록되어 있을 수 있으므로 -= 후 +=)
-        Managers.Stage.ExitRoom -= ExitRoomHandler;
-        Managers.Stage.ExitRoom += ExitRoomHandler;
+        SubscribeEvent();
 
+        
+        
         return playerPrefab;
     }
 
+    void SubscribeEvent()
+    {
+        // 중복 구독 방지 
+        Managers.Stage.ExitRoom -= ExitRoomHandler;
+        Managers.Stage.ExitRoom += ExitRoomHandler;
+
+    }
     // --- 데이터 수정 메소드들 ---
     public void TakeDamage(float damage)
     {
@@ -70,30 +82,33 @@ public class PlayerManager : MonoBehaviour
         OnDataChanged?.Invoke();
     }
     
-    public int GetGold()
-    {
-        return data != null ? data.gold : 0;
-    }
 
     public void AddExp(int amount)
     {
-        data.currentExp += amount;
-        while (data.currentExp >= data.nextLevelExp) // if 대신 while 사용 (연속 레벨업 대응)
-        {
-            LevelUp();
-        }
-        OnDataChanged?.Invoke();
+        OnLevelUp?.Invoke(amount);
     }
+    
 
-    private void LevelUp()
+    public void LevelUp()
     {
-        data.level++;
-        data.currentExp -= data.nextLevelExp;
-        data.nextLevelExp = Mathf.RoundToInt(data.nextLevelExp * 1.2f);
-        data.currentHp = data.maxHp.TotalValue;
-        Debug.Log($"Level Up! 현재 레벨: {data.level}");
+        var percentHp = data.currentHp / data.maxHp.TotalValue;
+        AddPermanentStat(PlayerStat.MaxHP, 0.1f, true);
+        data.currentHp = data.maxHp.TotalValue*percentHp;
+        _playerHpBar.SetMaxHP(data.maxHp.TotalValue,data.currentHp);
+
+        StartCoroutine(SelectAbility());
     }
 
+    IEnumerator SelectAbility()
+    {
+        _playerController.LVPParticle.Play();
+        Managers.UI.ShowFloatingText(PlayerTrans.position, "Level UP!", Color.yellow,false,1.5f);
+        yield return new WaitForSeconds(1.5f);
+        Managers.UI.ShowPopupUI<UI_Ability>();
+        //시간 정지
+        Time.timeScale = 0;
+    }
+    
     public void AddPermanentStat(PlayerStat type, float amount, bool isPercent = false)
     {
         Stat targetStat = GetStat(type);
@@ -147,7 +162,7 @@ public class PlayerManager : MonoBehaviour
     {
         _playerCollider.enabled = isActive;
         _playerRb.useGravity = isActive;
-        _playerHpBar.SetActive(isActive);
+        _playerHpBar.gameObject.SetActive(isActive);
         
         if (isActive)
         {

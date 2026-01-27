@@ -6,14 +6,21 @@ using UnityEngine.UI;
 
 public class UI_BattleScene : UI_Scene
 {
+    private PlayerData _playerData => Managers.Player.Data;
+
     private float _currentGold = 0;
     
     // 캐싱을 위한 딕셔너리
     private readonly Dictionary<Define.RoomType, Sprite> _spriteCache = new Dictionary<Define.RoomType, Sprite>();
 
-    enum Texts { GoldText }
+    enum Texts { GoldText,StageText,LevelText }
     enum Images { FadeOut, Node1, Node2, Node3 }
-    enum GameObjects { Line1, Line2, Line3, Map, LevelBar,SkillBar,Info }
+    enum GameObjects { Line1, Line2, Line3, Map,SkillBar,Info }
+
+    enum Sliders
+    {
+        LevelBar
+    }
 
     private void Start() => Init();
 
@@ -23,7 +30,8 @@ public class UI_BattleScene : UI_Scene
         Bind<TextMeshProUGUI>(typeof(Texts));
         Bind<Image>(typeof(Images));
         Bind<GameObject>(typeof(GameObjects));
-
+        Bind<Slider>(typeof(Sliders));
+        
         // 이벤트 연결 (중복 방지 safe subtract)
         Managers.Stage.ExitRoom -= FadeOut;
         Managers.Stage.ExitRoom += FadeOut;
@@ -42,12 +50,29 @@ public class UI_BattleScene : UI_Scene
         
         //첫 진입은 로비라 전투 UI 비활성화
         BattleUIActive(false);
+        
+        //경험치 초기화
+        InitExp();
+        Managers.Player.OnLevelUp -= AddExp;
+        Managers.Player.OnLevelUp += AddExp;
     }
 
-    private void FadeOut() => GetImage((int)Images.FadeOut).DOFade(1f, 2f).SetEase(Ease.InQuart);
-    private void FadeIn() => GetImage((int)Images.FadeOut).DOFade(0f, 1f).SetEase(Ease.InQuad);
-   
-    private void RefreshGoldUI() => UpdateGold(Managers.Player.GetGold());
+    private void FadeOut()
+    {
+        var fadeImg = GetImage((int)Images.FadeOut);
+        fadeImg.DOKill();
+        fadeImg.DOFade(1f, 2f).SetEase(Ease.InQuart);
+    }
+    private void FadeIn()
+    {
+        var fadeImg = GetImage((int)Images.FadeOut);
+        fadeImg.DOKill();
+        fadeImg.DOFade(0f, 1f).SetEase(Ease.InQuad);
+    }
+
+    #region 골드 관련 함수
+
+    private void RefreshGoldUI() => UpdateGold(Managers.Player.Data.gold);
 
     public void UpdateGold(float targetGold)
     {
@@ -57,9 +82,14 @@ public class UI_BattleScene : UI_Scene
             });
     }
 
+    #endregion
+  
+
     #region 맵 관련 함수
-    public void SetMap(List<RoomNode> roomNodes)
+    public void SetMap(List<RoomNode> roomNodes,int depth)
     {
+        GetText((int)Texts.StageText).text = $"{depth}";
+        
         int count = roomNodes.Count;
 
         // 1. 모든 라인과 노드 초기화 
@@ -118,16 +148,72 @@ public class UI_BattleScene : UI_Scene
 
     #endregion
 
+    #region 경험치 관련 함수
+
+    public void InitExp()
+    {
+        GetText((int)Texts.LevelText).text = _playerData.level.ToString();
+        // 초기화 시에는 즉시 반영
+        Get<Slider>((int)Sliders.LevelBar).value = (float)_playerData.currentExp / _playerData.nextLevelExp;
+    }
+
+    public void AddExp(int amount)
+    {
+        var levelBar = Get<Slider>((int)Sliders.LevelBar);
+        int totalTargetExp = _playerData.currentExp + amount;
+
+        // DOTween Sequence 생성
+        Sequence levelUpSeq = DOTween.Sequence();
+
+        // 연속 레벨업 처리 루프
+        while (totalTargetExp >= _playerData.nextLevelExp)
+        {
+            // 1. 현재 레벨의 최대치까지 바를 채움
+            levelUpSeq.Append(levelBar.DOValue(1f, 0.4f).SetEase(Ease.OutQuad));
+
+            // 2. 바가 다 찬 직후 실행될 로직 (데이터 갱신 및 텍스트 업데이트)
+            levelUpSeq.AppendCallback(() => {
+                levelBar.value = 0; // 바 초기화
+                Levelup();          // 레벨 및 다음 경험치 통 갱신
+                Managers.Player.LevelUp(); 
+            });
+
+            // 계산: 남은 경험치 갱신
+            amount -= (_playerData.nextLevelExp - _playerData.currentExp);
+            _playerData.currentExp = 0; 
+            totalTargetExp = amount;
+        }
+
+        // 3. 마지막으로 남은 경험치만큼 바를 채움
+        _playerData.currentExp = totalTargetExp;
+        float finalRatio = (float)_playerData.currentExp / _playerData.nextLevelExp;
+        levelUpSeq.Append(levelBar.DOValue(finalRatio, 0.4f).SetEase(Ease.OutQuad));
+    }
+
+    private void Levelup()
+    {
+        _playerData.level++;
+        // currentExp는 위 로직에서 소진되므로 통(Max)만 키워줌
+        _playerData.nextLevelExp = Mathf.RoundToInt(_playerData.nextLevelExp * 1.2f);
+        
+        // 텍스트 업데이트 및 살짝 커지는 연출 추가 
+        var levelText = GetText((int)Texts.LevelText);
+        levelText.text = _playerData.level.ToString();
+        levelText.transform.DOPunchScale(Vector3.one * 0.2f, 0.2f); 
+    }
+
+    #endregion
+
     public void BattleUIActive(bool isActive)
     {
-        GetObject((int)GameObjects.LevelBar).SetActive(isActive);
+        Get<Slider>((int)Sliders.LevelBar).gameObject.SetActive(isActive);
         GetObject((int)GameObjects.Map).SetActive(isActive);
         GetObject((int)GameObjects.SkillBar).SetActive(isActive);
     }
     
     public void AllUIActive(bool isActive)
     {
-        GetObject((int)GameObjects.LevelBar).SetActive(isActive);
+        Get<Slider>((int)Sliders.LevelBar).gameObject.SetActive(isActive);
         GetObject((int)GameObjects.Map).SetActive(isActive);
         GetObject((int)GameObjects.SkillBar).SetActive(isActive);
         GetObject((int)GameObjects.Info).SetActive(isActive);

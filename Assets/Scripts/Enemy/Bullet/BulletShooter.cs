@@ -22,7 +22,6 @@ namespace MasterStylizedProjectile
         public AudioClip hitClip;
         public bool isTargeting;
         public float RotSpeed;
-        [Tooltip("是否平射，如果为true，子弹在y轴方向的速度为0，且不能朝上下旋转")]
         public bool isFlatShoot = false;
     }
     public class BulletShooter : MonoBehaviour

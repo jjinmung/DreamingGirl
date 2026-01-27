@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using static Define;
 public class UI_Ability :UI_Popup
 {
+    bool isInit = false;
     private AbilityID[] abilityIDs;
     private List<UI_Card> uiCards;
     enum GameObjects
@@ -62,6 +63,8 @@ public class UI_Ability :UI_Popup
             {
                 Managers.Data.AbilityDict[abilityIDs[index]].AddStack();
                 Managers.UI.ClosePopupUI(this);
+                //시간 재개
+                Time.timeScale = 1;
             });
         }
 

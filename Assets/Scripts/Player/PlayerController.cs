@@ -12,6 +12,8 @@ public class PlayerController : MonoBehaviour
     private Vector2 _inputVector;
     public enum PlayerState { Idle, Run,Attack,Dash}
     public PlayerState CurrentState = PlayerState.Idle;
+    
+    public ParticleSystem LVPParticle;
 
     private bool _isAttackPressed;
     private void Awake()

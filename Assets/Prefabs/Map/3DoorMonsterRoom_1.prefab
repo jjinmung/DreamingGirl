@@ -396,7 +396,7 @@ MonoBehaviour:
   - {fileID: 5347042721741740087}
   - {fileID: 7394621276835830393}
   - {fileID: 5644000383572468375}
-  EnterDoor: {fileID: 0}
+  EnterDoor: {fileID: 4286038195106758602}
 --- !u!1 &5391256004992567401
 GameObject:
   m_ObjectHideFlags: 0
@@ -2211,6 +2211,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5619230779347145362, guid: 88f6b06584ebb994c9991fd67447f52b, type: 3}
   m_PrefabInstance: {fileID: 7630745262363327339}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &4286038195106758602 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5953419393419510945, guid: 88f6b06584ebb994c9991fd67447f52b, type: 3}
+  m_PrefabInstance: {fileID: 7630745262363327339}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c48f0fffd30075544820b9ffef090638, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &8189026297626778427
 PrefabInstance:
   m_ObjectHideFlags: 0

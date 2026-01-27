@@ -11,6 +11,7 @@ public class EnemyStat
     public float Speed;
     public float AttackDelay;
     public float currentHp;
+    public int Exp;
     public  EnemyStat(MonsterStat stat)
     {
         ID = stat.ID;
@@ -20,5 +21,6 @@ public class EnemyStat
         this.Damage = stat.Damage;
         this.Speed = stat.Speed;
         this.AttackDelay = stat.AttackDelay;
+        this.Exp = stat.Exp;
     }
 }

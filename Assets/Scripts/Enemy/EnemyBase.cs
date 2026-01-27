@@ -84,13 +84,21 @@ public abstract class EnemyBase : MonoBehaviour,IDamageable
 
     protected void Die()
     {
+        //변수제어
         isDead = true;
+        _behavior.SetVariableValue("IsDeath", true);
+        
+        //스테이지 관리
         Managers.Stage.CheckClear();
+        
+        //이벤트 호출
         dieAcation.Invoke();
+        
         gameObject.layer = LayerMask.NameToLayer("DeadBody");
         _animator.SetTrigger("DEATH");
-        _behavior.SetVariableValue("IsDeath", true);
-
+        
+        
+        Managers.Player.AddExp(stat.Exp);
         StartCoroutine(DelayDie());
     }
 

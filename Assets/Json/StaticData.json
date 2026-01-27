@@ -6,7 +6,8 @@
       "MaxHp": "100",
       "Damage": "50",
       "Speed": "5",
-      "AttackDelay": "5"
+      "AttackDelay": "5",
+      "Exp": "30"
     },
     {
       "ID": "2",

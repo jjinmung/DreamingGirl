@@ -6,8 +6,8 @@ using UnityEngine.UI;
 
 public class UI_PlayerHPBar : UI_Base
 {
-    private float hp;
-    private float hpMax;
+    private float _currentHp;
+    private float _maxHp;
     private Coroutine _subBarCoroutine;
     
     enum Texts
@@ -41,16 +41,16 @@ public class UI_PlayerHPBar : UI_Base
     }
 
 
-    public void SetMaxHP(float maxHp)
+    public void SetMaxHP(float maxHp,float currentHp)
     {
-        this.hpMax = maxHp;
-        this.hp = maxHp;
-        Get<Slider>((int)Sliders.MainBar).value = 1f;
-        Get<Slider>((int)Sliders.SubBar).value = 1f;
-        GetText((int)Texts.HPText).text = $"{maxHp}";
+        _maxHp = maxHp;
+        _currentHp = currentHp;
+        Get<Slider>((int)Sliders.MainBar).value = _currentHp/_maxHp;
+        Get<Slider>((int)Sliders.SubBar).value =  _currentHp/_maxHp;
+        GetText((int)Texts.HPText).text = $"{(int)currentHp}";
 
         //체력바 선 그리기
-        float ScaleX = 1000f / maxHp;
+        float ScaleX = 1000f / _maxHp;
         var children = Get<GameObject>((int)GameObjects.HPLines).
             transform.Cast<Transform>()
             .Select(t => t.gameObject.transform)
@@ -60,19 +60,21 @@ public class UI_PlayerHPBar : UI_Base
         {
             child.localScale = new Vector3(ScaleX, 1, 1);
         }
+        Get<GameObject>((int)GameObjects.HPLines).SetActive(false);
+        Get<GameObject>((int)GameObjects.HPLines).SetActive(true);
     }
     
     public void TakeDamage(float damage)
     {
-        hp = Mathf.Max(0, hp - damage); // 0 이하로 내려가지 않게 방지
+        _currentHp = Mathf.Max(0, _currentHp - damage); // 0 이하로 내려가지 않게 방지
         
-        Get<Slider>((int)Sliders.MainBar).value = hp / hpMax;
-        GetText((int)Texts.HPText).text = $"{Mathf.CeilToInt(hp)}"; // 현재 남은 피 표시
+        Get<Slider>((int)Sliders.MainBar).value = _currentHp / _maxHp;
+        GetText((int)Texts.HPText).text = $"{(int)(_currentHp)}"; // 현재 남은 피 표시
 
         // 이전 애니메이션이 돌고 있다면 멈추고 새로 시작
         if (_subBarCoroutine != null)
             StopCoroutine(_subBarCoroutine);
-        if (hp > 0)
+        if (_currentHp > 0)
             _subBarCoroutine = StartCoroutine(SubBarAnim());
     }
     
@@ -81,7 +83,7 @@ public class UI_PlayerHPBar : UI_Base
         yield return new WaitForSeconds(0.3f);
 
         Slider subSlider = Get<Slider>((int)Sliders.SubBar);
-        float targetValue = hp / hpMax;
+        float targetValue = _currentHp / _maxHp;
         float startValue = subSlider.value;
         float duration = 0.3f;
         float elapsed = 0f;
