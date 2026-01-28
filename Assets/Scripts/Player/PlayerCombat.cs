@@ -13,7 +13,7 @@ public class PlayerCombat : MonoBehaviour
     private Queue<(string type, float time)> inputBuffer = new Queue<(string type, float time)>();
     private float bufferTimeout = 0.5f;
     private Animator _animator;
-
+    public ActiveAbilityEffect CurrentActiveEffect { get; set; }
     public bool CanAttack { get; set; } = true;
     public int ComboIndex { get; private set; } = 0;
 
@@ -23,10 +23,29 @@ public class PlayerCombat : MonoBehaviour
 
     public void ProcessBuffer()
     {
+        // 1. 큐가 비어있거나 공격 불가능하면 리턴
         if (!CanAttack || inputBuffer.Count == 0) return;
 
-        var input = inputBuffer.Dequeue();
-        if (Time.time - input.time <= bufferTimeout)
+        // 2. 가장 오래된 입력을 확인 (꺼내지 않고 확인만)
+        var input = inputBuffer.Peek();
+
+        // 3. 버퍼 유효 시간 만료 체크
+        if (Time.time - input.time > bufferTimeout)
+        {
+            inputBuffer.Dequeue(); // 만료된 것만 제거
+            return;
+        }
+
+        // 4. 여기서 실제로 데이터를 하나 꺼냄 (한 번만 호출!)
+        inputBuffer.Dequeue();
+
+        // 5. 꺼낸 데이터의 타입에 따라 동작 수행
+        if (input.type.StartsWith("Skill_"))
+        {
+            string skillName = input.type.Replace("Skill_", "");
+            PerformSkill(skillName);
+        }
+        else if (input.type == "Attack")
         {
             PerformAttack();
         }
@@ -41,6 +60,16 @@ public class PlayerCombat : MonoBehaviour
             ComboIndex--;
         else
             ComboIndex++;
+    }
+    
+    private void PerformSkill(string animName)
+    {
+        LookAtMouse();
+        CanAttack = false;
+        _animator.SetTrigger(animName);
+
+        CurrentActiveEffect.Execute();
+        ResetCombo();
     }
 
     public void ResetCombo() => ComboIndex = 0;

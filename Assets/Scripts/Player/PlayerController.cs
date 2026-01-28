@@ -1,5 +1,6 @@
+using System;
 using UnityEngine;
-
+using static Define;
 
 
 public class PlayerController : MonoBehaviour
@@ -16,6 +17,11 @@ public class PlayerController : MonoBehaviour
     public ParticleSystem LVPParticle;
 
     private bool _isAttackPressed;
+
+    public AbilityID[] ActiveSkills;
+
+    private UI_Ability uiAbility;
+    public event Action OnGetActiveSKill;
     private void Awake()
     {
         _movement = GetComponent<PlayerMovement>();
@@ -25,15 +31,31 @@ public class PlayerController : MonoBehaviour
         _attackcollider= GetComponentInChildren<SphereCollider>();
         
         _attackcollider.enabled = false;
+        
+        ActiveSkills = new AbilityID[4]
+        {
+            AbilityID.None,
+            AbilityID.None,
+            AbilityID.None,
+            AbilityID.None,
+        };
     }
 
     private void Start()
     {
+        //기본 공격 이벤트 구독
         Managers.Input.OnAttack -= HandleAttackInput;
         Managers.Input.OnAttack += HandleAttackInput;
         
+        //대쉬 이벤트 구독
         Managers.Input.OnDash -= HandleDashInput;
         Managers.Input.OnDash += HandleDashInput;
+        
+        // 스킬 이벤트 구독
+        Managers.Input.OnSkill1 += () => HandleSkillInput(0);
+        Managers.Input.OnSkill2 += () => HandleSkillInput(1);
+        Managers.Input.OnSkill3 += () => HandleSkillInput(2);
+        Managers.Input.OnSkill4 += () => HandleSkillInput(3);
         
     }
     private void FixedUpdate()
@@ -72,7 +94,42 @@ public class PlayerController : MonoBehaviour
             _combat.AddBuffer("Attack");
         }
     }
+    
+    private void HandleSkillInput(int slotIndex)
+    {
+        var activeSkill = ActiveSkills[slotIndex];
+        if (activeSkill!=AbilityID.None)
+        {
+            var ActiveEffect = Managers.Data.AbilityDict[activeSkill].getActiveEffect();
+            // 애니메이션 이름을 포함한 버퍼 추가
+            _combat.AddBuffer($"Skill_{ActiveEffect.AnimationName}");
+        
+            // 나중에 Execute를 호출하기 위해 현재 실행 중인 스킬 정보를 저장해둘 수 있음
+            _combat.CurrentActiveEffect = ActiveEffect; 
+        }
+    }
 
+    public void GetAciveSkill(AbilityID activeId)
+    {
+        bool isAdd = false;
+        for (int i = 0; i < ActiveSkills.Length; i++)
+        {
+            if (ActiveSkills[i] == AbilityID.None)
+            {
+                isAdd = true;
+                ActiveSkills[i] = activeId;
+                break;
+            }
+        }
+
+        if (!isAdd)
+        {
+            Debug.Log("스킬창이 다 찼음!");
+            return;
+        }
+        OnGetActiveSKill.Invoke();
+
+    }
     private void HandleDashInput()
     {
         if (!_movement.CanMove) return;
@@ -106,10 +163,7 @@ public class PlayerController : MonoBehaviour
         InputActive(true);
         _combat.ResetCombo();
     }
-    public void OnAnimationStart()
-    {
-        InputActive(false);
-    }
+
     
     //애니메이션 이벤트 함수
     public void CheckCombo()

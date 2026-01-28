@@ -72,7 +72,8 @@
         Divine_Orbs,//신의 가호
         Enhanced_Strength,//근력 강화
         Enhanced_Vitality,//육체 강화
-        Swift_Execution//속전속결
+        Swift_Execution,//속전속결
+        None,
     }
     
     public enum RoomType { Monster, Event, Boss,Loby }

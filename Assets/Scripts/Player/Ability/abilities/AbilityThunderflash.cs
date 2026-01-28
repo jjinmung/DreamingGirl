@@ -1,16 +1,10 @@
-public class AbilityThunderflash : AbilityEffect
+public class AbilityThunderflash : ActiveAbilityEffect
 {
     public override void Apply(int stack)
     {
-        
+        Managers.Player.PlayerControl.GetAciveSkill(Define.AbilityID.Thunderflash);
     }
-
-    public override void ApplyStack(int stack)
-    {
-       
-    }
-
-    public override void Remove(int stack)
+    public override void Execute()
     {
         
     }

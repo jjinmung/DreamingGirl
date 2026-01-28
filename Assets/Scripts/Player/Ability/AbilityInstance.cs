@@ -3,14 +3,30 @@ public class AbilityInstance
     public AbilityData data;
     public AbilityEffect effect;
     public int stack;
-
     public AbilityInstance(AbilityData data)
     {
         this.data = data;
-        this.effect = data.GetEffect();
+        effect = data.GetEffect();
         stack = 0;
+
+        if (effect is ActiveAbilityEffect )
+        {
+            var activeEffect = effect as ActiveAbilityEffect;
+            activeEffect.SetStat(data.Damage,data.Damage,data.AnimationName);
+            
+        }
     }
 
+    public ActiveAbilityEffect getActiveEffect()
+    {
+        if (effect is ActiveAbilityEffect )
+        {
+            return effect as ActiveAbilityEffect;
+            
+        }
+        else
+            return null;
+    }
     public void AddStack()
     {
         if (stack >= data.maxStack)

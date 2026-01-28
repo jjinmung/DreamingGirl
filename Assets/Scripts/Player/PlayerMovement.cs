@@ -9,6 +9,7 @@ public class PlayerMovement : MonoBehaviour
 
     private Rigidbody _rb;
     private float _lastDashTime = -999f;
+    
     public bool CanMove { get; set; } = true;
 
     private void Awake() => _rb = GetComponent<Rigidbody>();

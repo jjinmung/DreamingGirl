@@ -48,7 +48,7 @@ public class UI_Card : UI_Base
         if (abilityInstance != null)
         {
             GetImage((int)Images.Card_Icon).sprite = abilityInstance.data.icon;
-            GetText((int)Texts.Card_Text).text = abilityInstance.data.description;
+            GetText((int)Texts.Card_Text).text = abilityInstance.data.description[abilityInstance.stack];
             var stack = abilityInstance.stack;
             for (int i = 0; i < stack; i++)
             {

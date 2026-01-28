@@ -14,6 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   abilityID: 8
   abilityName: "\uADFC\uB825 \uAC15\uD654"
-  description: "\uACF5\uACA9\uB825\uC774 \uC99D\uAC00\uD569\uB2C8\uB2E4."
+  description:
+  - "\uACF5\uACA9\uB825\uC774 10 \uC99D\uAC00\uD569\uB2C8\uB2E4."
+  - "\uACF5\uACA9\uB825\uC774 20 \uC99D\uAC00\uD569\uB2C8\uB2E4."
+  - "\uACF5\uACA9\uB825\uC774 30 \uC99D\uAC00\uD569\uB2C8\uB2E4."
+  - "\uACF5\uACA9\uB825\uC774 40 \uC99D\uAC00\uD569\uB2C8\uB2E4."
+  - "\uACF5\uACA9\uB825\uC774 50 \uC99D\uAC00\uD569\uB2C8\uB2E4."
   icon: {fileID: 21300000, guid: 7799073f5c8232942af47fb848ecaac4, type: 3}
   maxStack: 5
+  Damage: 0

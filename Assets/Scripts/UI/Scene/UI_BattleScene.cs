@@ -13,9 +13,39 @@ public class UI_BattleScene : UI_Scene
     // 캐싱을 위한 딕셔너리
     private readonly Dictionary<Define.RoomType, Sprite> _spriteCache = new Dictionary<Define.RoomType, Sprite>();
 
-    enum Texts { GoldText,StageText,LevelText }
-    enum Images { FadeOut, Node1, Node2, Node3 }
-    enum GameObjects { Line1, Line2, Line3, Map,SkillBar,Info }
+    enum Texts 
+    { 
+        GoldText, 
+        StageText,
+        LevelText 
+    }
+
+    enum Images
+    {
+        FadeOut, 
+        Node1, 
+        Node2, 
+        Node3,
+        Image_Skill1,
+        Image_Skill2,
+        Image_Skill3,
+        Image_Skill4,
+        Image_DashCool,
+        Image_Skill1Cool,
+        Image_Skill2Cool,
+        Image_Skill3Cool,
+        Image_Skill4Cool,
+    }
+
+    enum GameObjects
+    {
+        Line1,
+        Line2, 
+        Line3, 
+        Map,
+        SkillBar,
+        Info
+    }
 
     enum Sliders
     {
@@ -55,6 +85,16 @@ public class UI_BattleScene : UI_Scene
         InitExp();
         Managers.Player.OnLevelUp -= AddExp;
         Managers.Player.OnLevelUp += AddExp;
+        
+        //스킬바 초기화
+        GetImage((int)Images.Image_DashCool).fillAmount = 0f;
+        GetImage((int)Images.Image_Skill1Cool).fillAmount = 0f;
+        GetImage((int)Images.Image_Skill2Cool).fillAmount = 0f;
+        GetImage((int)Images.Image_Skill3Cool).fillAmount = 0f;
+        GetImage((int)Images.Image_Skill4Cool).fillAmount = 0f;
+        RefreshSkillBar();
+        Managers.Player.PlayerControl.OnGetActiveSKill -= RefreshSkillBar;
+        Managers.Player.PlayerControl.OnGetActiveSKill += RefreshSkillBar;
     }
 
     private void FadeOut()
@@ -202,6 +242,31 @@ public class UI_BattleScene : UI_Scene
         levelText.transform.DOPunchScale(Vector3.one * 0.2f, 0.2f); 
     }
 
+    #endregion
+
+    #region 스킬 관련함수
+
+    public void SkillBarInit()
+    {
+        GetImage((int)Images.Image_Skill1).gameObject.SetActive(false);
+        GetImage((int)Images.Image_Skill2).gameObject.SetActive(false);
+        GetImage((int)Images.Image_Skill3).gameObject.SetActive(false);
+        GetImage((int)Images.Image_Skill4).gameObject.SetActive(false);
+    }
+
+    private void RefreshSkillBar()
+    {
+        SkillBarInit();
+        var skills = Managers.Player.PlayerControl.ActiveSkills;
+        for (int i = 0; i < skills.Length; i++)
+        {
+            if (skills[i]!=Define.AbilityID.None)
+            {
+                GetImage(i+4).gameObject.SetActive(true);
+                GetImage(i + 4).sprite = Managers.Data.AbilityDict[skills[i]].data.icon;
+            }
+        }
+    }
     #endregion
 
     public void BattleUIActive(bool isActive)

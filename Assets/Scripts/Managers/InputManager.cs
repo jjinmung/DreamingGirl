@@ -11,8 +11,11 @@ public class InputManager : MonoBehaviour
     public event Action OnAttack;
     public event Action OnDash;
     public event Action OnChangeCamera;
-
     public event Action OnInteract;
+    public event Action OnSkill1;
+    public event Action OnSkill2;
+    public event Action OnSkill3;
+    public event Action OnSkill4;
     public bool IsAttackPressed { get; private set; }
     private void Awake()
     {
@@ -35,6 +38,12 @@ public class InputManager : MonoBehaviour
         _playerAction.Player.ChangeCamera.performed += ctx => OnChangeCamera?.Invoke();
         
         _playerAction.Player.Interact.performed += ctx => OnInteract?.Invoke();
+        
+        _playerAction.Player.Skill1.performed += ctx => OnSkill1?.Invoke();
+        _playerAction.Player.Skill2.performed += ctx => OnSkill2?.Invoke();
+        _playerAction.Player.Skill3.performed += ctx => OnSkill3?.Invoke();
+        _playerAction.Player.Skill4.performed += ctx => OnSkill4?.Invoke();
+        
         
     }
 
