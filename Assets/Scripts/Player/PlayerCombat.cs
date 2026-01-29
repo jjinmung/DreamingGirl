@@ -68,10 +68,15 @@ public class PlayerCombat : MonoBehaviour
         CanAttack = false;
         _animator.SetTrigger(animName);
 
-        CurrentActiveEffect.Execute();
+       
         ResetCombo();
     }
-
+    //애니메이션 이벤트 함수
+    public void ActiveSkillExecute()
+    {
+        CurrentActiveEffect.Execute();
+    }
+    
     public void ResetCombo() => ComboIndex = 0;
     public void ClearBuffer() => inputBuffer.Clear();
 

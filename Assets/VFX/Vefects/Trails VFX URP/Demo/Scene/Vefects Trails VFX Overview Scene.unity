@@ -1531,6 +1531,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: VFX
       objectReference: {fileID: 0}
+    - target: {fileID: 4096053577672655010, guid: a16780d45d1675a43b63990c52ae8504, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4109962275573140333, guid: a16780d45d1675a43b63990c52ae8504, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1569,6 +1573,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4109962275573140333, guid: a16780d45d1675a43b63990c52ae8504, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6577448470677649963, guid: a16780d45d1675a43b63990c52ae8504, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7939380662691080693, guid: a16780d45d1675a43b63990c52ae8504, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 3b3a2d6ab90cd2440b943da8a099c1ba, type: 2}
+    - target: {fileID: 9100544764952946563, guid: a16780d45d1675a43b63990c52ae8504, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

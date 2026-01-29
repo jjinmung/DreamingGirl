@@ -4,11 +4,9 @@ public class PlayerMovement : MonoBehaviour
 {
     public float rotationSpeed = 15f;
     public float dashForce = 20f;
-    private float dashCooldown => Managers.Player.Data.dashCooldown.TotalValue;
     private float movementSpeed => Managers.Player.Data.moveSpeed.TotalValue;
 
     private Rigidbody _rb;
-    private float _lastDashTime = -999f;
     
     public bool CanMove { get; set; } = true;
 
@@ -35,8 +33,6 @@ public class PlayerMovement : MonoBehaviour
 
     public void ExecuteDash(Vector3 direction, System.Action onDashStart)
     {
-        if (Time.time < _lastDashTime + dashCooldown) return;
-        _lastDashTime = Time.time;
         onDashStart?.Invoke();
 
         Vector3 dashDir = direction.sqrMagnitude > 0.01f ? direction : transform.forward;

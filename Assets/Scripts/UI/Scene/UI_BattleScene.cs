@@ -95,6 +95,9 @@ public class UI_BattleScene : UI_Scene
         RefreshSkillBar();
         Managers.Player.PlayerControl.OnGetActiveSKill -= RefreshSkillBar;
         Managers.Player.PlayerControl.OnGetActiveSKill += RefreshSkillBar;
+        
+        Managers.Player.PlayerControl.OnUseActiveSKill -= UseSkill;
+        Managers.Player.PlayerControl.OnUseActiveSKill += UseSkill;
     }
 
     private void FadeOut()
@@ -267,6 +270,30 @@ public class UI_BattleScene : UI_Scene
             }
         }
     }
+
+    public void UseSkill(int index, float cooldown)
+    {
+        // index 0: Dash
+        // index 1~4: Skill 1~4
+        // Images enum에서 Image_DashCool(8)부터 순서대로 배치되어 있으므로 index를 더해줍니다.
+        int targetImageIndex = (int)Images.Image_DashCool + index;
+    
+        Image coolImage = GetImage(targetImageIndex);
+    
+        if (coolImage == null) return;
+
+        // 기존에 돌고 있던 트윈이 있다면 제거 (연속 입력 대비)
+        coolImage.DOKill();
+    
+        // 쿨타임 연출 시작
+        coolImage.fillAmount = 1f; // 먼저 꽉 채우고
+        coolImage.DOFillAmount(0f, cooldown) // 0까지 cooldown 시간 동안
+            .SetEase(Ease.Linear) // 쿨타임은 일정하게 줄어들어야 하므로 Linear 권장
+            .OnComplete(() => {
+                // 완료 후 추가 연출이 필요하다면 여기에 작성 (예: 반짝임)
+                coolImage.fillAmount = 0f;
+            });
+    }
     #endregion
 
     public void BattleUIActive(bool isActive)
@@ -283,5 +310,6 @@ public class UI_BattleScene : UI_Scene
         GetObject((int)GameObjects.SkillBar).SetActive(isActive);
         GetObject((int)GameObjects.Info).SetActive(isActive);
     }
+    
     
 }

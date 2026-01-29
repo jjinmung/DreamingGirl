@@ -229,7 +229,7 @@ GameObject:
   - component: {fileID: 6392182139150437133}
   - component: {fileID: 2974191448472382829}
   - component: {fileID: 2778749397588518241}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: 1DoorMonsterRoom_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -3821,7 +3821,7 @@ GameObject:
   - component: {fileID: 387431549882715957}
   - component: {fileID: 5636140765923309899}
   - component: {fileID: 1346618219511390746}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: LobyMap
   m_TagString: Untagged
   m_Icon: {fileID: 0}

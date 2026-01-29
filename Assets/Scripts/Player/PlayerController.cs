@@ -15,13 +15,19 @@ public class PlayerController : MonoBehaviour
     public PlayerState CurrentState = PlayerState.Idle;
     
     public ParticleSystem LVPParticle;
+    public TrailRenderer[] ThunderTrail;
 
     private bool _isAttackPressed;
 
     public AbilityID[] ActiveSkills;
 
     private UI_Ability uiAbility;
+    
+    //UI맵핑을 위한 이벤트
     public event Action OnGetActiveSKill;
+    public  event Action<int, float> OnUseActiveSKill;
+    
+    private float[] _lastSkillTime = new  float[5]{-999f,-999f,-999f,-999f,-999f};
     private void Awake()
     {
         _movement = GetComponent<PlayerMovement>();
@@ -52,10 +58,10 @@ public class PlayerController : MonoBehaviour
         Managers.Input.OnDash += HandleDashInput;
         
         // 스킬 이벤트 구독
-        Managers.Input.OnSkill1 += () => HandleSkillInput(0);
-        Managers.Input.OnSkill2 += () => HandleSkillInput(1);
-        Managers.Input.OnSkill3 += () => HandleSkillInput(2);
-        Managers.Input.OnSkill4 += () => HandleSkillInput(3);
+        Managers.Input.OnSkill1 += () => HandleSkillInput(1);
+        Managers.Input.OnSkill2 += () => HandleSkillInput(2);
+        Managers.Input.OnSkill3 += () => HandleSkillInput(3);
+        Managers.Input.OnSkill4 += () => HandleSkillInput(4);
         
     }
     private void FixedUpdate()
@@ -97,13 +103,16 @@ public class PlayerController : MonoBehaviour
     
     private void HandleSkillInput(int slotIndex)
     {
-        var activeSkill = ActiveSkills[slotIndex];
+        var activeSkill = ActiveSkills[slotIndex-1];
         if (activeSkill!=AbilityID.None)
         {
             var ActiveEffect = Managers.Data.AbilityDict[activeSkill].getActiveEffect();
+            
+            if(Time.time < _lastSkillTime[slotIndex]+ActiveEffect.Cooldown) return;
+            _lastSkillTime[slotIndex] = Time.time;
             // 애니메이션 이름을 포함한 버퍼 추가
             _combat.AddBuffer($"Skill_{ActiveEffect.AnimationName}");
-        
+            OnUseActiveSKill?.Invoke(slotIndex,ActiveEffect.Cooldown);
             // 나중에 Execute를 호출하기 위해 현재 실행 중인 스킬 정보를 저장해둘 수 있음
             _combat.CurrentActiveEffect = ActiveEffect; 
         }
@@ -132,8 +141,10 @@ public class PlayerController : MonoBehaviour
     }
     private void HandleDashInput()
     {
-        if (!_movement.CanMove) return;
-
+        float dashCoolDown = Managers.Player.Data.dashCooldown.TotalValue;
+        if (!_movement.CanMove||Time.time<_lastSkillTime[0]+dashCoolDown) return;
+        _lastSkillTime[0] = Time.time;
+        OnUseActiveSKill?.Invoke(0,dashCoolDown);
         _movement.ExecuteDash(CalculateCameraDirection(), () => {
             _combat.ClearBuffer();
             _combat.ResetCombo();

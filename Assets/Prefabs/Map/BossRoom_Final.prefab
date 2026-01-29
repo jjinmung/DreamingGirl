@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: 8908639980299852498}
   - component: {fileID: 9076490381194862143}
   - component: {fileID: 7443556902691835553}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: BossRoom_Final
   m_TagString: Untagged
   m_Icon: {fileID: 0}

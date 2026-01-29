@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: 5098090527861362414}
   - component: {fileID: 2981846195468192528}
   - component: {fileID: -2236759329496484309}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: 2DoorEventRoom_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}

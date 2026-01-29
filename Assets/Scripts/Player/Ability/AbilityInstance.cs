@@ -12,7 +12,7 @@ public class AbilityInstance
         if (effect is ActiveAbilityEffect )
         {
             var activeEffect = effect as ActiveAbilityEffect;
-            activeEffect.SetStat(data.Damage,data.Damage,data.AnimationName);
+            activeEffect.SetStat(data.Damage,data.Cooldown,data.AnimationName);
             
         }
     }
@@ -24,8 +24,8 @@ public class AbilityInstance
             return effect as ActiveAbilityEffect;
             
         }
-        else
-            return null;
+        return null;
+            
     }
     public void AddStack()
     {
