@@ -10,7 +10,7 @@ using Action = System.Action;
 public abstract class EnemyBase : MonoBehaviour,IDamageable
 {
     //lazy cashing
-    protected GameObject _player=> _playerCache ??= GameObject.FindGameObjectWithTag("Player");
+    protected GameObject _player=> _playerCache ??= Managers.Player.PlayerControl.gameObject;
     
     protected BehaviorGraphAgent _behavior=> _behaviorCache ??= GetComponent<BehaviorGraphAgent>();
     protected Animator _animator=> _animatorCache ??= GetComponent<Animator>();
@@ -47,7 +47,7 @@ public abstract class EnemyBase : MonoBehaviour,IDamageable
         _behavior.SetVariableValue("Target", _player);
         _behavior.SetVariableValue("IsDeath", false);
         _behavior.SetVariableValue("AttackDelay", stat.AttackDelay);
-
+        _behavior.SetVariableValue("Speed", stat.Speed);
         // 이벤트 클린업 및 등록
         ResetEvents();
 

@@ -14,9 +14,9 @@ public class SpawnData
 
 public class EnemySpawner : MonoBehaviour
 {
-    public SpawnData[] enemiesToSpawn;
+    public EnemyRoom Room;
     public GameObject[] PatrolPoints;
-    public int spawnCount;
+    
     public float spawnWidth = 10f; // 가로 길이 (X축)
     public float spawnDepth = 5f;  // 세로 길이 (Z축)
     public float overlapCheckRadius = 1f; // 적끼리 겹치지 않게 체크할 반경
@@ -27,7 +27,9 @@ public class EnemySpawner : MonoBehaviour
 
     public void SpawnEnemys()
     {
-        for (int i = 0; i < spawnCount; i++)
+        if (Room == null)
+            Room = GetComponentInParent<EnemyRoom>();
+        for (int i = 0; i < Room.spawnCount; i++)
             SpawnEnemy();
     }
 
@@ -108,15 +110,15 @@ public class EnemySpawner : MonoBehaviour
 
     private SpawnData GetWeightedRandomEnemy()
     {
-        if (enemiesToSpawn.Length == 0) return null;
+        if (Room.enemiesToSpawn.Length == 0) return null;
 
         // 1. 가중치 기반 적 선택 로직 
-        float totalWeight = enemiesToSpawn.Sum(data => data.spawnWeight);
+        float totalWeight = Room.enemiesToSpawn.Sum(data => data.spawnWeight);
         float pivot = Random.Range(0, totalWeight);
         float cumulative = 0;
         SpawnData selectedEnemy = null;
 
-        foreach (var data in enemiesToSpawn)
+        foreach (var data in Room.enemiesToSpawn)
         {
             cumulative += data.spawnWeight;
             if (pivot <= cumulative)

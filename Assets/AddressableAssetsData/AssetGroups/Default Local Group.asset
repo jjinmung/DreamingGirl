@@ -15,13 +15,28 @@ MonoBehaviour:
   m_GroupName: Default Local Group
   m_GUID: b29214beaf4c3e4429517b4868df0061
   m_SerializeEntries:
+  - m_GUID: 00453b460eba3f64e95f56b3612a030c
+    m_Address: Assets/Prefabs/Map/MonsterMap/1DoorMonsterRoom_4.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 084e72d6c450366488c55708e35b5078
     m_Address: Assets/Textures/UI/EventMap.png
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0935c84604f42c146b273bb9161ff83f
+    m_Address: Assets/Prefabs/Map/MonsterMap/3DoorMonsterRoom_2.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 0ebb5488216ce0f40a777b5bdcbae289
     m_Address: Assets/Textures/UI/BossMap.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1308a7e1e379fe144864f5ac90c2cd56
+    m_Address: Assets/Prefabs/Map/MonsterMap/1DoorMonsterRoom_3.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -42,6 +57,16 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 3f77ae87816988e4e8ba3a88abd4dec5
     m_Address: Assets/Prefabs/UI/EnemyHPBar.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 44923d0c524796f4293e219405e08098
+    m_Address: Assets/Prefabs/Map/MonsterMap/2DoorMonsterRoom_4.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4ef26d6dda85a664b9331eb661951304
+    m_Address: Assets/Prefabs/Map/MonsterMap/1DoorMonsterRoom_2.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -70,8 +95,38 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 85ef06146a33b6e48bc4d6c815a08bb3
+    m_Address: Assets/Prefabs/UI/Item/EnemyAttackRange.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8cabcda9f34700647aecebe6dbbf4379
+    m_Address: Assets/Prefabs/Map/MonsterMap/3DoorMonsterRoom_1.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a04e6f9d19e6ad444a7d83d67b0121c3
     m_Address: Assets/So/PassiveSkill/IceSpirit.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a4d38e05394016642a4baadc598c08e1
+    m_Address: Assets/Prefabs/Map/MonsterMap/2DoorMonsterRoom_3.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a68a0bd7ffa027a4385fc77c6dac2d17
+    m_Address: Assets/Prefabs/Map/MonsterMap/2DoorMonsterRoom_1.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a7f2fc5062bc1264994357abba0c866c
+    m_Address: Assets/Prefabs/Enemy/2.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b3d1606db4f542f4686b86bb38505743
+    m_Address: Assets/Prefabs/Map/MonsterMap/1DoorMonsterRoom_1.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -80,8 +135,23 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: beb99d1ccb44833489d778aa855e64fa
+    m_Address: Assets/Prefabs/Map/MonsterMap/2DoorMonsterRoom_2.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: cb8f2ec0b52b62e47a857eb94d0da2c0
     m_Address: Assets/Prefabs/UI/UI_FloatingText.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dbf0c0a067cb5e34f97a77f53068b1f5
+    m_Address: Assets/Prefabs/Map/MonsterMap/3DoorMonsterRoom_4.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e5ec1888a40c8b345a67f0fb4a620d1d
+    m_Address: Assets/Prefabs/Map/MonsterMap/3DoorMonsterRoom_3.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

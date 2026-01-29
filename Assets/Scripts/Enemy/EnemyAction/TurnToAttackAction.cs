@@ -63,10 +63,10 @@ public partial class TurnToAttackAction : Action
     void SetAttackRange()
     {
         var enemy = Agent.Value.GetComponent<EnemyBase>();
-        if (enemy is FishGuardS fishGuardS)
+        if (enemy is Enemy01 enemy01)
         {
-            fishGuardS.SetAttackArange(true);
-            fishGuardS.IsAttack = true;
+            enemy01.SetAttackArange(true);
+            enemy01.IsAttack = true;
         }
     }
 }

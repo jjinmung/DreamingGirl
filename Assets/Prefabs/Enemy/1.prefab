@@ -881,7 +881,6 @@ GameObject:
   - component: {fileID: 5276544777711048274}
   - component: {fileID: 4795987098736670926}
   - component: {fileID: 4958460325671323963}
-  - component: {fileID: 9126237720410480222}
   m_Layer: 0
   m_Name: 1
   m_TagString: Enemy
@@ -1047,6 +1046,7 @@ MonoBehaviour:
     Speed: 0
     AttackDelay: 0
     currentHp: 0
+    Exp: 0
   IsAttack: 0
   isDead: 0
   _originalMat: {fileID: 2100000, guid: 233777f676c33ac4d94c9bbb423ce306, type: 2}
@@ -1092,19 +1092,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &9126237720410480222
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6289261040990989459}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 713ae95199c329d45bcba0b628262611, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  address: 
 --- !u!1 &6380974333179427922
 GameObject:
   m_ObjectHideFlags: 0

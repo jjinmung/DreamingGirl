@@ -8,7 +8,6 @@ public class DashBehaviour : StateMachineBehaviour
     {
         if(player==null)
             player = animator.GetComponent<PlayerController>();
-        player.gameObject.SetLayerRecursively("TransChar");
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
@@ -23,7 +22,6 @@ public class DashBehaviour : StateMachineBehaviour
         if(player==null)
             player = animator.GetComponent<PlayerController>();
         player.OnAnimationFinished();
-        player.gameObject.SetLayerRecursively("Char");
     }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()

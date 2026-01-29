@@ -144,7 +144,7 @@ public class StageManager : MonoBehaviour
         // 몬스터방 주소 리스트, 이벤트방 주소 리스트 중 랜덤 반환
         return type switch
         {
-            RoomType.Monster => $"Assets/Prefabs/Map/{count}DoorMonsterRoom_{Random.Range(1, 4)}.prefab" ,
+            RoomType.Monster => $"Assets/Prefabs/Map/MonsterMap/{count}DoorMonsterRoom_{Random.Range(1, 4)}.prefab" ,
             RoomType.Event => $"Assets/Prefabs/Map/{count}DoorEventRoom_1.prefab",
             RoomType.Boss => "Assets/Prefabs/Map/BossRoom_Final.prefab",
             RoomType.Loby => "Assets/Prefabs/Map/LobyMap.prefab",
@@ -199,7 +199,7 @@ public class StageManager : MonoBehaviour
     public void CheckClear()
     {
         killCount++;
-        if (enemySpawner != null && killCount >= enemySpawner.spawnCount)
+        if (enemySpawner != null && killCount >= enemySpawner.Room.spawnCount)
         {
             ClearRoom();
             killCount = 0;

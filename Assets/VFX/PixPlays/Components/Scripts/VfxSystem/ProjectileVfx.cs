@@ -15,9 +15,10 @@ namespace PixPlays.ElementalVFX
         [SerializeField] float _FlyCurveStrength;
         [SerializeField] float _ProjectileFlyDelay;
         [SerializeField] float _ProjectileDeactivateDelay;
-        public override void Play(VfxData data)
+       
+        public override void Play()
         {
-            base.Play(data);
+            base.Play();
             StartCoroutine(Coroutine_Projectile());
         }
 

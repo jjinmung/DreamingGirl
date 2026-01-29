@@ -5,17 +5,18 @@
       "Name": "sharkman",
       "MaxHp": "100",
       "Damage": "50",
-      "Speed": "5",
+      "Speed": "1",
       "AttackDelay": "5",
       "Exp": "30"
     },
     {
       "ID": "2",
-      "Name": "skeleton",
+      "Name": "piggyman",
       "MaxHp": "120",
       "Damage": "45",
-      "Speed": "5",
-      "AttackDelay": "5"
+      "Speed": "0.8",
+      "AttackDelay": "5",
+      "Exp": "35"
     }
   ],
   "PlayerBasicStat": [
