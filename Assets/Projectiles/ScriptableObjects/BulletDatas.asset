@@ -363,3 +363,17 @@ MonoBehaviour:
     isTargeting: 0
     RotSpeed: 0
     isFlatShoot: 0
+  - EffectName: WaterShoot
+    Speed: 30
+    ChargeParticles: {fileID: 0}
+    ChargeParticleTime: 0
+    ChargeClip: {fileID: 0}
+    StartParticles: {fileID: 2780857208774719906, guid: 372213c07969827419f15f2a29407627, type: 3}
+    BulletParticles: {fileID: 4673623749991693318, guid: 0db301afb471cef4bbd2a8f35354c244, type: 3}
+    HitParticles: {fileID: 3709157541744995779, guid: 4567a0dbdf34dac4e982d0f778229127, type: 3}
+    startClip: {fileID: 8300000, guid: d40047749c7d67446a69e9d5ce6997ce, type: 3}
+    bulletClip: {fileID: 0}
+    hitClip: {fileID: 8300000, guid: f5ca75920ddd5d344bd3a8634b246a0e, type: 3}
+    isTargeting: 0
+    RotSpeed: 0
+    isFlatShoot: 0

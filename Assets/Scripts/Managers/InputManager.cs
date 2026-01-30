@@ -10,7 +10,6 @@ public class InputManager : MonoBehaviour
     // 이벤트 방식으로 처리할 액션들
     public event Action OnAttack;
     public event Action OnDash;
-    public event Action OnChangeCamera;
     public event Action OnInteract;
     public event Action OnSkill1;
     public event Action OnSkill2;
@@ -34,8 +33,6 @@ public class InputManager : MonoBehaviour
         };
         
         _playerAction.Player.Dash.performed += ctx => OnDash?.Invoke();
-        
-        _playerAction.Player.ChangeCamera.performed += ctx => OnChangeCamera?.Invoke();
         
         _playerAction.Player.Interact.performed += ctx => OnInteract?.Invoke();
         

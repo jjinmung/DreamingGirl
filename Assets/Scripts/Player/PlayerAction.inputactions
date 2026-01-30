@@ -34,15 +34,6 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "ChangeCamera",
-                    "type": "Button",
-                    "id": "64f552cd-ac06-4180-bc38-6793f4f2d034",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "Interact",
                     "type": "Button",
                     "id": "a62817f5-05d1-44b5-aa3a-6dcbe05ed214",
@@ -196,17 +187,6 @@
                     "processors": "",
                     "groups": "",
                     "action": "Dash",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "f296a437-becd-4eec-8545-70934394b1da",
-                    "path": "<Keyboard>/t",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "ChangeCamera",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

@@ -36,6 +36,7 @@ public class ResourceManager : MonoBehaviour
         _resources.Add(address, loadHandle);
         return loadHandle.Result;
     }
+    // [Load] 라벨을 통한 에셋 로드 (동기)
     public T[] LoadAll<T>(string label) where T : Object
     {
         // Addressables에서 라벨로 에셋 위치 목록을 가져옴
@@ -114,6 +115,30 @@ public class ResourceManager : MonoBehaviour
         return go;
     }
 
+    // [Load] AssetReference 기반 로드
+    public T Load<T>(AssetReference assetRef) where T : Object
+    {
+        if (assetRef == null || !assetRef.RuntimeKeyIsValid())
+            return null;
+
+        return Load<T>(assetRef.RuntimeKey.ToString());
+    }
+
+    // [Instantiate] AssetReference 기반 생성
+    public GameObject Instantiate(AssetReference assetRef, Vector3 position = default, Quaternion rotation = default, Transform parent = null)
+    {
+        if (assetRef == null || !assetRef.RuntimeKeyIsValid())
+        {
+            Debug.LogError("[ResourceManager] Invalid AssetReference");
+            return null;
+        }
+
+        // RuntimeKey를 문자열 키로 변환하여 기존 로직 재활용
+        string key = assetRef.RuntimeKey.ToString();
+        
+        // 내부적으로 기존의 string 기반 Instantiate를 호출합니다.
+        return Instantiate(key, position, rotation, parent);
+    }
     // [Destroy / Release] 풀로 반납
     public void Destroy(GameObject go, float delay=0f)
     {

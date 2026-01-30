@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4488132070216655065}
   - component: {fileID: 6293636552260798212}
   - component: {fileID: 1456594192093424964}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Particles_BulletHead
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4904,7 +4904,7 @@ GameObject:
   - component: {fileID: 1588069679898883835}
   - component: {fileID: 4271285191934733060}
   - component: {fileID: 3074720735121985034}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Par_PurpleShoot_Bullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9831,7 +9831,7 @@ GameObject:
   - component: {fileID: 8197065926722298858}
   - component: {fileID: 5233649240476219662}
   - component: {fileID: 3318447964632398351}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Particles_Shell
   m_TagString: Untagged
   m_Icon: {fileID: 0}

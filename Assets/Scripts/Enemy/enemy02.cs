@@ -11,6 +11,7 @@ public class Enemy02 : EnemyBase
     public override void Attack()
     {
         _animator.SetTrigger("ATTACK");
+        IsAttack = true;
     }
 
 

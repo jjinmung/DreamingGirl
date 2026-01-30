@@ -48,6 +48,7 @@ public abstract class EnemyBase : MonoBehaviour,IDamageable
         _behavior.SetVariableValue("IsDeath", false);
         _behavior.SetVariableValue("AttackDelay", stat.AttackDelay);
         _behavior.SetVariableValue("Speed", stat.Speed);
+        _behavior.SetVariableValue("IsAttack", IsAttack);
         // 이벤트 클린업 및 등록
         ResetEvents();
 

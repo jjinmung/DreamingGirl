@@ -24,12 +24,12 @@ public class EnemySpawner : MonoBehaviour
     public bool Draw = true;
 
     private List<GameObject> enemies = new List<GameObject>();
-
+    public int SpawnCount;
     public void SpawnEnemys()
     {
         if (Room == null)
             Room = GetComponentInParent<EnemyRoom>();
-        for (int i = 0; i < Room.spawnCount; i++)
+        for (int i = 0; i < SpawnCount; i++)
             SpawnEnemy();
     }
 
@@ -87,14 +87,9 @@ public class EnemySpawner : MonoBehaviour
 
     public void StartBattle()
     {
-        int targetLayer = LayerMask.NameToLayer("Enemy");
         foreach (var enemy in enemies)
         {
-            Transform[] allChildren = enemy.GetComponentsInChildren<Transform>(true);
-            foreach (Transform child in allChildren)
-            {
-                child.gameObject.layer = targetLayer;
-            }
+            enemy.SetLayerRecursively("Enemy");
             
             var hpBar = Managers.UI.MakeSubItem<UI_EnemyHPBar>(Address.Enemy_HP_BAR);
             var enemyBase = enemy.GetComponent<EnemyBase>();

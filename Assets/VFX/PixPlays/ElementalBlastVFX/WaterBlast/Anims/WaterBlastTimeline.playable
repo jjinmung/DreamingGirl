@@ -23,6 +23,7 @@ MonoBehaviour:
   searchHierarchy: 0
   active: 1
   postPlayback: 1
+  directorOnClipEnd: 0
 --- !u!114 &-4467592746470719814
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -138,6 +139,7 @@ MonoBehaviour:
   searchHierarchy: 0
   active: 1
   postPlayback: 1
+  directorOnClipEnd: 0
 --- !u!114 &-3249672365411934793
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -161,6 +163,7 @@ MonoBehaviour:
   searchHierarchy: 0
   active: 1
   postPlayback: 2
+  directorOnClipEnd: 0
 --- !u!114 &-1998577186905714264
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -412,6 +415,7 @@ MonoBehaviour:
   searchHierarchy: 0
   active: 1
   postPlayback: 1
+  directorOnClipEnd: 0
 --- !u!114 &6612788751736630490
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -527,6 +531,7 @@ MonoBehaviour:
   searchHierarchy: 0
   active: 1
   postPlayback: 1
+  directorOnClipEnd: 0
 --- !u!114 &7815559848116295294
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -446,7 +446,7 @@ GameObject:
   - component: {fileID: 7781331373121379011}
   - component: {fileID: 682643215006849104}
   - component: {fileID: 7398548565014258152}
-  m_Layer: 12
+  m_Layer: 14
   m_Name: ThunderflashAttackRange
   m_TagString: Attack
   m_Icon: {fileID: 0}
@@ -6219,7 +6219,7 @@ GameObject:
   - component: {fileID: 3032883603071668273}
   m_Layer: 0
   m_Name: Range
-  m_TagString: Untagged
+  m_TagString: Range
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -16856,7 +16856,7 @@ GameObject:
   - component: {fileID: 5686695657970272267}
   - component: {fileID: 8475354004805295224}
   - component: {fileID: 6659651143094353044}
-  m_Layer: 12
+  m_Layer: 14
   m_Name: AttackRange
   m_TagString: Attack
   m_Icon: {fileID: 0}
@@ -34088,7 +34088,7 @@ GameObject:
   - component: {fileID: 204298322915164198}
   - component: {fileID: 4692999676289178213}
   - component: {fileID: 8298568241446963650}
-  m_Layer: 12
+  m_Layer: 14
   m_Name: FlurrySlashAttackRange
   m_TagString: Attack
   m_Icon: {fileID: 0}
@@ -35772,7 +35772,7 @@ GameObject:
   - component: {fileID: 4276861000866334499}
   - component: {fileID: 1067380311097102184}
   - component: {fileID: 3353744361143116026}
-  m_Layer: 7
+  m_Layer: 14
   m_Name: InteractRange
   m_TagString: IgnoreBullet
   m_Icon: {fileID: 0}

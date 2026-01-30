@@ -30,6 +30,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0db301afb471cef4bbd2a8f35354c244
+    m_Address: Assets/Prefabs/Bullet/Water/WaterballProjectile.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 0ebb5488216ce0f40a777b5bdcbae289
     m_Address: Assets/Textures/UI/BossMap.png
     m_ReadOnly: 0
@@ -55,6 +60,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 372213c07969827419f15f2a29407627
+    m_Address: Assets/Prefabs/Bullet/Water/WaterballCast.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 3f77ae87816988e4e8ba3a88abd4dec5
     m_Address: Assets/Prefabs/UI/EnemyHPBar.prefab
     m_ReadOnly: 0
@@ -62,6 +72,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 44923d0c524796f4293e219405e08098
     m_Address: Assets/Prefabs/Map/MonsterMap/2DoorMonsterRoom_4.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4567a0dbdf34dac4e982d0f778229127
+    m_Address: Assets/Prefabs/Bullet/Water/WaterballHit.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -90,11 +105,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 766ca916eb61c0c42afe638202aea042
-    m_Address: Assets/Json/StaticData.json
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 85ef06146a33b6e48bc4d6c815a08bb3
     m_Address: Assets/Prefabs/UI/Item/EnemyAttackRange.prefab
     m_ReadOnly: 0
@@ -108,7 +118,8 @@ MonoBehaviour:
   - m_GUID: a04e6f9d19e6ad444a7d83d67b0121c3
     m_Address: Assets/So/PassiveSkill/IceSpirit.asset
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - PassiveSkill
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a4d38e05394016642a4baadc598c08e1
     m_Address: Assets/Prefabs/Map/MonsterMap/2DoorMonsterRoom_3.prefab
@@ -132,6 +143,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b6a0703867fc74447a31e58de1d2cc2f
     m_Address: Assets/Prefabs/UI/Popup/UI_PassiveSkill.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bba72dd022e5b76498651c501be843f2
+    m_Address: Assets/Json/StaticData.json
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

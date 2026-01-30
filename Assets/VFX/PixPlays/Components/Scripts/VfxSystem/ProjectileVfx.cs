@@ -76,6 +76,9 @@ namespace PixPlays.ElementalVFX
                 _HitEffect.Stop();
                 _ProjectileEffect.Stop();
                 _CastEffect.Stop();
+                _HitEffect.gameObject.SetActive(false);
+                _ProjectileEffect.gameObject.SetActive(false);
+                _CastEffect.gameObject.SetActive(false);
             }
         }
     }

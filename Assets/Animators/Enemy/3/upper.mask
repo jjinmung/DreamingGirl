@@ -1,0 +1,73 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!319 &31900000
+AvatarMask:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: upper
+  m_Mask: 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+  m_Elements:
+  - m_Path: 
+    m_Weight: 1
+  - m_Path: High_Spike:Root
+    m_Weight: 0
+  - m_Path: High_Spike:Root/High_Spike:Root_M
+    m_Weight: 0
+  - m_Path: High_Spike:Root/High_Spike:Root_M/High_Spike:Hip_L
+    m_Weight: 0
+  - m_Path: High_Spike:Root/High_Spike:Root_M/High_Spike:Hip_L/High_Spike:Knee_L
+    m_Weight: 0
+  - m_Path: High_Spike:Root/High_Spike:Root_M/High_Spike:Hip_L/High_Spike:Knee_L/High_Spike:Ankle_L
+    m_Weight: 0
+  - m_Path: High_Spike:Root/High_Spike:Root_M/High_Spike:Hip_L/High_Spike:Knee_L/High_Spike:Ankle_L/High_Spike:Toes_L
+    m_Weight: 0
+  - m_Path: High_Spike:Root/High_Spike:Root_M/High_Spike:Hip_L/High_Spike:Knee_L/High_Spike:Ankle_L/High_Spike:Toes_L/High_Spike:ToesEnd_L
+    m_Weight: 0
+  - m_Path: High_Spike:Root/High_Spike:Root_M/High_Spike:Hip_R
+    m_Weight: 0
+  - m_Path: High_Spike:Root/High_Spike:Root_M/High_Spike:Hip_R/High_Spike:Knee_R
+    m_Weight: 0
+  - m_Path: High_Spike:Root/High_Spike:Root_M/High_Spike:Hip_R/High_Spike:Knee_R/High_Spike:Ankle_R
+    m_Weight: 0
+  - m_Path: High_Spike:Root/High_Spike:Root_M/High_Spike:Hip_R/High_Spike:Knee_R/High_Spike:Ankle_R/High_Spike:Toes_R
+    m_Weight: 0
+  - m_Path: High_Spike:Root/High_Spike:Root_M/High_Spike:Hip_R/High_Spike:Knee_R/High_Spike:Ankle_R/High_Spike:Toes_R/High_Spike:ToesEnd_R
+    m_Weight: 0
+  - m_Path: High_Spike:Root/High_Spike:Root_M/High_Spike:Spine1_M
+    m_Weight: 1
+  - m_Path: High_Spike:Root/High_Spike:Root_M/High_Spike:Spine1_M/High_Spike:Chest_M
+    m_Weight: 1
+  - m_Path: High_Spike:Root/High_Spike:Root_M/High_Spike:Spine1_M/High_Spike:Chest_M/High_Spike:Neck_M
+    m_Weight: 1
+  - m_Path: High_Spike:Root/High_Spike:Root_M/High_Spike:Spine1_M/High_Spike:Chest_M/High_Spike:Neck_M/High_Spike:Head_M
+    m_Weight: 1
+  - m_Path: High_Spike:Root/High_Spike:Root_M/High_Spike:Spine1_M/High_Spike:Chest_M/High_Spike:Neck_M/High_Spike:Head_M/High_Spike:HeadEnd_M
+    m_Weight: 1
+  - m_Path: High_Spike:Root/High_Spike:Root_M/High_Spike:Spine1_M/High_Spike:Chest_M/High_Spike:Scapula_L
+    m_Weight: 1
+  - m_Path: High_Spike:Root/High_Spike:Root_M/High_Spike:Spine1_M/High_Spike:Chest_M/High_Spike:Scapula_L/High_Spike:Shoulder_L
+    m_Weight: 1
+  - m_Path: High_Spike:Root/High_Spike:Root_M/High_Spike:Spine1_M/High_Spike:Chest_M/High_Spike:Scapula_L/High_Spike:Shoulder_L/High_Spike:Elbow_L
+    m_Weight: 1
+  - m_Path: High_Spike:Root/High_Spike:Root_M/High_Spike:Spine1_M/High_Spike:Chest_M/High_Spike:Scapula_L/High_Spike:Shoulder_L/High_Spike:Elbow_L/High_Spike:Wrist_L
+    m_Weight: 1
+  - m_Path: High_Spike:Root/High_Spike:Root_M/High_Spike:Spine1_M/High_Spike:Chest_M/High_Spike:Scapula_L/High_Spike:Shoulder_L/High_Spike:Elbow_L/High_Spike:Wrist_L/High_Spike:MiddleFinger1_L
+    m_Weight: 1
+  - m_Path: High_Spike:Root/High_Spike:Root_M/High_Spike:Spine1_M/High_Spike:Chest_M/High_Spike:Scapula_L/High_Spike:Shoulder_L/High_Spike:Elbow_L/High_Spike:Wrist_L/High_Spike:MiddleFinger1_L/High_Spike:MiddleFinger4_L
+    m_Weight: 1
+  - m_Path: High_Spike:Root/High_Spike:Root_M/High_Spike:Spine1_M/High_Spike:Chest_M/High_Spike:Scapula_R
+    m_Weight: 1
+  - m_Path: High_Spike:Root/High_Spike:Root_M/High_Spike:Spine1_M/High_Spike:Chest_M/High_Spike:Scapula_R/High_Spike:Shoulder_R
+    m_Weight: 1
+  - m_Path: High_Spike:Root/High_Spike:Root_M/High_Spike:Spine1_M/High_Spike:Chest_M/High_Spike:Scapula_R/High_Spike:Shoulder_R/High_Spike:Elbow_R
+    m_Weight: 1
+  - m_Path: High_Spike:Root/High_Spike:Root_M/High_Spike:Spine1_M/High_Spike:Chest_M/High_Spike:Scapula_R/High_Spike:Shoulder_R/High_Spike:Elbow_R/High_Spike:Wrist_R
+    m_Weight: 1
+  - m_Path: High_Spike:Root/High_Spike:Root_M/High_Spike:Spine1_M/High_Spike:Chest_M/High_Spike:Scapula_R/High_Spike:Shoulder_R/High_Spike:Elbow_R/High_Spike:Wrist_R/High_Spike:MiddleFinger1_R
+    m_Weight: 1
+  - m_Path: High_Spike:Root/High_Spike:Root_M/High_Spike:Spine1_M/High_Spike:Chest_M/High_Spike:Scapula_R/High_Spike:Shoulder_R/High_Spike:Elbow_R/High_Spike:Wrist_R/High_Spike:MiddleFinger1_R/High_Spike:MiddleFinger4_R
+    m_Weight: 1
+  - m_Path: High_Spike:Spike_L
+    m_Weight: 0

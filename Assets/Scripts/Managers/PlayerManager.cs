@@ -79,6 +79,7 @@ public class PlayerManager : MonoBehaviour
     public void AddGold(int amount)
     {
         data.gold += amount;
+        
         OnDataChanged?.Invoke();
     }
     
@@ -93,6 +94,7 @@ public class PlayerManager : MonoBehaviour
     {
         var percentHp = data.currentHp / data.maxHp.TotalValue;
         AddPermanentStat(PlayerStat.MaxHP, 0.1f, true);
+        AddPermanentStat(PlayerStat.Attack, 0.1f, true);
         data.currentHp = data.maxHp.TotalValue*percentHp;
         _playerHpBar.SetMaxHP(data.maxHp.TotalValue,data.currentHp);
 

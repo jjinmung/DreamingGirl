@@ -106,6 +106,8 @@ public class UI_PassiveSkill : UI_Popup
             PassiveSkillID targetID = id;
             // 이벤트 바인딩
             GetObject((int)targetID).BindEvent(_ => ShowInfo(targetID));
+            GetObject((int)targetID).BindEvent(OnEnter, UIEvent.Enter);
+            GetObject((int)targetID).BindEvent(OnExit, UIEvent.Exit);
         }
         
         // 4. 구매버튼 이벤트
@@ -139,7 +141,13 @@ public class UI_PassiveSkill : UI_Popup
     
     private void ShowInfo(PassiveSkillID id)
     {
-        if (!Managers.Data.PassiveDict.TryGetValue(id, out var skillData)) return;
+        if (!Managers.Data.PassiveDict.TryGetValue(id, out var skillData))
+        {
+            Debug.Log("No Passive Skill found for ID: " + id);
+            return;
+        }
+            
+            
 
         GetObject((int)GameObjects.SKill_Info).SetActive(true);
         GetText((int)Texts.Skill_Name).text = skillData.skillName;
@@ -175,7 +183,7 @@ public class UI_PassiveSkill : UI_Popup
             // 1. 재화 차감 및 데이터 추가
             Managers.Player.AddGold(-skillData.price);
             Managers.Data.SaveData.player.ownedPassives.Add(selectedSkillID);
-        
+            Managers.Data.SaveData.player.gold -= skillData.price;
             // 2. 패시브 효과 즉시 적용 (Player에게 알림)
             //skillData.GetEffect().Apply();
 

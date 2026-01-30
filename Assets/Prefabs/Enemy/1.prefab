@@ -878,9 +878,9 @@ GameObject:
   - component: {fileID: 5857075051408540295}
   - component: {fileID: 2776821118433412296}
   - component: {fileID: 4958112449567700324}
+  - component: {fileID: 4958460325671323963}
   - component: {fileID: 5276544777711048274}
   - component: {fileID: 4795987098736670926}
-  - component: {fileID: 4958460325671323963}
   m_Layer: 0
   m_Name: 1
   m_TagString: Enemy
@@ -1026,6 +1026,28 @@ MonoBehaviour:
           m_Value1: 1557442008778255439
         Name: Target
         m_Value: {fileID: 0}
+--- !u!195 &4958460325671323963
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6289261040990989459}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 2000
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!114 &5276544777711048274
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1069,29 +1091,24 @@ MonoBehaviour:
   Index: 7
   StartNodeTrans: {fileID: 6297109473689213439}
   Speed: 15
-  ShootInterval: 0.1
---- !u!195 &4958460325671323963
-NavMeshAgent:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6289261040990989459}
-  m_Enabled: 1
-  m_AgentTypeID: 0
-  m_Radius: 0.5
-  m_Speed: 3.5
-  m_Acceleration: 8
-  avoidancePriority: 50
-  m_AngularSpeed: 2000
-  m_StoppingDistance: 0
-  m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
-  m_AutoRepath: 1
-  m_Height: 2
-  m_BaseOffset: 0
-  m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
+  startEffect:
+    m_AssetGUID: 0001259a2d80bda44ae7afc7638da652
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0
+  BulletEffect:
+    m_AssetGUID: e2b635f69d498db438acfebe4d14f57b
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0
+  HitEffect:
+    m_AssetGUID: 82eb2380e8f93e64b9f170537430be84
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0
 --- !u!1 &6380974333179427922
 GameObject:
   m_ObjectHideFlags: 0

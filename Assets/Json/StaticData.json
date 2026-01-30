@@ -14,20 +14,30 @@
       "Name": "piggyman",
       "MaxHp": "120",
       "Damage": "45",
-      "Speed": "0.8",
+      "Speed": "0.7",
       "AttackDelay": "5",
       "Exp": "35"
+    },
+    {
+      "ID": "3",
+      "Name": "waterBoss",
+      "MaxHp": "500",
+      "Damage": "50",
+      "Speed": "1",
+      "AttackDelay": "7",
+      "Exp": "30"
     }
   ],
   "PlayerBasicStat": [
     {
       "ID": "1",
-      "MaxHp": "300",
+      "MaxHp": "500",
       "Damage": "30",
       "Speed": "5",
       "DashCooldown": "5",
       "CritChance": "10",
-      "AttackSpeed": "1"
+      "AttackSpeed": "1",
+      "Exp": "30"
     }
   ]
 }

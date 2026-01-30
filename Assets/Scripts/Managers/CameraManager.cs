@@ -15,7 +15,8 @@ public class CameraManager : MonoBehaviour
     private CinemachineCamera _thirdPersonCam;
     private CinemachineCamera _quarterViewCam;
     private CinemachineCamera _middleViewCam;
-    private CinemachineCamera _StoreCam;
+    private CinemachineCamera _storeCam;
+    private CinemachineCamera _bossCam;
     
     public Action OnSwitchedToThirdPerson;
     public Action OnSwitchedToQuarterView;
@@ -90,9 +91,6 @@ public class CameraManager : MonoBehaviour
 
         OnSwitchedToQuarterView -= HandleCullingMaskForQuarterView;
         OnSwitchedToQuarterView += HandleCullingMaskForQuarterView;
-
-        Managers.Input.OnChangeCamera -= ChanageCamera;
-        Managers.Input.OnChangeCamera += ChanageCamera;
         
         _isQuarterView = true;
         _middleViewCam =_player.GetComponentInChildren<CinemachineCamera>();
@@ -115,10 +113,10 @@ public class CameraManager : MonoBehaviour
         var qvObj = parent.transform.GetChild(0);
         var tpObj = parent.transform.GetChild(1);
         var storeObj = parent.transform.GetChild(2);
-        
+       
         if (qvObj != null) _quarterViewCam = qvObj.GetComponent<CinemachineCamera>();
         if (tpObj != null) _thirdPersonCam = tpObj.GetComponent<CinemachineCamera>();
-        if (storeObj != null) _StoreCam = storeObj.GetComponent<CinemachineCamera>();
+        if (storeObj != null) _storeCam = storeObj.GetComponent<CinemachineCamera>();
         
         
     }
@@ -161,7 +159,7 @@ public class CameraManager : MonoBehaviour
         _thirdPersonCam.Priority = 10;
         _quarterViewCam.Priority = 10;
         _middleViewCam.Priority = 10;
-        _StoreCam.Priority = 10;
+        _storeCam.Priority = 10;
     }
 
     public void SetTarget(Transform target)
@@ -176,7 +174,7 @@ public class CameraManager : MonoBehaviour
         if (isStore)
         {
             ResetAllPriorities();
-            _StoreCam.Priority = 20;
+            _storeCam.Priority = 20;
         }
         else
         {
@@ -184,7 +182,25 @@ public class CameraManager : MonoBehaviour
             _quarterViewCam.Priority = 20;
         }
     }
+    
+    public void SetBossCam(bool isBoss)
+    {
+        if(_bossCam==null)
+            _bossCam = GameObject.Find("BossCam").GetComponent<CinemachineCamera>();
+        if (isBoss)
+        {
+            ResetAllPriorities();
+            HandleCullingMaskForQuarterView();
+            _bossCam.Priority = 20;
+        }
+        else
+        {
+            ResetAllPriorities();
+            _mainCam.cullingMask &= ~(1 << _ceilingLayer);
+            
+            _quarterViewCam.Priority = 20;
+        }
+    }
 
     #endregion
-    
 }

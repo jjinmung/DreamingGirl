@@ -14,11 +14,15 @@ public static class Extension
 	public static void SetLayerRecursively(this GameObject obj, string layer)
 	{
 		var newLayer = LayerMask.NameToLayer(layer);
-		if(!obj.CompareTag("Attack"))
-			obj.layer = newLayer;
-		foreach (Transform child in obj.transform)
+		if (!obj.CompareTag("Range"))
 		{
-			child.gameObject.SetLayerRecursively(layer);
+			obj.layer = newLayer;
+			foreach (Transform child in obj.transform)
+			{
+				child.gameObject.SetLayerRecursively(layer);
+			}
 		}
+			
+		
 	}
 }

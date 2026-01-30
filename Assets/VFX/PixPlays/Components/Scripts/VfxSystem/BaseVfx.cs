@@ -12,7 +12,7 @@ namespace PixPlays.ElementalVFX
          
         [SerializeField] Transform _source;
         [SerializeField] Transform _Target;
-        [SerializeField] private float duration = 3f;
+        [SerializeField] protected float duration = 3f;
         [SerializeField] private float radius = 1f;
         public virtual void Play()
         {
@@ -22,9 +22,9 @@ namespace PixPlays.ElementalVFX
             {
                 _SafetyDestroy += _data.Duration;//Offset the safety destroy by the duration if bigger;
             }
-            Destroy(gameObject, _SafetyDestroy);
-            Invoke(nameof(Stop), _data.Duration);
-            StopAllCoroutines();
+            //Destroy(gameObject, _SafetyDestroy);
+            //Invoke(nameof(Stop),duration);
+            //StopAllCoroutines();
         }
         public virtual void Play(VfxData data)
         {
@@ -41,7 +41,7 @@ namespace PixPlays.ElementalVFX
         public virtual void Stop()
         {
             StopAllCoroutines();
-            Destroy(gameObject, _DestoyDelay);
+            //Destroy(gameObject, _DestoyDelay);
         }
     }
 }

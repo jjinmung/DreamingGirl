@@ -400,7 +400,9 @@ MonoBehaviour:
   enemiesToSpawn:
   - ID: 2
     spawnWeight: 10
-  spawnCount: 5
+  - ID: 1
+    spawnWeight: 10
+  spawnCount: 10
 --- !u!1 &5391256004992567401
 GameObject:
   m_ObjectHideFlags: 0

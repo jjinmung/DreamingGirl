@@ -5,13 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 namespace MasterStylizedProjectile
 {
     public class Bullet:MonoBehaviour
     {
         public float Speed = 5;
-        public ParticleSystem OnHitEffect;
+        public AssetReference OnHitEffect;
         public AudioClip bulletClip;
         public AudioClip onHitClip;
 
@@ -94,7 +95,7 @@ namespace MasterStylizedProjectile
             if (OnHitEffect != null)
             {
                 var onHitObj = 
-                    Managers.Resource.Instantiate(Address.PurpleShoot_Hit, 
+                    Managers.Resource.Instantiate(OnHitEffect, 
                     transform.position, Quaternion.identity);
                 
                 /*var onHit = onHitObj.gameObject.AddComponent<AudioTrigger>();

@@ -119,7 +119,7 @@ public class StageManager : MonoBehaviour
         currentRoomNode = currentRoomNode.nextNodes[doorIndex];
         currentDepth++;
         currentRoom = Managers.Resource.Instantiate(currentRoomNode.address, Vector3.zero,default,Root.transform).GetComponent<Room>();
-        
+        currentRoom.CloseImmediately();
         if (currentRoomNode.type == RoomType.Monster)
         {
             var enemyroom = currentRoom as EnemyRoom;
@@ -199,7 +199,7 @@ public class StageManager : MonoBehaviour
     public void CheckClear()
     {
         killCount++;
-        if (enemySpawner != null && killCount >= enemySpawner.Room.spawnCount)
+        if (enemySpawner != null && killCount >= enemySpawner.SpawnCount)
         {
             ClearRoom();
             killCount = 0;
@@ -221,8 +221,14 @@ public class StageManager : MonoBehaviour
 
     IEnumerator EnterToNextRoomCoroutine()
     {
-        if(currentRoomNode.type == RoomType.Monster)
+        if (currentRoomNode.type == RoomType.Monster)
+        {
+            int spawnCount = currentDepth * Random.Range(0, 1) + 5;
+            enemySpawner.SpawnCount = spawnCount;
             enemySpawner.SpawnEnemys();
+            
+        }
+            
         else if (currentRoomNode.type == RoomType.Event)
         {
             var eventRoom = currentRoom as EventRoom;
@@ -246,10 +252,25 @@ public class StageManager : MonoBehaviour
         
         yield return waitForHalf;
 
-        Managers.Camera.ChanageCamera();
-        
-        yield return waitForTwo;
-        
+        if (currentRoomNode.type != RoomType.Boss)
+        {
+            Managers.Camera.ChanageCamera();
+            
+            yield return waitForTwo;
+        }
+        else
+        {
+            Managers.Camera.SetBossCam(true);
+            //보스 초기화
+            var boss =GameObject.Find("3").GetComponent<Enemy03>();
+            boss.gameObject.SetLayerRecursively("Default");
+            yield return waitForOne;
+            
+            boss.Rage();
+            yield return waitForTwo;
+            Managers.Camera.SetBossCam(false);
+            boss.Init(3);
+        }
         
         if (_battleUI == null) _battleUI = Managers.UI.LoadScene<UI_BattleScene>();
         _battleUI.AllUIActive(true);
