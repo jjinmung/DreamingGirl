@@ -10,6 +10,7 @@ public class Enemy02 : EnemyBase
     [SerializeField] private CurveProjectile projectile;
     public override void Attack()
     {
+        base.Attack();
         _animator.SetTrigger("ATTACK");
         IsAttack = true;
     }

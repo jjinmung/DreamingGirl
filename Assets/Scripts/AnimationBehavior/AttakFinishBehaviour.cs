@@ -9,7 +9,7 @@ public class AttakFinishBehaviour : StateMachineBehaviour
     {
         if(combat==null)
             combat = animator.GetComponent<PlayerCombat>();
-        combat.CanAttack=false;
+        //combat.CanAttack=false;
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks

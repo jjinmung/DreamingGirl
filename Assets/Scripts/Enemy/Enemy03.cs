@@ -10,13 +10,15 @@ public class Enemy03 : EnemyBase
     private int attackIndex = 0;
     private int BallAtttackCount = 0;
     private float beamDuration = 5f;
+    private float beamRotaion = 0.7f;
+    private float ballAttackDelay = 0.5f;
     private Coroutine rangeCoroutine;
     
     private Vector3 _dashTargetPos;
     
     
     [SerializeField]private GameObject Blast;
-    [SerializeField]private GameObject DashEffect;
+    [SerializeField]private ParticleSystem DashEffect;
    
     private CinemachineCollisionImpulseSource cam;
     [SerializeField]private DecalProjector attackRange;
@@ -27,6 +29,7 @@ public class Enemy03 : EnemyBase
     {
         cam =  GetComponentInChildren<CinemachineCollisionImpulseSource>();
         attackcollider = GetComponentInChildren<SphereCollider>();
+        attackRange = GetComponentInChildren<DecalProjector>(true);
     }
 
     public override void Init(int id)
@@ -54,18 +57,19 @@ public class Enemy03 : EnemyBase
 
     public override void Attack()
     {
+        base.Attack();
         IsAttack = true;
         _behavior.SetVariableValue("IsAttack", IsAttack);
         switch (attackIndex)
         {
             case 0:
-                BeamAttack();
+                BallAttack();
                 break;
             case 1:
                 DashAttack();
                 break;
             case 2:
-                BallAttack();
+                BeamAttack();
                 break;
             case 3:
                 BlastAttack();
@@ -90,7 +94,7 @@ public class Enemy03 : EnemyBase
     #region 빔공격
     private void BeamAttack()
     {
-        SetAttackArange(true, 2.5f, 3f, BeamStart);
+        SetAttackArange(true, 2.5f, 2f, BeamStart);
     }
 
     void BeamStart()
@@ -127,7 +131,7 @@ public class Enemy03 : EnemyBase
         transform.rotation = Quaternion.Slerp(
             transform.rotation, 
             targetRotation, 
-            0.5f * Time.deltaTime
+            beamRotaion * Time.deltaTime
         );
 
         // 4. [핵심] 현재 회전과 목표 회전 사이의 각도 차이 계산
@@ -151,6 +155,8 @@ public class Enemy03 : EnemyBase
         _animator.SetFloat("moveSpeed", 0);
         _animator.SetBool("DASH",true);
         
+        DashEffect.gameObject.SetActive(true);
+        DashEffect.Play();
         TurnToDash();
     }
 
@@ -187,9 +193,10 @@ public class Enemy03 : EnemyBase
     private void Dash()
     {
         _navMeshAgent.isStopped = false;
-        _navMeshAgent.speed = 40f;
+ 
+        _navMeshAgent.speed = 15f;
+        _animator.SetFloat("NORMAL", 2);
         _animator.SetFloat("moveSpeed", 2f);
-        DashEffect.SetActive(true);
         attackcollider.enabled = true;
         // NavMesh 위의 유효한 위치인지 재확인 후 이동
         if (UnityEngine.AI.NavMesh.SamplePosition(_dashTargetPos, out UnityEngine.AI.NavMeshHit hit, 2.0f, UnityEngine.AI.NavMesh.AllAreas))
@@ -224,7 +231,9 @@ public class Enemy03 : EnemyBase
         _navMeshAgent.speed = stat.Speed; // 원래 속도로 복구
         _animator.SetBool("DASH", false);
         _animator.SetFloat("moveSpeed", 0);
-        DashEffect.SetActive(false);
+        _animator.SetFloat("NORMAL", 1);
+        DashEffect.Stop();
+        DashEffect.gameObject.SetActive(false);
         attackcollider.enabled = false;
         SetAttackArange(false);
         IsAttack = false;
@@ -235,7 +244,7 @@ public class Enemy03 : EnemyBase
     private void BlastAttack()
     {
         Blast.SetActive(true);
-        Invoke((nameof(BlastAnimation)),1f);
+        Invoke((nameof(BlastAnimation)),0.9f);
         Invoke(nameof(BlastFisnished),2f);
     }
 
@@ -253,15 +262,15 @@ public class Enemy03 : EnemyBase
     private void BallAttack()
     {
         BallAtttackCount = 1;
-        SetAttackArange(true, 2f,1f,ShootBall);
+        SetAttackArange(true, 2f,ballAttackDelay,ShootBall);
     }
 
     public void CountinueBallAttack()
     {
         transform.LookAt(new Vector3(_player.transform.position.x, 0, _player.transform.position.z));
-        if (BallAtttackCount < 5)
+        if (BallAtttackCount < 7)
         {
-            SetAttackArange(true, 2f,1f,ShootBall);
+            SetAttackArange(true, 2f,ballAttackDelay,ShootBall);
             BallAtttackCount++;
         }
         else

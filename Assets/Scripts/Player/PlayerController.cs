@@ -22,6 +22,7 @@ public class PlayerController : MonoBehaviour
     public AbilityID[] ActiveSkills;
 
     private UI_Ability uiAbility;
+    private bool AttackDelay = true;
     
     //UI맵핑을 위한 이벤트
     public event Action OnGetActiveSKill;
@@ -71,16 +72,24 @@ public class PlayerController : MonoBehaviour
         Vector3 moveDir = CalculateCameraDirection();
         _movement.Move(_inputVector, moveDir);
         
-        if (Managers.Input.IsAttackPressed && _combat.CanAttack)
+        if (Managers.Input.IsAttackPressed&&AttackDelay)
         {
             _combat.AddBuffer("Attack");
+            AttackDelay=false;
+            Invoke(nameof(DelayAttackInput),0.5f);
         }
         
         _combat.ProcessBuffer();
+            
         
         UpdateAnimation();
 
 
+    }
+
+    void DelayAttackInput()
+    {
+        AttackDelay=true;
     }
 
     private Vector3 CalculateCameraDirection()
@@ -94,11 +103,7 @@ public class PlayerController : MonoBehaviour
 
     private void HandleAttackInput()
     {
-        // 누른 "순간" 즉시 첫 공격이 나가도록 처리
-        if (_combat.CanAttack)
-        {
-            _combat.AddBuffer("Attack");
-        }
+        _combat.AddBuffer("Attack");
     }
     
     private void HandleSkillInput(int slotIndex)
@@ -151,7 +156,9 @@ public class PlayerController : MonoBehaviour
             _animator.SetTrigger("QUICK SHIFT F");
             _movement.CanMove = false;
             _combat.CanAttack = false;
+            CurrentState = PlayerState.Dash;
         });
+
     }
     private void UpdateAnimation()
     {

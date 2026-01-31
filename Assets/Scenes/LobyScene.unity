@@ -22335,7 +22335,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1455148031236441451, guid: be0d49aedcc6ff349880d4bf2a34153d, type: 3}
       propertyPath: StageCount
-      value: 6
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1455148031236441451, guid: be0d49aedcc6ff349880d4bf2a34153d, type: 3}
       propertyPath: MonsterMapPercent

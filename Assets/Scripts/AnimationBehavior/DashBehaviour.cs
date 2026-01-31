@@ -21,7 +21,12 @@ public class DashBehaviour : StateMachineBehaviour
     {
         if(player==null)
             player = animator.GetComponent<PlayerController>();
-        player.OnAnimationFinished();
+        if (player.CurrentState == PlayerController.PlayerState.Dash)
+        {
+            player.OnAnimationFinished();
+            player.CurrentState = PlayerController.PlayerState.Idle;
+        }
+        
     }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()

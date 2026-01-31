@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,12 +10,16 @@ namespace PixPlays.ElementalVFX
         private TrailRenderer _trailRenderer;
         private float _initialWidth;
         private float _initialTrailTime;
-        private void Start()
+        private void Awake()
         {
             _trailRenderer = GetComponent<TrailRenderer>();
             _initialWidth = _trailRenderer.widthMultiplier;
             _initialTrailTime = _trailRenderer.time;
+           
         }
+
+
+
         private void Update()
         {
             _trailRenderer.widthMultiplier = GetWorldScale(transform, _initialWidth);

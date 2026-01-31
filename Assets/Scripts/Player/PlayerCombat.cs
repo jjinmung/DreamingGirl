@@ -25,10 +25,10 @@ public class PlayerCombat : MonoBehaviour
     {
         // 1. 큐가 비어있거나 공격 불가능하면 리턴
         if (!CanAttack || inputBuffer.Count == 0) return;
-
+        
         // 2. 가장 오래된 입력을 확인 (꺼내지 않고 확인만)
         var input = inputBuffer.Peek();
-
+       
         // 3. 버퍼 유효 시간 만료 체크
         if (Time.time - input.time > bufferTimeout)
         {

@@ -24,7 +24,7 @@
       "MaxHp": "500",
       "Damage": "50",
       "Speed": "1",
-      "AttackDelay": "7",
+      "AttackDelay": "4",
       "Exp": "30"
     }
   ],

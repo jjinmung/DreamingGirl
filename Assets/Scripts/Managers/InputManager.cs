@@ -26,7 +26,6 @@ public class InputManager : MonoBehaviour
         
         _playerAction.Player.Attack.started += ctx => {
             IsAttackPressed = true;
-            OnAttack?.Invoke();
         };
         _playerAction.Player.Attack.canceled += ctx => {
             IsAttackPressed = false;

@@ -65,7 +65,7 @@ public abstract class EnemyBase : MonoBehaviour,IDamageable
     }
     
 
-    public abstract void Attack();
+    public virtual void Attack(){if(isDead) return;}
 
     public void TakeDamage(float damage)
     {

@@ -11,6 +11,7 @@ public class Enemy01 : EnemyBase
     private int enemyID = 1;
     public override void Attack()
     {
+        base.Attack();
         _animator.SetTrigger("ATTACK");
     }
 
