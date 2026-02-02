@@ -40,6 +40,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 107012ce0b67af043afb80b8ebb70db8
+    m_Address: Assets/Prefabs/Enemy/3.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 1308a7e1e379fe144864f5ac90c2cd56
     m_Address: Assets/Prefabs/Map/MonsterMap/1DoorMonsterRoom_3.prefab
     m_ReadOnly: 0
@@ -65,6 +70,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3de6a85170e8baa4ab0d9135dfecf235
+    m_Address: Assets/Prefabs/UI/Popup/UI_StageEnding.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 3f77ae87816988e4e8ba3a88abd4dec5
     m_Address: Assets/Prefabs/UI/EnemyHPBar.prefab
     m_ReadOnly: 0
@@ -82,6 +92,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 4ef26d6dda85a664b9331eb661951304
     m_Address: Assets/Prefabs/Map/MonsterMap/1DoorMonsterRoom_2.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6928e84ae278ef444b6e22fd29b42bf8
+    m_Address: Assets/Prefabs/UI/Item/BossHPBar.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -106,7 +121,7 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 85ef06146a33b6e48bc4d6c815a08bb3
-    m_Address: Assets/Prefabs/UI/Item/EnemyAttackRange.prefab
+    m_Address: Assets/Prefabs/UI/Item/CircleAttackRange.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

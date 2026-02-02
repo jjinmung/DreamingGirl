@@ -63,9 +63,9 @@ public abstract class EnemyBase : MonoBehaviour,IDamageable
         takeDamageAction += TakeDamageHandler;
         dieAcation += DieHandler;
     }
-    
 
-    public virtual void Attack(){if(isDead) return;}
+
+    public abstract void Attack();
 
     public void TakeDamage(float damage)
     {

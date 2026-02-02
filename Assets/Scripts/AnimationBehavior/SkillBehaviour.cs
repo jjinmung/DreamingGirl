@@ -8,6 +8,7 @@ public class SkillBehaviour : StateMachineBehaviour
     {
         if(player==null)
             player = animator.GetComponent<PlayerController>();
+        player.CurrentState = PlayerController.PlayerState.Attack;
         player.StopDashPhysics();
         player.InputActive(false);
     }
@@ -21,9 +22,7 @@ public class SkillBehaviour : StateMachineBehaviour
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if(player==null)
-            player = animator.GetComponent<PlayerController>();
-        player.OnAnimationFinished();
+        
     }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()

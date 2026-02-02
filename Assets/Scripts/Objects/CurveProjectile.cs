@@ -49,13 +49,17 @@ public class CurveProjectile : MonoBehaviour
                 currentPos.y += curveHeight;
 
                 // 3. 위치 업데이트 및 회전
-                _ProjectileEffect.transform.forward = currentPos - _ProjectileEffect.transform.position; // 진행 방향 바라보기
+                if(currentPos - _ProjectileEffect.transform.position!=Vector3.zero)
+                    _ProjectileEffect.transform.forward = currentPos - _ProjectileEffect.transform.position; // 진행 방향 바라보기
                 _ProjectileEffect.transform.position = currentPos;
 
                 yield return null;
             }
             _ProjectileEffect.transform.position = _target;
-            _HitEffect.transform.forward = (_ProjectileEffect.transform.position -  _target);
+            if(_ProjectileEffect.transform.position -  _target != Vector3.zero)
+            {
+                _HitEffect.transform.forward = (_ProjectileEffect.transform.position -  _target);
+            }
             _ProjectileEffect.transform.position =  _target;
             _ProjectileEffect.Stop();
 

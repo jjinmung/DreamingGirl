@@ -36,7 +36,7 @@ public class PlayerManager : MonoBehaviour
     {
         data = new PlayerData(Managers.Data.PlayerBasicStat[1],Managers.Data.SaveData.player);
         var playerPrefab = Managers.Resource.Instantiate(Address.Player);
-        playerPrefab.transform.position = data.position;
+        
 
         // 생성 시점에 모든 컴포넌트를 한 번만 캐싱
         _playerUnit = playerPrefab.GetComponent<PlayerUnit>();
@@ -47,16 +47,30 @@ public class PlayerManager : MonoBehaviour
         
         _playerHpBar = _playerUnit.GetComponentInChildren<UI_PlayerHPBar>(true);
         _playerHpBar.Init();
-        _playerHpBar.SetMaxHP(data.maxHp.TotalValue,data.currentHp);
-        _playerHpBar.gameObject.SetActive(false);
+        
+        
 
         _playerAnim.SetFloat("AttackSpeed", data.attackSpeed.TotalValue);
 
         SubscribeEvent();
-
+        
+        PlayerInit();
         
         
         return playerPrefab;
+    }
+
+    public void PlayerInit()
+    {
+        LevelReset();
+        data.currentHp = data.maxHp.TotalValue;
+        _playerHpBar.SetMaxHP(data.maxHp.TotalValue,data.currentHp);
+        _playerUnit.transform.position = data.position;
+        _playerHpBar.gameObject.SetActive(false);
+        for(int i=0; i< _playerController.ActiveSkills.Length; i++)
+        {
+            _playerController.ActiveSkills[i] = AbilityID.None;
+        }
     }
 
     void SubscribeEvent()
@@ -99,6 +113,18 @@ public class PlayerManager : MonoBehaviour
         _playerHpBar.SetMaxHP(data.maxHp.TotalValue,data.currentHp);
 
         StartCoroutine(SelectAbility());
+    }
+
+    public void LevelReset()
+    {
+        for (int i = 0; i < data.level-1; i++)
+        {
+            AddPermanentStat(PlayerStat.MaxHP, -0.1f, true);
+            AddPermanentStat(PlayerStat.Attack, -0.1f, true);
+        }
+        data.level = 1;
+        data.currentExp = 0;
+        data.nextLevelExp = 100;
     }
 
     IEnumerator SelectAbility()
@@ -160,16 +186,17 @@ public class PlayerManager : MonoBehaviour
     /// <summary>
     /// 플레이어의 물리 및 컨트롤러 상태를 일괄 제어
     /// </summary>
-    private void SetPlayerActiveState(bool isActive)
+    public void SetPlayerActiveState(bool isActive)
     {
         _playerCollider.enabled = isActive;
         _playerRb.useGravity = isActive;
         _playerHpBar.gameObject.SetActive(isActive);
+        _playerController.InputActive(isActive);
         
         if (isActive)
         {
             _playerController.gameObject.SetLayerRecursively("Char");
-            _playerController.InputActive(true);
+            
         }
         else
         {
@@ -177,8 +204,41 @@ public class PlayerManager : MonoBehaviour
             _playerController.gameObject.SetLayerRecursively("Default");
             _playerController.CurrentState = PlayerController.PlayerState.Idle;
             _playerAnim.SetFloat("MOVE", 0);
-            _playerController.InputActive(false);
         }
+    }
+
+    public void BossClearControl(bool isActive)
+    {
+        _playerController.InputActive(isActive);
+        if (!isActive)
+        {
+            _playerController.StopDashPhysics();
+            _playerController.CurrentState = PlayerController.PlayerState.Idle;
+            _playerAnim.SetFloat("MOVE", 0);
+        }
+    }
+    public void FadeMoveFloat(float targetValue, float duration = 0.5f)
+    {
+        StartCoroutine(CoUpdateAnimFloat(targetValue, duration));
+    }
+
+    private IEnumerator CoUpdateAnimFloat(float targetValue, float duration)
+    {
+        float startValue = _playerAnim.GetFloat("MOVE");
+        float elapsedTime = 0f;
+
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            // 0에서 1 사이의 진행률 계산
+            float nextValue = Mathf.Lerp(startValue, targetValue, elapsedTime / duration);
+        
+            _playerAnim.SetFloat("MOVE", nextValue);
+            yield return null;
+        }
+
+        // 마지막에 정확한 목표값으로 설정
+        Managers.Player.PlayerAnim.SetFloat("MOVE", targetValue);
     }
     
 }

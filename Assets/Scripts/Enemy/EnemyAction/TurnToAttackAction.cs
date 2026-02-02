@@ -68,6 +68,8 @@ public partial class TurnToAttackAction : Action
             enemy01.SetAttackArange(true);
             enemy01.IsAttack = true;
         }
+
+        
     }
 }
 

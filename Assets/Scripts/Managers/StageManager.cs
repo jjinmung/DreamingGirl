@@ -11,6 +11,7 @@ public class StageManager : MonoBehaviour
 {
     public event Action ExitRoom;
     public event Action EnterRoom;
+    
 
     private List<List<RoomNode>> stageMap = new();
     public int StageCount = 10;
@@ -50,7 +51,7 @@ public class StageManager : MonoBehaviour
         ExitRoom += ExitToNextRoom;
         EnterRoom -= EnterToNextRoom;
         EnterRoom += EnterToNextRoom;
-        
+
         
         lobyNode = new RoomNode { 
             index = -1, 
@@ -113,8 +114,6 @@ public class StageManager : MonoBehaviour
 
     public void ChangeRoom()
     {
-        
-        
         Managers.Resource.Destroy(currentRoom.gameObject);
         currentRoomNode = currentRoomNode.nextNodes[doorIndex];
         currentDepth++;
@@ -125,6 +124,10 @@ public class StageManager : MonoBehaviour
             var enemyroom = currentRoom as EnemyRoom;
             if(enemyroom!=null)
                 enemySpawner = enemyroom.Spawner;
+        }
+        else if (currentRoomNode.type == RoomType.Boss)
+        {
+            enemySpawner = null;
         }
         
         if (surface != null)
@@ -168,7 +171,7 @@ public class StageManager : MonoBehaviour
     {
         // 연출 시작
         Managers.Camera.ChanageCamera();
-        Managers.Player.PlayerAnim.SetFloat("MOVE", 0.5f);
+        Managers.Player.FadeMoveFloat(0.5f);
         
         if (_battleUI == null) _battleUI = Managers.UI.LoadScene<UI_BattleScene>();
         _battleUI.AllUIActive(false);
@@ -195,17 +198,37 @@ public class StageManager : MonoBehaviour
         yield return waitForOne;
         EnterRoom?.Invoke();
     }
-
+    
     public void CheckClear()
     {
-        killCount++;
-        if (enemySpawner != null && killCount >= enemySpawner.SpawnCount)
+        
+        if (currentRoomNode.type == RoomType.Monster)
         {
-            ClearRoom();
-            killCount = 0;
+            killCount++;
+            if (enemySpawner != null && killCount >= enemySpawner.SpawnCount)
+            {
+                ClearRoom();
+                killCount = 0;
+            }
+        }
+        else if (currentRoomNode.type == RoomType.Boss)
+        {
+            
+            StartCoroutine(BossClear());
         }
     }
+    
+    IEnumerator BossClear()
+    {
+        Managers.Player.BossClearControl(false);
+        Time.timeScale = 0.2f;
+        yield return waitForHalf;
+        Time.timeScale = 1f;
+        
+        yield return waitForOne;
+        var ui = Managers.UI.ShowPopupUI<UI_StageEnding>();
 
+    }
     public void ClearRoom()
     {
         foreach (var door in currentRoom.doors)
@@ -214,71 +237,134 @@ public class StageManager : MonoBehaviour
         }
     }
 
+    #region 방입장 함수
+
     public void EnterToNextRoom()
     {
         StartCoroutine(EnterToNextRoomCoroutine());
     }
-
+    
     IEnumerator EnterToNextRoomCoroutine()
+{
+    // 1. 방 타입에 따른 초기 설정 (Spawn / Boss 생성 / Event)
+    Enemy03 boss = InitializeRoomContent();
+
+    // 2. 플레이어 이동 및 연출
+    yield return StartPlayerEntranceSequence();
+
+    // 3. 카메라 및 보스 등장 연출
+    if (currentRoomNode.type == RoomType.Boss)
     {
-        if (currentRoomNode.type == RoomType.Monster)
-        {
-            int spawnCount = currentDepth * Random.Range(0, 1) + 5;
+        yield return StartBossEncounterSequence(boss);
+    }
+    else
+    {
+        Managers.Camera.ChanageCamera();
+        yield return waitForTwo;
+    }
+
+    // 4. UI 설정 및 전투 개시
+    SetupBattleUI();
+    
+    Managers.Player.EnterRoom();
+    _battleUI.SetMap(currentRoomNode.nextNodes, currentDepth);
+}
+    
+
+private Enemy03 InitializeRoomContent()
+{
+    switch (currentRoomNode.type)
+    {
+        case RoomType.Monster:
+            int spawnCount = currentDepth * Random.Range(0, 2) + 5; 
             enemySpawner.SpawnCount = spawnCount;
             enemySpawner.SpawnEnemys();
-            
-        }
-            
-        else if (currentRoomNode.type == RoomType.Event)
-        {
-            var eventRoom = currentRoom as EventRoom;
-            if (eventRoom != null)
-                eventRoom.ClearEvent();
-        }
-            
-        var enterDoor = currentRoom.EnterDoor;
-        enterDoor.EnterRoomOpen();
+            break;
 
-        var player = Managers.Player.PlayerTrans;
-        player.rotation = Quaternion.identity;
-        
-        // 새 방의 입구 안쪽으로 이동
-        player.DOMove(enterDoor.ExitPos.position, 2f).SetEase(Ease.Linear);
-        
-        yield return waitForTwo;
-
-        enterDoor.Close();
-        Managers.Player.PlayerAnim.SetFloat("MOVE", 0f);
-        
-        yield return waitForHalf;
-
-        if (currentRoomNode.type != RoomType.Boss)
-        {
-            Managers.Camera.ChanageCamera();
-            
-            yield return waitForTwo;
-        }
-        else
-        {
-            Managers.Camera.SetBossCam(true);
-            //보스 초기화
-            var boss =GameObject.Find("3").GetComponent<Enemy03>();
+        case RoomType.Boss:
+            var bossObj = Managers.Resource.Instantiate(Address.Boss, currentRoom.BossPos.position,Quaternion.Euler(0,180,0));
+            var boss = bossObj.GetComponent<Enemy03>();
             boss.gameObject.SetLayerRecursively("Default");
-            yield return waitForOne;
-            
-            boss.Rage();
-            yield return waitForTwo;
-            Managers.Camera.SetBossCam(false);
-            boss.Init(3);
-        }
+            return boss;
+
+        case RoomType.Event:
+            if (currentRoom is EventRoom eventRoom)
+                eventRoom.ClearEvent();
+            break;
+    }
+    return null;
+}
+
+private IEnumerator StartPlayerEntranceSequence()
+{
+    var enterDoor = currentRoom.EnterDoor;
+    enterDoor.EnterRoomOpen();
+
+    var player = Managers.Player.PlayerTrans;
+    player.rotation = Quaternion.identity;
+    
+    // 이동 연출
+    yield return player.DOMove(enterDoor.ExitPos.position, 2f).SetEase(Ease.Linear).WaitForCompletion();
+    
+    enterDoor.Close();
+    Managers.Player.FadeMoveFloat(0);
+    yield return waitForHalf;
+}
+
+private IEnumerator StartBossEncounterSequence(Enemy03 boss)
+{
+    if (boss == null) yield break;
+
+    Managers.Camera.SetBossCam(true);
+    yield return waitForOne;
+    
+    boss.Rage();
+    yield return waitForTwo;
+    
+    Managers.Camera.SetBossCam(false);
+    boss.Init(3);
+}
+
+    #endregion
+
+    
+
+private void SetupBattleUI()
+{
+    if (_battleUI == null) 
+        _battleUI = Managers.UI.LoadScene<UI_BattleScene>();
+
+    if (currentDepth == 1)
+        _battleUI.BattleInit();
+    if (currentRoomNode.type == RoomType.Monster)
+    {
+        _battleUI.BattleUIActive();
+        enemySpawner.StartBattle();
+    }
+    else
+    {
+        _battleUI.BossUIActive();
+    }
+}
+    public void ReturnToLoby()
+    {
+        StartCoroutine(ReturnToLobyCoroutine());
+    }
+
+    IEnumerator ReturnToLobyCoroutine()
+    {
+        _battleUI.AllUIActive(false);
+        _battleUI.FadeOut(1);
+        yield return waitForOne;
+        Managers.Resource.Destroy(currentRoom.gameObject);
+        GenerateMap();
+        Managers.Player.PlayerInit();
+        yield return waitForOne;
+        Managers.Player.BossClearControl(true);
+        _battleUI.FadeIn(1);
         
-        if (_battleUI == null) _battleUI = Managers.UI.LoadScene<UI_BattleScene>();
-        _battleUI.AllUIActive(true);
+        yield return waitForOne;
         
-        if (currentRoomNode.type == RoomType.Monster)
-            enemySpawner.StartBattle();
-        
-        Managers.Player.EnterRoom();
-        _battleUI.SetMap(currentRoomNode.nextNodes, currentDepth);
+        _battleUI.LobyUIActive();
     }
 }

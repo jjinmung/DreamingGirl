@@ -87,6 +87,14 @@ public class DataManager
         return File.Exists(GetSavePath(index));
     }
 
+    public void ClearAbility()
+    {
+        foreach (var ability in AbilityDict.Values)
+        {
+            ability.RemoveAll();
+        }
+    }
+
     // --- [세이브/로드 로직] ---
 
     public void SaveGame()

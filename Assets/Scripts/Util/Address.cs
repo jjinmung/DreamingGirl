@@ -2,6 +2,8 @@ public static class Address
 {
     // 캐릭터
     public const string Player = "Assets/Prefabs/Player.prefab";
+    public const string Boss = "Assets/Prefabs/Enemy/3.prefab";
+    
     
     // 파티클
     public const string PurpleShoot_Bullet = "Assets/Prefabs/Shoot_Purple/Par_PurpleShoot_Bullet.prefab";
@@ -10,9 +12,10 @@ public static class Address
     
     // UI
     public const string Enemy_HP_BAR ="Assets/Prefabs/UI/EnemyHPBar.prefab";
+    public const string Boss_HP_BAR = "Assets/Prefabs/UI/Item/BossHPBar.prefab";
     public const string UI_Blood = "Assets/Prefabs/UI/UI_Bloode.prefab";
     public const string UI_FloatingText = "Assets/Prefabs/UI/UI_FloatingText.prefab";
-    public const string CircleAttackRange = "Assets/Prefabs/UI/Item/EnemyAttackRange.prefab";
+    public const string CircleAttackRange = "Assets/Prefabs/UI/Item/CircleAttackRange.prefab";
     
     //텍스쳐
     public const string EnemyMap = "Assets/Textures/UI/EnemyMap.png";

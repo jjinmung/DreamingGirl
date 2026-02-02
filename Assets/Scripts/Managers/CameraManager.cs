@@ -123,6 +123,7 @@ public class CameraManager : MonoBehaviour
 
     public void ChanageCamera()
     {
+        
         if (_thirdPersonCam == null || _quarterViewCam == null) RefreshCameras();
         if (_mainCam == null) _mainCam = Camera.main;
         
@@ -199,6 +200,7 @@ public class CameraManager : MonoBehaviour
             _mainCam.cullingMask &= ~(1 << _ceilingLayer);
             
             _quarterViewCam.Priority = 20;
+            _isQuarterView = true;
         }
     }
 

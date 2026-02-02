@@ -29,6 +29,8 @@ public class EnemySpawner : MonoBehaviour
     {
         if (Room == null)
             Room = GetComponentInParent<EnemyRoom>();
+        
+        enemies.Clear();
         for (int i = 0; i < SpawnCount; i++)
             SpawnEnemy();
     }

@@ -28,7 +28,6 @@ namespace PixPlays.ElementalVFX
             _currentLength = 0;
            
             this.damage = damage;
-            Debug.Log(this.damage);
             StopAllCoroutines();
             StartCoroutine(Coroutine_BeamLogic());
             Invoke(nameof(Stop),duration);

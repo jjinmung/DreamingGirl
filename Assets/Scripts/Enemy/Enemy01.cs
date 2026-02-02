@@ -11,7 +11,7 @@ public class Enemy01 : EnemyBase
     private int enemyID = 1;
     public override void Attack()
     {
-        base.Attack();
+        if(isDead) return;
         _animator.SetTrigger("ATTACK");
     }
 

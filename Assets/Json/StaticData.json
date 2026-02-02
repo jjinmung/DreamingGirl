@@ -25,7 +25,7 @@
       "Damage": "50",
       "Speed": "1",
       "AttackDelay": "4",
-      "Exp": "30"
+      "Exp": "0"
     }
   ],
   "PlayerBasicStat": [
@@ -36,8 +36,7 @@
       "Speed": "5",
       "DashCooldown": "5",
       "CritChance": "10",
-      "AttackSpeed": "1",
-      "Exp": "30"
+      "AttackSpeed": "1"
     }
   ]
 }

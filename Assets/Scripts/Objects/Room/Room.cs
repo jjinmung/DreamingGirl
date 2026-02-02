@@ -8,6 +8,7 @@ public class Room : MonoBehaviour
     public Door EnterDoor;
     public Transform SpawnPos =>EnterDoor.EnterPos;
 
+    public Transform BossPos;
     public void CloseImmediately()
     {
         //풀링을 위해 다시 닫아놓는다.
@@ -15,5 +16,10 @@ public class Room : MonoBehaviour
         {
             door.CloseImmediately();
         }
+    }
+
+    private void OnDisable()
+    {
+        CloseImmediately();
     }
 }

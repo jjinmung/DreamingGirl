@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4673623749991693318}
   - component: {fileID: 7453824845483931174}
   - component: {fileID: 4198626467940346524}
+  - component: {fileID: 1382086287556473020}
   m_Layer: 14
   m_Name: WaterballProjectile
   m_TagString: Untagged
@@ -4964,6 +4965,21 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.10076243
   m_Center: {x: -0.0000020839502, y: 0, z: -0.2741663}
+--- !u!114 &1382086287556473020
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2222169657316110755}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9f9528a8383b3f48b569a8afdf8010f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trailRenderers:
+  - {fileID: 5208664156012737463}
+  - {fileID: 4514988241955932177}
 --- !u!1 &8920328133436259253
 GameObject:
   m_ObjectHideFlags: 0

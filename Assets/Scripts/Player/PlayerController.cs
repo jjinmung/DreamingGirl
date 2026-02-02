@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour
     private SphereCollider _attackcollider;
     private Animator _animator;
     private Vector2 _inputVector;
-    public enum PlayerState { Idle, Run,Attack,Dash}
+    public enum PlayerState {Idle, Run,Attack,Dash}
     public PlayerState CurrentState = PlayerState.Idle;
     
     public ParticleSystem LVPParticle;
@@ -181,12 +181,22 @@ public class PlayerController : MonoBehaviour
         InputActive(true);
         _combat.ResetCombo();
     }
-
+    public void OnAttackFinished()
+    {
+        if (CurrentState == PlayerState.Attack)
+        {
+            InputActive(true);
+        }
+        _combat.ResetCombo();
+    }
     
     //애니메이션 이벤트 함수
     public void CheckCombo()
     {
-        _combat.CanAttack = true;
+        if (CurrentState == PlayerState.Attack)
+        {
+            _combat.CanAttack = true;
+        }
         StopDashPhysics();
         _attackcollider.enabled = false;
     }
@@ -204,5 +214,8 @@ public class PlayerController : MonoBehaviour
         _movement.CanMove = isActive; 
         _combat.CanAttack = isActive;
         _interaction.CanInteract = isActive;
+        
+        _combat.ClearBuffer();
+        
     }
 }

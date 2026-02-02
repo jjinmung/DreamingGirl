@@ -8,41 +8,58 @@ using UnityEngine.Rendering.Universal;
 public class Enemy03 : EnemyBase
 {
     private int attackIndex = 0;
-    private int BallAtttackCount = 0;
+
     private float beamDuration = 5f;
     private float beamRotaion = 0.7f;
-    private float ballAttackDelay = 0.5f;
+
     private Coroutine rangeCoroutine;
     
     private Vector3 _dashTargetPos;
     
     
     [SerializeField]private GameObject Blast;
+    [SerializeField]private GameObject ProjectilePos;
     [SerializeField]private ParticleSystem DashEffect;
    
     private CinemachineCollisionImpulseSource cam;
-    [SerializeField]private DecalProjector attackRange;
+    [SerializeField]private DecalProjector[] attackRanges;
     private SphereCollider attackcollider;
     [SerializeField] private BeamVfx beam;
     private bool isBeamAttack;
+    
+    
     private void Awake()
     {
         cam =  GetComponentInChildren<CinemachineCollisionImpulseSource>();
         attackcollider = GetComponentInChildren<SphereCollider>();
-        attackRange = GetComponentInChildren<DecalProjector>(true);
+        attackRanges = GetComponentsInChildren<DecalProjector>(true);
     }
 
     public override void Init(int id)
     {
         base.Init(id);
-        var hpBar = Managers.UI.MakeSubItem<UI_EnemyHPBar>(Address.Enemy_HP_BAR);
+        var hpBar = Managers.UI.MakeSubItem<UI_BossHPBar>(Address.Boss_HP_BAR);
+        //위치 초기화
+        RectTransform rect = hpBar.GetComponent<RectTransform>();
+        if (rect != null)
+        {
+            // 1. 앵커를 중앙으로 설정 (부모의 중앙 기준)
+            rect.anchorMin = new Vector2(0.5f, 0.5f);
+            rect.anchorMax = new Vector2(0.5f, 0.5f);
+            rect.pivot = new Vector2(0.5f, 0.5f);
+
+            // 2. 위치 좌표를 0,0으로 (중앙 정렬)
+            rect.anchoredPosition = Vector2.zero;
+        }
+        
         hpBar.SetMaxHP(stat.MaxHp);
-        hpBar.GetComponentInChildren<HealthBarController>().target = transform;
+        
         takeDamageAction -= hpBar.TakeDamage;
         takeDamageAction += hpBar.TakeDamage;
         dieAcation -= hpBar.Destroy;
         dieAcation += hpBar.Destroy;
         gameObject.SetLayerRecursively("Enemy");
+        attackIndex = 0;
     }
 
     private void Update()
@@ -57,7 +74,7 @@ public class Enemy03 : EnemyBase
 
     public override void Attack()
     {
-        base.Attack();
+        if(isDead) return;
         IsAttack = true;
         _behavior.SetVariableValue("IsAttack", IsAttack);
         switch (attackIndex)
@@ -88,20 +105,26 @@ public class Enemy03 : EnemyBase
 
     protected override void DieHandler()
     {
-        SetAttackArange(false);
+        for(int i=0; i<attackRanges.Length; i++)
+            SetAttackArange(false,i);
+        attackcollider.enabled = false;
+        beam.Stop();
+        DashEffect.gameObject.SetActive(false);
+        OnDashComplete();
+        
     }
 
     #region 빔공격
     private void BeamAttack()
     {
-        SetAttackArange(true, 2.5f, 2f, BeamStart);
+        SetAttackArange(true, 0,2.5f, 2f, BeamStart);
     }
 
     void BeamStart()
     {
         isBeamAttack = true;
         _animator.SetTrigger("BEAMSTART");
-        SetAttackArange(false);
+        SetAttackArange(false,0);
         Invoke(nameof(BeamEnd), beamDuration);
     }
     //애니메이션 이벤트함수
@@ -157,38 +180,11 @@ public class Enemy03 : EnemyBase
         
         DashEffect.gameObject.SetActive(true);
         DashEffect.Play();
-        TurnToDash();
+        SetAttackArange(true, 0,5f,2f,Dash);
+      
     }
 
-    private void TurnToDash()
-    {
-        // 1. 타겟으로 향하는 방향 벡터 계산
-        Vector3 direction = _player.transform.position - transform.position;
-        direction.y = 0; // 높이 차이 무시
-        
 
-        // 2. 목표 회전값 계산
-        Quaternion targetRotation = Quaternion.LookRotation(direction);
-
-        // 3. 부드러운 회전 적용
-        transform.rotation = Quaternion.Slerp(
-            transform.rotation, 
-            targetRotation, 
-            20f * Time.deltaTime
-        );
-
-        // 4. [핵심] 현재 회전과 목표 회전 사이의 각도 차이 계산
-        float angleDiff = Quaternion.Angle(transform.rotation, targetRotation);
-
-        // 각도 차이가 1도 이내라면 완료로 간주
-        if (angleDiff < 1.0f)
-        {
-            // 정확히 목표 방향을 바라보도록 최종 보정
-            transform.rotation = targetRotation;
-            //공경 범위 활성화
-            SetAttackArange(true, 5f,2f,Dash);
-        }
-    }
 
     private void Dash()
     {
@@ -235,16 +231,17 @@ public class Enemy03 : EnemyBase
         DashEffect.Stop();
         DashEffect.gameObject.SetActive(false);
         attackcollider.enabled = false;
-        SetAttackArange(false);
+        SetAttackArange(false,0);
         IsAttack = false;
         _behavior.SetVariableValue("IsAttack", IsAttack);
     }
     #endregion
-  
+
+    #region 블래스터 공격
     private void BlastAttack()
     {
         Blast.SetActive(true);
-        Invoke((nameof(BlastAnimation)),0.9f);
+        Invoke((nameof(BlastAnimation)),1.05f);
         Invoke(nameof(BlastFisnished),2f);
     }
 
@@ -259,31 +256,56 @@ public class Enemy03 : EnemyBase
         IsAttack = false;
         _behavior.SetVariableValue("IsAttack", IsAttack);
     }
+    
+
+    #endregion
+
+    #region 볼 공격
     private void BallAttack()
     {
-        BallAtttackCount = 1;
-        SetAttackArange(true, 2f,ballAttackDelay,ShootBall);
+        _animator.SetTrigger("BALLREADY");
+        StartCoroutine(BallAttackStart());
+        
     }
 
-    public void CountinueBallAttack()
+
+
+    IEnumerator BallAttackStart()
     {
-        transform.LookAt(new Vector3(_player.transform.position.x, 0, _player.transform.position.z));
-        if (BallAtttackCount < 7)
+        float angleStep = 15f;
+        // 몬스터가 바라보는 현재 방향을 기준으로 설정
+        Vector3 horizontalDir = _player.transform.position - transform.position;
+        horizontalDir.y = 0;
+        Quaternion centerRotation = Quaternion.LookRotation(horizontalDir);
+
+        for (int i = 0; i < attackRanges.Length; i++)
         {
-            SetAttackArange(true, 2f,ballAttackDelay,ShootBall);
-            BallAtttackCount++;
+            float offsetAngle = (i - (attackRanges.Length - 1) / 2f) * angleStep;
+        
+            // 몬스터 정면에서 offsetAngle만큼 Y축으로 회전한 방향 계산
+            Quaternion finalRotation = centerRotation * Quaternion.Euler(0, offsetAngle, 0);
+        
+
+            // 여기서는 회전값만 설정하고, 레이캐스트는 SetAttackArange 내부에서 처리
+            attackRanges[i].transform.rotation = finalRotation * Quaternion.Euler(90, 0, 0);
+
+            // 2f, 2f는 각각 폭과 지속시간
+            SetAttackArange(true, i, 2f, 2f, ShooBall);
+            yield return new WaitForSeconds(0.5f);
         }
-        else
-        {
-            IsAttack = false;
-            _behavior.SetVariableValue("IsAttack", IsAttack);
-        }
+
+        IsAttack = false;
+        _behavior.SetVariableValue("IsAttack", IsAttack);
+        
     }
 
-    private void ShootBall()
+    void ShooBall()
     {
-        _animator.SetTrigger("BALL");
+        _animator.SetTrigger("BALLSTART");
     }
+
+    #endregion
+   
 
     public void Rage()
     {
@@ -291,23 +313,29 @@ public class Enemy03 : EnemyBase
         _animator.SetTrigger("RAGE");
     }
     
-    public void SetAttackArange(bool isAcive, float width=0f, float duration=0,Action action=null)
+    public void SetAttackArange(bool isAcive, int index,float width=0f, float duration=0,Action action=null)
     {
-        if (rangeCoroutine != null) StopCoroutine(rangeCoroutine);
 
         if (isAcive)
         {
-            attackRange.gameObject.SetActive(true);
-            Vector3 newSize = attackRange.size;
+            attackRanges[index].gameObject.SetActive(true);
+            Vector3 newSize = attackRanges[index].size;
             newSize.x = width;
-            attackRange.size = newSize;
+            attackRanges[index].size = newSize;
         
             float maxDistance = 150f; 
             RaycastHit hit;
             float targetDistance = maxDistance;
+            
+            Vector3 rayDir;
+            
+            rayDir = attackRanges[index].transform.up; 
+            
+            rayDir.y = 0; // 수평 레이캐스트 보장
+            rayDir.Normalize();
 
             // 레이캐스트 지점 저장
-            if (Physics.Raycast(transform.position+Vector3.up*0.5f, transform.forward, out hit, maxDistance, LayerMask.GetMask("Map")))
+            if (Physics.Raycast(transform.position+Vector3.up*0.5f, rayDir, out hit, maxDistance, LayerMask.GetMask("Map")))
             {
                 targetDistance = hit.distance;
                 // --- 수정된 부분 ---
@@ -324,18 +352,19 @@ public class Enemy03 : EnemyBase
                 _dashTargetPos = transform.position + (transform.forward * maxDistance);
             }
 
-            rangeCoroutine = StartCoroutine(AnimateRangeSize(targetDistance * 2f, duration,action));
+            rangeCoroutine = StartCoroutine(AnimateRangeSize(index,rayDir, targetDistance * 2f, duration,action));
         }
         else
         {
-            attackRange.gameObject.SetActive(false);
+            attackRanges[index].transform.localEulerAngles = new Vector3(90f, 0f, 0f);
+            attackRanges[index].gameObject.SetActive(false);
         }
     }
     
-    private IEnumerator AnimateRangeSize(float targetY, float duration, Action action)
+    private IEnumerator AnimateRangeSize(int index,Vector3 dir,float targetY, float duration, Action action)
     {
         float elapsedTime = 0f;
-        Vector3 initialSize = attackRange.size;
+        Vector3 initialSize = attackRanges[index].size;
         initialSize.y = 0f; 
 
         while (elapsedTime < duration)
@@ -343,20 +372,24 @@ public class Enemy03 : EnemyBase
             elapsedTime += Time.deltaTime;
             float progress = elapsedTime / duration;
         
-            Vector3 newSize = attackRange.size;
+            Vector3 newSize = attackRanges[index].size;
             newSize.y = Mathf.Lerp(initialSize.y, targetY, progress);
-            attackRange.size = newSize;
+            attackRanges[index].size = newSize;
 
             yield return null;
         }
 
-        Vector3 finalSize = attackRange.size;
+        Vector3 finalSize = attackRanges[index].size;
         finalSize.y = targetY;
-        attackRange.size = finalSize;
+        attackRanges[index].size = finalSize;
         rangeCoroutine = null;
     
-        // 이펙트 비활성화 및 대쉬 시작
-        attackRange.gameObject.SetActive(false); 
+        // 이펙트 비활성화 및 액션 시작
+        ProjectilePos.transform.rotation = Quaternion.LookRotation(dir);
+        
+        attackRanges[index].transform.localEulerAngles = new Vector3(90f, 0f, 0f);
+        attackRanges[index].gameObject.SetActive(false);
+        
         action.Invoke();
     }
 }

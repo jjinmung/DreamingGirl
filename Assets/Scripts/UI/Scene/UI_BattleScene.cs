@@ -63,10 +63,10 @@ public class UI_BattleScene : UI_Scene
         Bind<Slider>(typeof(Sliders));
         
         // 이벤트 연결 (중복 방지 safe subtract)
-        Managers.Stage.ExitRoom -= FadeOut;
-        Managers.Stage.ExitRoom += FadeOut;
-        Managers.Stage.EnterRoom -= FadeIn;
-        Managers.Stage.EnterRoom += FadeIn;
+        Managers.Stage.ExitRoom -= HandleExitRoom;
+        Managers.Stage.ExitRoom += HandleExitRoom;
+        Managers.Stage.EnterRoom -= HandleEnterRoom;
+        Managers.Stage.EnterRoom += HandleEnterRoom;
         Managers.Player.OnDataChanged -= RefreshGoldUI;
         Managers.Player.OnDataChanged += RefreshGoldUI;
 
@@ -79,10 +79,8 @@ public class UI_BattleScene : UI_Scene
         RefreshGoldUI();
         
         //첫 진입은 로비라 전투 UI 비활성화
-        BattleUIActive(false);
+        LobyUIActive();
         
-        //경험치 초기화
-        InitExp();
         Managers.Player.OnLevelUp -= AddExp;
         Managers.Player.OnLevelUp += AddExp;
         
@@ -99,18 +97,21 @@ public class UI_BattleScene : UI_Scene
         Managers.Player.PlayerControl.OnUseActiveSKill -= UseSkill;
         Managers.Player.PlayerControl.OnUseActiveSKill += UseSkill;
     }
+    
+    private void HandleExitRoom() => FadeOut(2f);
+    private void HandleEnterRoom() => FadeIn(1f);
 
-    private void FadeOut()
+    public void FadeOut(float duration)
     {
         var fadeImg = GetImage((int)Images.FadeOut);
         fadeImg.DOKill();
-        fadeImg.DOFade(1f, 2f).SetEase(Ease.InQuart);
+        fadeImg.DOFade(1f, duration).SetEase(Ease.InQuart);
     }
-    private void FadeIn()
+    public void FadeIn(float duration)
     {
         var fadeImg = GetImage((int)Images.FadeOut);
         fadeImg.DOKill();
-        fadeImg.DOFade(0f, 1f).SetEase(Ease.InQuad);
+        fadeImg.DOFade(0f, duration).SetEase(Ease.InQuad);
     }
 
     #region 골드 관련 함수
@@ -193,7 +194,7 @@ public class UI_BattleScene : UI_Scene
 
     #region 경험치 관련 함수
 
-    public void InitExp()
+    private void InitExp()
     {
         GetText((int)Texts.LevelText).text = _playerData.level.ToString();
         // 초기화 시에는 즉시 반영
@@ -295,13 +296,7 @@ public class UI_BattleScene : UI_Scene
             });
     }
     #endregion
-
-    public void BattleUIActive(bool isActive)
-    {
-        Get<Slider>((int)Sliders.LevelBar).gameObject.SetActive(isActive);
-        GetObject((int)GameObjects.Map).SetActive(isActive);
-        GetObject((int)GameObjects.SkillBar).SetActive(isActive);
-    }
+    
     
     public void AllUIActive(bool isActive)
     {
@@ -310,6 +305,29 @@ public class UI_BattleScene : UI_Scene
         GetObject((int)GameObjects.SkillBar).SetActive(isActive);
         GetObject((int)GameObjects.Info).SetActive(isActive);
     }
-    
+
+    public void LobyUIActive()
+    {
+        AllUIActive(false);
+        GetObject((int)GameObjects.Info).SetActive(true);
+    }
+    public void BattleUIActive()
+    {
+        AllUIActive(false);
+        Get<Slider>((int)Sliders.LevelBar).gameObject.SetActive(true);
+        GetObject((int)GameObjects.Map).SetActive(true);
+        GetObject((int)GameObjects.SkillBar).SetActive(true);
+    }
+
+    public void BossUIActive()
+    {
+        GetObject((int)GameObjects.SkillBar).SetActive(true);
+    }
+
+    public void BattleInit()
+    {
+        InitExp();
+        RefreshSkillBar();
+    }
     
 }

@@ -41,7 +41,7 @@ namespace MasterStylizedProjectile
         {
             //var targetPos = GetMouseTargetPos();
             //var targetDir = targetPos - StartNodeTrans.position;
-            var targetDir = transform.forward;
+            var targetDir = StartNodeTrans.forward;
             
             targetDir.y = 0;
             targetDir = targetDir.normalized;
@@ -73,7 +73,7 @@ namespace MasterStylizedProjectile
                 bullet.Speed = Speed;
                 bullet.OnHitEffect = HitEffect;
                 bullet.Damage = damage;
-
+                
                    
                 /*if (CurEffect.hitClip != null)
                 {

@@ -12,7 +12,8 @@ public class AttackBehaviour : StateMachineBehaviour
             player = animator.GetComponent<PlayerController>();
         if (rb == null)
             rb= animator.GetComponent<Rigidbody>();
-        
+
+        player.CurrentState = PlayerController.PlayerState.Attack;
         player.InputActive(false);
         Vector3 dashDirection = animator.transform.forward;
         rb.linearVelocity = dashDirection * dashForce;

@@ -50,6 +50,6 @@ public class Door : MonoBehaviour
     }
     public void CloseImmediately()
     {
-        door.rotation = Quaternion.Euler(close);
+        door.localEulerAngles = close;
     }
 }

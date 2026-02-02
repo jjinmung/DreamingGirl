@@ -10,7 +10,7 @@ public class Enemy02 : EnemyBase
     [SerializeField] private CurveProjectile projectile;
     public override void Attack()
     {
-        base.Attack();
+        if(isDead) return;
         _animator.SetTrigger("ATTACK");
         IsAttack = true;
     }
@@ -37,7 +37,7 @@ public class Enemy02 : EnemyBase
 
     protected override void DieHandler()
     {
-        SetAttackArange(false);
+        
     }
     #endregion
     
