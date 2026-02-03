@@ -5,10 +5,10 @@ public class AbilityThunderflash : ActiveAbilityEffect
 {
     private float blinkDistance = 10f; // 이동 거리
     private LayerMask wallLayer = LayerMask.GetMask("Map");      // 벽으로 인식할 레이어
-    private PlayerController player => Managers.Player.PlayerControl;
+    private PlayerController player => Managers.Player.Control;
     public override void Apply(int stack)
     {
-        Managers.Player.PlayerControl.GetAciveSkill(Define.AbilityID.Thunderflash);
+        Managers.Player.Control.GetAciveSkill(Define.AbilityID.Thunderflash);
     }
     public override void Execute()
     {

@@ -2,6 +2,7 @@ using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using static Define;
 
 public class PlayerManager : MonoBehaviour
@@ -19,6 +20,7 @@ public class PlayerManager : MonoBehaviour
 
     // 캐싱용 필드
     private PlayerUnit _playerUnit;
+    private PlayerCombat _playerCombat;
     private Animator _playerAnim;
     private PlayerController _playerController;
     private Rigidbody _playerRb;
@@ -26,10 +28,12 @@ public class PlayerManager : MonoBehaviour
     private UI_PlayerHPBar _playerHpBar;
 
     // 프로퍼티 (Null 체크 없이 즉시 반환하도록 개선)
-    public PlayerUnit PlayerUnit=>_playerUnit;
-    public Transform PlayerTrans => _playerUnit.transform;
-    public Animator PlayerAnim => _playerAnim;
-    public PlayerController PlayerControl => _playerController;
+    public PlayerUnit Unit=>_playerUnit;
+    public PlayerCombat Combat=>_playerCombat;
+    public Transform Trans => _playerUnit.transform;
+    public Animator Anim => _playerAnim;
+    public PlayerController Control => _playerController;
+    
 
     
     
@@ -41,6 +45,7 @@ public class PlayerManager : MonoBehaviour
 
         // 생성 시점에 모든 컴포넌트를 한 번만 캐싱
         _playerUnit = playerPrefab.GetComponent<PlayerUnit>();
+        _playerCombat = playerPrefab.GetComponent<PlayerCombat>();
         _playerAnim = playerPrefab.GetComponent<Animator>();
         _playerController = playerPrefab.GetComponent<PlayerController>();
         _playerRb = playerPrefab.GetComponent<Rigidbody>();
@@ -131,7 +136,7 @@ public class PlayerManager : MonoBehaviour
     IEnumerator SelectAbility()
     {
         _playerController.LVPParticle.Play();
-        Managers.UI.ShowFloatingText(PlayerTrans.position, "Level UP!", Color.yellow,false,1.5f);
+        Managers.UI.ShowFloatingText(Trans.position, "Level UP!", Color.yellow,false,1.5f);
         yield return new WaitForSeconds(1.5f);
         Managers.UI.ShowPopupUI<UI_Ability>();
         //시간 정지
@@ -167,9 +172,15 @@ public class PlayerManager : MonoBehaviour
 
     public void Heal(float amount)
     {
-        data.currentHp = Mathf.Clamp(data.currentHp + amount, 0, data.maxHp.TotalValue);
-        TakeDamageAction?.Invoke(-amount); // 기존 로직 유지
-        Managers.UI.ShowFloatingText(PlayerTrans.position, $"+{amount}", Color.green, false);
+        if (data.currentHp < data.maxHp.TotalValue)
+        {
+            _playerController.HealParticle.Play();
+            var healamount = data.currentHp+amount <=data.maxHp.TotalValue? amount:data.maxHp.TotalValue- data.currentHp;
+            data.currentHp = Mathf.Clamp(data.currentHp + healamount, 0, data.maxHp.TotalValue);
+            TakeDamageAction?.Invoke(-healamount); // 기존 로직 유지
+            Managers.UI.ShowFloatingText(Trans.position, $"+{(int)healamount}", Color.green, false);
+        }
+
     }
     
     // --- 상태 제어 메소드 (클린 코드) ---
@@ -239,7 +250,7 @@ public class PlayerManager : MonoBehaviour
         }
 
         // 마지막에 정확한 목표값으로 설정
-        Managers.Player.PlayerAnim.SetFloat("MOVE", targetValue);
+        _playerAnim.SetFloat("MOVE", targetValue);
     }
     
 }

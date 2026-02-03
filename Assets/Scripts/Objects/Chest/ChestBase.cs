@@ -22,7 +22,7 @@ public class ChestBase:MonoBehaviour,IInteractable
             
     }
 
-    public void Init()
+    public virtual void Init()
     {
         _canInteract = true;
         ChsetLid.localEulerAngles = Close;

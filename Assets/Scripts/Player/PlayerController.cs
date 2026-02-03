@@ -13,8 +13,9 @@ public class PlayerController : MonoBehaviour
     private Vector2 _inputVector;
     public enum PlayerState {Idle, Run,Attack,Dash}
     public PlayerState CurrentState = PlayerState.Idle;
-    
+    [Header("Effects")]
     public ParticleSystem LVPParticle;
+    public ParticleSystem HealParticle;
     public TrailRenderer[] ThunderTrail;
 
     private bool _isAttackPressed;

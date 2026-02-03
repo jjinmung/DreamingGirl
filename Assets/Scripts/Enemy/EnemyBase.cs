@@ -10,7 +10,7 @@ using Action = System.Action;
 public abstract class EnemyBase : MonoBehaviour,IDamageable
 {
     //lazy cashing
-    protected GameObject _player=> _playerCache ??= Managers.Player.PlayerControl.gameObject;
+    protected GameObject _player=> _playerCache ??= Managers.Player.Control.gameObject;
     
     protected BehaviorGraphAgent _behavior=> _behaviorCache ??= GetComponent<BehaviorGraphAgent>();
     protected Animator _animator=> _animatorCache ??= GetComponent<Animator>();

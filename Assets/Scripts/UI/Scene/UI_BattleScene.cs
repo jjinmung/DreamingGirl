@@ -91,11 +91,11 @@ public class UI_BattleScene : UI_Scene
         GetImage((int)Images.Image_Skill3Cool).fillAmount = 0f;
         GetImage((int)Images.Image_Skill4Cool).fillAmount = 0f;
         RefreshSkillBar();
-        Managers.Player.PlayerControl.OnGetActiveSKill -= RefreshSkillBar;
-        Managers.Player.PlayerControl.OnGetActiveSKill += RefreshSkillBar;
+        Managers.Player.Control.OnGetActiveSKill -= RefreshSkillBar;
+        Managers.Player.Control.OnGetActiveSKill += RefreshSkillBar;
         
-        Managers.Player.PlayerControl.OnUseActiveSKill -= UseSkill;
-        Managers.Player.PlayerControl.OnUseActiveSKill += UseSkill;
+        Managers.Player.Control.OnUseActiveSKill -= UseSkill;
+        Managers.Player.Control.OnUseActiveSKill += UseSkill;
     }
     
     private void HandleExitRoom() => FadeOut(2f);
@@ -261,7 +261,7 @@ public class UI_BattleScene : UI_Scene
     private void RefreshSkillBar()
     {
         SkillBarInit();
-        var skills = Managers.Player.PlayerControl.ActiveSkills;
+        var skills = Managers.Player.Control.ActiveSkills;
         for (int i = 0; i < skills.Length; i++)
         {
             if (skills[i]!=Define.AbilityID.None)

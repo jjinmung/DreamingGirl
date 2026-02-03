@@ -13,7 +13,7 @@ public class Store : MonoBehaviour,IInteractable
     public void OnInteract()
     {
         Managers.Camera.SetStoreCam(!IsInteracting);
-        Managers.Player.PlayerControl.InputActive(IsInteracting);
+        Managers.Player.Control.InputActive(IsInteracting);
         //Managers.UI.ShowPopupUI<>()
         NPC.GetComponent<Animator>().SetTrigger("Interacting");
         NPC.DORotate(InteractionRotation, 1f);

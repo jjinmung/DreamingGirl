@@ -5,8 +5,9 @@ using UnityEngine.InputSystem;
 public class PlayerCombat : MonoBehaviour
 {
     public enum AttackType { Normal, Ice, Fire }
-    public AttackType currentAttackType = AttackType.Fire;
-
+    [Header("공격타입")]
+    public bool IsIceAttack = false;
+    public bool IsFireAttack = false;
     [SerializeField] private ParticleSystem[] swordTrails;
     [SerializeField] private Transform[] attackEffectPos;
 
@@ -83,10 +84,33 @@ public class PlayerCombat : MonoBehaviour
     // 애니메이션 이벤트에서 호출
     public void PlayAttackEffect(int index)
     {
-        var trail = swordTrails[(int)currentAttackType];
-        trail.transform.position = attackEffectPos[index].position;
-        trail.transform.rotation = attackEffectPos[index].rotation;
-        trail.Play();
+        if (IsIceAttack || IsFireAttack)
+        {
+            if (IsIceAttack)
+            {
+                var trail = swordTrails[(int)AttackType.Ice];
+                trail.transform.position = attackEffectPos[index].position;
+                trail.transform.rotation = attackEffectPos[index].rotation;
+                trail.Play();
+            }
+            
+            if (IsFireAttack)
+            {
+                var trail = swordTrails[(int)AttackType.Fire];
+                trail.transform.position = attackEffectPos[index].position;
+                trail.transform.rotation = attackEffectPos[index].rotation;
+                trail.Play();
+            }
+        }
+        else
+        {
+            var trail = swordTrails[(int)AttackType.Normal];
+            trail.transform.position = attackEffectPos[index].position;
+            trail.transform.rotation = attackEffectPos[index].rotation;
+            trail.Play();
+            
+        }
+        
     }
     
     private void LookAtMouse()

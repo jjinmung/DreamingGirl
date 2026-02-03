@@ -38,7 +38,7 @@ public class Enemy03 : EnemyBase
     public override void Init(int id)
     {
         base.Init(id);
-        var hpBar = Managers.UI.MakeSubItem<UI_BossHPBar>(Address.Boss_HP_BAR);
+        var hpBar = Managers.UI.MakeSubItem<UI_EnemyHPBar>(Address.Boss_HP_BAR);
         //위치 초기화
         RectTransform rect = hpBar.GetComponent<RectTransform>();
         if (rect != null)

@@ -183,7 +183,7 @@ public class StageManager : MonoBehaviour
         if (_battleUI == null) _battleUI = Managers.UI.LoadScene<UI_BattleScene>();
         _battleUI.AllUIActive(false);
         
-        var player = Managers.Player.PlayerTrans;
+        var player = Managers.Player.Trans;
         player.DOMove(currentExitDoor.ExitPos.position, 1f);
         player.DORotate(currentExitDoor.dir, 1f);
         yield return waitForOne;
@@ -257,113 +257,119 @@ public class StageManager : MonoBehaviour
     }
     
     IEnumerator EnterToNextRoomCoroutine()
-{
-    // 1. 방 타입에 따른 초기 설정 (Spawn / Boss 생성 / Event)
-    Enemy03 boss = InitializeRoomContent();
-
-    // 2. 플레이어 이동 및 연출
-    yield return StartPlayerEntranceSequence();
-
-    // 3. 카메라 및 보스 등장 연출
-    if (currentRoomNode.type == RoomType.Boss)
     {
-        yield return StartBossEncounterSequence(boss);
+        // 1. 방 타입에 따른 초기 설정 (Spawn / Boss 생성 / Event)
+        Enemy03 boss = InitializeRoomContent();
+
+        // 2. 플레이어 이동 및 연출
+        yield return StartPlayerEntranceSequence();
+
+        // 3. 카메라 및 보스 등장 연출
+        if (currentRoomNode.type == RoomType.Boss)
+        {
+            yield return StartBossEncounterSequence(boss);
+        }
+        else
+        {
+            Managers.Camera.ChanageCamera();
+            yield return waitForTwo;
+        }
+
+        // 4. UI 설정 및 전투 개시
+        SetupBattleUI();
+        
+        Managers.Player.EnterRoom();
+        _battleUI.SetMap(currentRoomNode.nextNodes, currentDepth);
     }
-    else
+    
+
+    private Enemy03 InitializeRoomContent()
     {
-        Managers.Camera.ChanageCamera();
+        switch (currentRoomNode.type)
+        {
+            case RoomType.Monster:
+                int spawnCount = currentDepth * Random.Range(0, 2) + 5; 
+                enemySpawner.SpawnCount = spawnCount;
+                enemySpawner.SpawnEnemys();
+                break;
+
+            case RoomType.Boss:
+                var bossObj = Managers.Resource.Instantiate(Address.Boss, currentRoom.BossPos.position,Quaternion.Euler(0,180,0));
+                var boss = bossObj.GetComponent<Enemy03>();
+                boss.gameObject.SetLayerRecursively("Default");
+                return boss;
+
+            case RoomType.Event:
+                if (currentRoom is EventRoom eventRoom)
+                    eventRoom.EventInit();
+                break;
+        }
+        return null;
+    }
+
+    private IEnumerator StartPlayerEntranceSequence()
+    {
+        var enterDoor = currentRoom.EnterDoor;
+        enterDoor.EnterRoomOpen();
+
+        var player = Managers.Player.Trans;
+        player.rotation = Quaternion.identity;
+        
+        // 이동 연출
+        yield return player.DOMove(enterDoor.ExitPos.position, 2f).SetEase(Ease.Linear).WaitForCompletion();
+        
+        enterDoor.Close();
+        Managers.Player.FadeMoveFloat(0);
+        yield return waitForHalf;
+    }
+
+    private IEnumerator StartBossEncounterSequence(Enemy03 boss)
+    {
+        if (boss == null) yield break;
+
+        Managers.Camera.SetBossCam(true);
+        yield return waitForOne;
+        
+        boss.Rage();
         yield return waitForTwo;
+        
+        Managers.Camera.SetBossCam(false);
+        boss.Init(3);
     }
-
-    // 4. UI 설정 및 전투 개시
-    SetupBattleUI();
-    
-    Managers.Player.EnterRoom();
-    _battleUI.SetMap(currentRoomNode.nextNodes, currentDepth);
-}
-    
-
-private Enemy03 InitializeRoomContent()
-{
-    switch (currentRoomNode.type)
-    {
-        case RoomType.Monster:
-            int spawnCount = currentDepth * Random.Range(0, 2) + 5; 
-            enemySpawner.SpawnCount = spawnCount;
-            enemySpawner.SpawnEnemys();
-            break;
-
-        case RoomType.Boss:
-            var bossObj = Managers.Resource.Instantiate(Address.Boss, currentRoom.BossPos.position,Quaternion.Euler(0,180,0));
-            var boss = bossObj.GetComponent<Enemy03>();
-            boss.gameObject.SetLayerRecursively("Default");
-            return boss;
-
-        case RoomType.Event:
-            if (currentRoom is EventRoom eventRoom)
-                eventRoom.EventInit();
-            break;
-    }
-    return null;
-}
-
-private IEnumerator StartPlayerEntranceSequence()
-{
-    var enterDoor = currentRoom.EnterDoor;
-    enterDoor.EnterRoomOpen();
-
-    var player = Managers.Player.PlayerTrans;
-    player.rotation = Quaternion.identity;
-    
-    // 이동 연출
-    yield return player.DOMove(enterDoor.ExitPos.position, 2f).SetEase(Ease.Linear).WaitForCompletion();
-    
-    enterDoor.Close();
-    Managers.Player.FadeMoveFloat(0);
-    yield return waitForHalf;
-}
-
-private IEnumerator StartBossEncounterSequence(Enemy03 boss)
-{
-    if (boss == null) yield break;
-
-    Managers.Camera.SetBossCam(true);
-    yield return waitForOne;
-    
-    boss.Rage();
-    yield return waitForTwo;
-    
-    Managers.Camera.SetBossCam(false);
-    boss.Init(3);
-}
 
     #endregion
 
     
 
     private void SetupBattleUI()
-{
-    if (_battleUI == null) 
-        _battleUI = Managers.UI.LoadScene<UI_BattleScene>();
+    {
+        if (_battleUI == null) 
+            _battleUI = Managers.UI.LoadScene<UI_BattleScene>();
 
-    if (currentDepth == 1)
-    {
-        _battleUI.BattleInit();
-        TotalGold = 0;
-        TotalKill = 0;
-        PlayTime = Time.time;
+        if (currentDepth == 1)
+        {
+            _battleUI.BattleInit();
+            TotalGold = 0;
+            TotalKill = 0;
+            PlayTime = Time.time;
+        }
+
+        switch (currentRoomNode.type )
+        {
+            case  RoomType.Monster:
+                _battleUI.BattleUIActive();
+                enemySpawner.StartBattle();
+                break;
+            case  RoomType.Boss:
+                _battleUI.BossUIActive();
+                break;
+            case  RoomType.Event:
+                _battleUI.BattleUIActive();
+                break;
+            
+        }
+
     }
-       
-    if (currentRoomNode.type == RoomType.Monster)
-    {
-        _battleUI.BattleUIActive();
-        enemySpawner.StartBattle();
-    }
-    else
-    {
-        _battleUI.BossUIActive();
-    }
-}
     public void ReturnToLoby()
     {
         StartCoroutine(ReturnToLobyCoroutine());
@@ -389,6 +395,6 @@ private IEnumerator StartBossEncounterSequence(Enemy03 boss)
     public void AddGold(int amount)
     {
         TotalGold += amount;
-        Managers.UI.ShowFloatingText(Managers.Player.PlayerTrans.position, $"+{amount}gold", Color.yellow, false,1.5f);
+        Managers.UI.ShowFloatingText(Managers.Player.Trans.position, $"+{amount}gold", Color.yellow, false,1.5f);
     }
 }
