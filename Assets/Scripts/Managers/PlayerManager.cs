@@ -26,6 +26,7 @@ public class PlayerManager : MonoBehaviour
     private UI_PlayerHPBar _playerHpBar;
 
     // 프로퍼티 (Null 체크 없이 즉시 반환하도록 개선)
+    public PlayerUnit PlayerUnit=>_playerUnit;
     public Transform PlayerTrans => _playerUnit.transform;
     public Animator PlayerAnim => _playerAnim;
     public PlayerController PlayerControl => _playerController;
@@ -170,7 +171,7 @@ public class PlayerManager : MonoBehaviour
         TakeDamageAction?.Invoke(-amount); // 기존 로직 유지
         Managers.UI.ShowFloatingText(PlayerTrans.position, $"+{amount}", Color.green, false);
     }
-
+    
     // --- 상태 제어 메소드 (클린 코드) ---
 
     private void ExitRoomHandler()

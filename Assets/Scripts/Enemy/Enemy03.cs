@@ -16,17 +16,17 @@ public class Enemy03 : EnemyBase
     
     private Vector3 _dashTargetPos;
     
-    
+    [Header("Effects")]
     [SerializeField]private GameObject Blast;
-    [SerializeField]private GameObject ProjectilePos;
     [SerializeField]private ParticleSystem DashEffect;
-   
-    private CinemachineCollisionImpulseSource cam;
     [SerializeField]private DecalProjector[] attackRanges;
-    private SphereCollider attackcollider;
     [SerializeField] private BeamVfx beam;
-    private bool isBeamAttack;
     
+    private CinemachineCollisionImpulseSource cam;
+    private SphereCollider attackcollider;
+    [SerializeField]private GameObject ProjectilePos;
+    private bool isBeamAttack;
+
     
     private void Awake()
     {

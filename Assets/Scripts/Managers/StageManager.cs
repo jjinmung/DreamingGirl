@@ -12,11 +12,16 @@ public class StageManager : MonoBehaviour
     public event Action ExitRoom;
     public event Action EnterRoom;
     
-
-    private List<List<RoomNode>> stageMap = new();
+    
     public int StageCount = 10;
     [Range(0, 1f)]
     public float MonsterMapPercent = 0.5f;
+
+    public int TotalGold;
+    public float PlayTime;
+    public int TotalKill;
+    
+    private List<List<RoomNode>> stageMap = new();
     private RoomNode currentRoomNode;
     private RoomNode lobyNode;
     private int currentDepth;
@@ -114,9 +119,11 @@ public class StageManager : MonoBehaviour
 
     public void ChangeRoom()
     {
+        
         Managers.Resource.Destroy(currentRoom.gameObject);
         currentRoomNode = currentRoomNode.nextNodes[doorIndex];
         currentDepth++;
+        TotalGold += currentDepth * 15;
         currentRoom = Managers.Resource.Instantiate(currentRoomNode.address, Vector3.zero,default,Root.transform).GetComponent<Room>();
         currentRoom.CloseImmediately();
         if (currentRoomNode.type == RoomType.Monster)
@@ -204,6 +211,8 @@ public class StageManager : MonoBehaviour
         
         if (currentRoomNode.type == RoomType.Monster)
         {
+            TotalGold+= currentDepth*2;
+            TotalKill++;
             killCount++;
             if (enemySpawner != null && killCount >= enemySpawner.SpawnCount)
             {
@@ -213,7 +222,9 @@ public class StageManager : MonoBehaviour
         }
         else if (currentRoomNode.type == RoomType.Boss)
         {
-            
+            TotalGold += 30;
+            TotalKill++;
+            PlayTime = Time.time-PlayTime;
             StartCoroutine(BossClear());
         }
     }
@@ -227,6 +238,7 @@ public class StageManager : MonoBehaviour
         
         yield return waitForOne;
         var ui = Managers.UI.ShowPopupUI<UI_StageEnding>();
+        ui.SetText(true,PlayTime,TotalKill,TotalGold);
 
     }
     public void ClearRoom()
@@ -289,7 +301,7 @@ private Enemy03 InitializeRoomContent()
 
         case RoomType.Event:
             if (currentRoom is EventRoom eventRoom)
-                eventRoom.ClearEvent();
+                eventRoom.EventInit();
             break;
     }
     return null;
@@ -329,13 +341,19 @@ private IEnumerator StartBossEncounterSequence(Enemy03 boss)
 
     
 
-private void SetupBattleUI()
+    private void SetupBattleUI()
 {
     if (_battleUI == null) 
         _battleUI = Managers.UI.LoadScene<UI_BattleScene>();
 
     if (currentDepth == 1)
+    {
         _battleUI.BattleInit();
+        TotalGold = 0;
+        TotalKill = 0;
+        PlayTime = Time.time;
+    }
+       
     if (currentRoomNode.type == RoomType.Monster)
     {
         _battleUI.BattleUIActive();
@@ -364,7 +382,13 @@ private void SetupBattleUI()
         _battleUI.FadeIn(1);
         
         yield return waitForOne;
-        
         _battleUI.LobyUIActive();
+        Managers.Player.AddGold(TotalGold);
+    }
+    
+    public void AddGold(int amount)
+    {
+        TotalGold += amount;
+        Managers.UI.ShowFloatingText(Managers.Player.PlayerTrans.position, $"+{amount}gold", Color.yellow, false,1.5f);
     }
 }

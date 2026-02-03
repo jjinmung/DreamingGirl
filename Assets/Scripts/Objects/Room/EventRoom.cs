@@ -2,8 +2,9 @@ using UnityEngine;
 
 public class EventRoom : Room
 {
-    public void ClearEvent()
+    [SerializeField] private ChestSpawner chestSpawner;
+    public void EventInit()
     {
-        Managers.Stage.ClearRoom();
+        chestSpawner.Init();
     }
 }

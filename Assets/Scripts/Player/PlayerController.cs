@@ -211,6 +211,7 @@ public class PlayerController : MonoBehaviour
 
     public void InputActive(bool isActive)
     {
+        Debug.Log("isActive");
         _movement.CanMove = isActive; 
         _combat.CanAttack = isActive;
         _interaction.CanInteract = isActive;

@@ -18,7 +18,7 @@ public class UI_StageEnding : UI_Popup
         GoldText
     }
 
-    private void Start()
+    private void Awake()
     {
         Init();
     }
@@ -43,5 +43,14 @@ public class UI_StageEnding : UI_Popup
         Managers.Data.ClearAbility();
         Managers.Stage.ReturnToLoby();
         Managers.UI.ClosePopupUI(this);
+    }
+
+    public void SetText(bool isWin ,float playTime, int killCount, int gold)
+    {
+        TimeSpan t = TimeSpan.FromSeconds(playTime);
+        GetText((int)Texts.TitleText).text = isWin ? "승 리" : "패 배";
+        GetText((int)Texts.PlayTimeText).text = $"던전 플레이 시간 : {t.Minutes+(t.Hours*60)}분 {t.Seconds}초";
+        GetText((int)Texts.KillCountText).text = $"적 처시수 : {killCount}마리";
+        GetText((int)Texts.GoldText).text = $"획득 골드량 : {gold}gold";
     }
 }

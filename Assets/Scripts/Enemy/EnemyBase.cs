@@ -30,7 +30,7 @@ public abstract class EnemyBase : MonoBehaviour,IDamageable
     public bool isDead=false;
     public event Action<float> takeDamageAction; //데미지 받았을 때 실행할 이벤트
     public event Action dieAcation;
-    
+    [Header("MAT")]
     [SerializeField]private Material _originalMat;
     [SerializeField]private Material _hitMat;
     [SerializeField]private Material _deathMat;

@@ -20,6 +20,8 @@ public class PlayerInteraction : MonoBehaviour
         if (_currentInteractable != null&&CanInteract)
         {
             _currentInteractable.OnInteract();
+            if(!_currentInteractable.IsInteractable)
+                InteractUI.SetActive(false);
         }
     }
 
@@ -28,9 +30,11 @@ public class PlayerInteraction : MonoBehaviour
         // 들어온 물체가 IInteractable을 가지고 있는지 확인
         if (other.TryGetComponent(out IInteractable interactable))
         {
-            _currentInteractable = interactable;
-            InteractUI.gameObject.SetActive(true);
-            Debug.Log("상호작용 가능: " + other.name);
+            if (interactable.IsInteractable)
+            {
+                _currentInteractable = interactable;
+                InteractUI.SetActive(true);
+            }
         }
     }
 
