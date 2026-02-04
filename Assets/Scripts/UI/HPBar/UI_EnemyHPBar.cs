@@ -76,4 +76,9 @@ public class UI_EnemyHPBar : UI_Base
         Managers.Resource.Destroy(gameObject);
     }
 
+    public void SetFalse()
+    {
+        gameObject.SetActive(false);
+    }
+
 }

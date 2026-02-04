@@ -395,6 +395,6 @@ public class StageManager : MonoBehaviour
     public void AddGold(int amount)
     {
         TotalGold += amount;
-        Managers.UI.ShowFloatingText(Managers.Player.Trans.position, $"+{amount}gold", Color.yellow, false,1.5f);
+        Managers.UI.ShowFloatingText(Managers.Player.Trans.position, $"+{amount}gold", Color.yellow, 1.5f);
     }
 }

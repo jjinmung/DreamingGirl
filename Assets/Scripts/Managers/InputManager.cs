@@ -8,7 +8,6 @@ public class InputManager : MonoBehaviour
     private PlayerAction _playerAction;
 
     // 이벤트 방식으로 처리할 액션들
-    public event Action OnAttack;
     public event Action OnDash;
     public event Action OnInteract;
     public event Action OnSkill1;

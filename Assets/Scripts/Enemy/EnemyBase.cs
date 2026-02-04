@@ -17,6 +17,7 @@ public abstract class EnemyBase : MonoBehaviour,IDamageable
     protected NavMeshAgent _navMeshAgent=> _navMeshAgentCache ??= GetComponent<NavMeshAgent>();
     protected SkinnedMeshRenderer _skinnedMesh=> _skinnedMeshCache ??= GetComponentInChildren<SkinnedMeshRenderer>();
     protected Rigidbody _rigidbody=> _rigidbodyCache ??= GetComponent<Rigidbody>();
+    public UI_EnemyHPBar EnemyHpBar => _hpbarCashe ??= GetComponentInChildren<UI_EnemyHPBar>();
 
     private GameObject _playerCache;
     private BehaviorGraphAgent _behaviorCache;
@@ -24,10 +25,23 @@ public abstract class EnemyBase : MonoBehaviour,IDamageable
     private NavMeshAgent _navMeshAgentCache;
     private SkinnedMeshRenderer _skinnedMeshCache;
     private Rigidbody _rigidbodyCache;
+    protected UI_EnemyHPBar _hpbarCashe;
     
     public EnemyStat stat; 
     public bool IsAttack=false;
     public bool isDead=false;
+    [Header("이펙트")]
+    [SerializeField]private ParticleSystem HitParticle;
+    [SerializeField]private ParticleSystem fireParticle;
+    [SerializeField]private ParticleSystem IceParticle;
+    
+    //디버프 코루틴
+    Coroutine _burnCoroutine;
+    Coroutine _freezeCoroutine;
+    
+    //화상 쿨타임
+    private float lastBurn = -999f;
+    private float burnCooldown=5f;
     public event Action<float> takeDamageAction; //데미지 받았을 때 실행할 이벤트
     public event Action dieAcation;
     [Header("MAT")]
@@ -54,6 +68,10 @@ public abstract class EnemyBase : MonoBehaviour,IDamageable
 
         //이름 변경
         name = stat.Name;
+        
+        //체력바 비활성화
+        if(EnemyHpBar!=null)
+            EnemyHpBar.gameObject.SetActive(false);
     }
 
     private void ResetEvents()
@@ -67,11 +85,15 @@ public abstract class EnemyBase : MonoBehaviour,IDamageable
 
     public abstract void Attack();
 
-    public void TakeDamage(float damage)
+    public void TakeDamage(float damage, Color color= default,bool isRandom =false)
     {
         if (isDead) return;
-        Managers.UI.ShowFloatingText(transform.position,$"-{damage}",Color.white,false);
-        stat.currentHp -= damage;
+        stat.currentHp = Mathf.Clamp(stat.currentHp - damage, 0, stat.MaxHp);
+        var col = color == default ? Color.white : color;
+        if(color ==default)
+            Managers.UI.ShowFloatingText(transform.position,$"-{(int)damage}",col,1f);
+        else
+            Managers.UI.ShowFloatingText(transform.position,$"-{(int)damage}",col,1f,40f,isRandom);
         
         if (stat.currentHp <= 0)
         {
@@ -81,6 +103,61 @@ public abstract class EnemyBase : MonoBehaviour,IDamageable
         takeDamageAction.Invoke(damage);
     }
 
+    #region 디버프 함수
+
+    public void ApplyBurn(float playerDamage, float ratio, float duration)
+    {
+        if (isDead) return;
+        if (burnCooldown + lastBurn > Time.time) return;
+        
+        lastBurn = Time.time;
+        if(_burnCoroutine!=null)
+            StopCoroutine(_burnCoroutine);
+        _burnCoroutine =StartCoroutine(BurnRoutine(playerDamage * ratio, duration));
+    }
+
+    private IEnumerator BurnRoutine(float damagePerSecond, float duration)
+    {
+        if (fireParticle != null) fireParticle.Play();
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            
+            // 초당 데미지 입힘 (Enemy01의 데미지 입는 함수 호출)
+            TakeDamage(damagePerSecond,Color.red,true);
+            
+            yield return new WaitForSeconds(1f); // 1초 간격
+            elapsed += 1f;
+        }
+        
+        if (fireParticle != null) fireParticle.Stop();
+    }
+    
+    public void ApplyFreeze(float playerDamage, float ratio, float duration)
+    {
+        if (isDead) return;
+        if(_freezeCoroutine!=null)
+            StopCoroutine(_freezeCoroutine);
+        _freezeCoroutine =StartCoroutine(FreezeRoutine(playerDamage * ratio, duration));
+    }
+
+    private IEnumerator FreezeRoutine(float damagePerSecond, float duration)
+    {
+        if (fireParticle != null) IceParticle.Play();
+        TakeDamage(damagePerSecond,Color.cyan,true);
+        stat.Speed *= 0.5f;
+        _behavior.SetVariableValue("Speed", stat.Speed);
+        yield return new WaitForSeconds(duration); // 3초 
+        stat.Speed *= 2f;
+        _behavior.SetVariableValue("Speed", stat.Speed);
+        if (fireParticle != null) IceParticle.Stop();
+    }
+
+    #endregion
+    
+    
+
     protected abstract void TakeDamageHandler(float damage);
 
     protected void Die()
@@ -88,6 +165,15 @@ public abstract class EnemyBase : MonoBehaviour,IDamageable
         //변수제어
         isDead = true;
         _behavior.SetVariableValue("IsDeath", true);
+        
+        if(_burnCoroutine!=null)
+            StopCoroutine(_burnCoroutine);
+        if(_freezeCoroutine!=null)
+            StopCoroutine(_freezeCoroutine);
+        //이펙트 종료
+        HitParticle.Stop();
+        fireParticle.Stop();
+        IceParticle.Stop();
         
         //스테이지 관리
         Managers.Stage.CheckClear();
@@ -112,6 +198,7 @@ public abstract class EnemyBase : MonoBehaviour,IDamageable
 
     IEnumerator DelayHitEffect()
     {
+        HitParticle.Play();
         _skinnedMesh.material = _hitMat;
         yield return new WaitForSeconds(0.2f);
         _skinnedMesh.material = _originalMat;

@@ -14,8 +14,6 @@ namespace MasterStylizedProjectile
 
         public Transform StartNodeTrans;
         public float Speed;
-        float LastShootTime = 0;
-        
          // Start is called before the first frame update
          private EnemyBase enemy;
          [SerializeField] private AssetReference startEffect;

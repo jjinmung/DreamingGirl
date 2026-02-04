@@ -47,7 +47,7 @@ public class UI_PlayerHPBar : UI_Base
         _currentHp = currentHp;
         Get<Slider>((int)Sliders.MainBar).value = _currentHp/_maxHp;
         Get<Slider>((int)Sliders.SubBar).value =  _currentHp/_maxHp;
-        GetText((int)Texts.HPText).text = $"{(int)currentHp}";
+        GetText((int)Texts.HPText).text = $"{Mathf.RoundToInt(_currentHp)}";
 
         //체력바 선 그리기
         float ScaleX = 1000f / _maxHp;
@@ -69,7 +69,7 @@ public class UI_PlayerHPBar : UI_Base
         _currentHp = Mathf.Max(0, _currentHp - damage); // 0 이하로 내려가지 않게 방지
         
         Get<Slider>((int)Sliders.MainBar).value = _currentHp / _maxHp;
-        GetText((int)Texts.HPText).text = $"{(int)(_currentHp)}"; // 현재 남은 피 표시
+        GetText((int)Texts.HPText).text = $"{Mathf.RoundToInt(_currentHp)}"; // 현재 남은 피 표시
 
         // 이전 애니메이션이 돌고 있다면 멈추고 새로 시작
         if (_subBarCoroutine != null)

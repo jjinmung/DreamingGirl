@@ -13,18 +13,20 @@ public class PlayerController : MonoBehaviour
     private Vector2 _inputVector;
     public enum PlayerState {Idle, Run,Attack,Dash}
     public PlayerState CurrentState = PlayerState.Idle;
-    [Header("Effects")]
+    [Header("이펙트")]
     public ParticleSystem LVPParticle;
     public ParticleSystem HealParticle;
+    public ParticleSystem StatUpParticle;
+    public ParticleSystem PactAbyssParticle;
     public TrailRenderer[] ThunderTrail;
-
-    private bool _isAttackPressed;
-
-    public AbilityID[] ActiveSkills;
+    
+    
+    [HideInInspector]public MotionTrail motionTrail;
+    [HideInInspector]public AbilityID[] ActiveSkills;
 
     private UI_Ability uiAbility;
     private bool AttackDelay = true;
-    
+    private bool _isAttackPressed;
     //UI맵핑을 위한 이벤트
     public event Action OnGetActiveSKill;
     public  event Action<int, float> OnUseActiveSKill;
@@ -47,13 +49,14 @@ public class PlayerController : MonoBehaviour
             AbilityID.None,
             AbilityID.None,
         };
+        motionTrail = FindAnyObjectByType<MotionTrail>();
+        if (motionTrail != null)
+            motionTrail.TargetSkinMeshes = GetComponentsInChildren<SkinnedMeshRenderer>();
+        motionTrail.gameObject.SetActive(false);
     }
 
     private void Start()
     {
-        //기본 공격 이벤트 구독
-        Managers.Input.OnAttack -= HandleAttackInput;
-        Managers.Input.OnAttack += HandleAttackInput;
         
         //대쉬 이벤트 구독
         Managers.Input.OnDash -= HandleDashInput;
@@ -99,12 +102,6 @@ public class PlayerController : MonoBehaviour
         Vector3 right = Camera.main.transform.right;
         forward.y = 0; right.y = 0;
         return (forward * _inputVector.y + right * _inputVector.x).normalized;
-    }
-    
-
-    private void HandleAttackInput()
-    {
-        _combat.AddBuffer("Attack");
     }
     
     private void HandleSkillInput(int slotIndex)
@@ -201,18 +198,26 @@ public class PlayerController : MonoBehaviour
         StopDashPhysics();
         _attackcollider.enabled = false;
     }
-
     public void PlayAttack(int index)
     {
         _combat.PlayAttackEffect(index);
         _attackcollider.enabled = true;
         
     }
+
+    public void OnMotionTrail()
+    {
+        motionTrail.gameObject.SetActive(true);
+    }
+    public void OffMotionTrail()
+    {
+        motionTrail.EffectOff();
+    }
+    
     public void StopDashPhysics() => _movement.StopVelocity();
 
     public void InputActive(bool isActive)
     {
-        Debug.Log("isActive");
         _movement.CanMove = isActive; 
         _combat.CanAttack = isActive;
         _interaction.CanInteract = isActive;
@@ -220,4 +225,6 @@ public class PlayerController : MonoBehaviour
         _combat.ClearBuffer();
         
     }
+    
+    
 }

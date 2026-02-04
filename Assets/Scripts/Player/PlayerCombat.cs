@@ -5,9 +5,13 @@ using UnityEngine.InputSystem;
 public class PlayerCombat : MonoBehaviour
 {
     public enum AttackType { Normal, Ice, Fire }
-    [Header("공격타입")]
+    [Header("공격 관련 변수")]
     public bool IsIceAttack = false;
     public bool IsFireAttack = false;
+    public bool IsPactAbyss=false;
+    public float FireDamageRatio = 0f;
+    public float IceDamageRatio = 0f;
+    
     [SerializeField] private ParticleSystem[] swordTrails;
     [SerializeField] private Transform[] attackEffectPos;
 

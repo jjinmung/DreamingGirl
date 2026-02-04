@@ -15,10 +15,13 @@ public class PlayerUnit : MonoBehaviour,IDamageable
     }
 
 
-    public void TakeDamage(float damage)
+    public void TakeDamage(float damage,Color color= default, bool isRandom =false)
     {
         ShowBloodEffect();
-        Managers.UI.ShowFloatingText(transform.position,$"-{damage}",Color.red,false);
+        var col = color==default ? Color.red : color;
+        Managers.UI.ShowFloatingText(transform.position,$"-{(int)damage}",col,1f);
+            
+        
         Managers.Player.TakeDamage(damage);
     }
     

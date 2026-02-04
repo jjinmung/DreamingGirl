@@ -5,7 +5,6 @@ using UnityEngine.Rendering.Universal;
 
 public class Enemy02 : EnemyBase
 {
-    private int enemyID = 2;
     private  CircleAttackRange attackRange;
     [SerializeField] private CurveProjectile projectile;
     public override void Attack()

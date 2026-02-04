@@ -32,15 +32,6 @@ namespace PixPlays.ElementalVFX
             StartCoroutine(Coroutine_BeamLogic());
             Invoke(nameof(Stop),duration);
         }
-        public override void Play()
-        {
-            _isFiring = true;
-            _currentLength = 0;
-            this.damage = damage;
-            StopAllCoroutines();
-            StartCoroutine(Coroutine_BeamLogic());
-            
-        }
 
         // VfxData를 받는 버전도 호환성을 위해 유지하되, 내부 로직은 동일하게 처리 가능
         public override void Play(VfxData data)
@@ -84,7 +75,7 @@ namespace PixPlays.ElementalVFX
                 float targetLength = Vector3.Distance(sourcePos, targetPos);
 
                 // 3. 빔이 한 번에 팍 생기는 게 아니라 _ScaleSpeed에 따라 서서히 늘어남
-                if (_currentLength < _currentLength)
+                if (_currentLength < targetLength)
                 {
                     _currentLength = Mathf.MoveTowards(_currentLength, targetLength, _ScaleSpeed * Time.deltaTime);
                 }

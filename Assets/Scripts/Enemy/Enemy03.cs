@@ -12,7 +12,7 @@ public class Enemy03 : EnemyBase
     private float beamDuration = 5f;
     private float beamRotaion = 0.7f;
 
-    private Coroutine rangeCoroutine;
+    
     
     private Vector3 _dashTargetPos;
     
@@ -177,6 +177,7 @@ public class Enemy03 : EnemyBase
         _navMeshAgent.isStopped = true;
         _animator.SetFloat("moveSpeed", 0);
         _animator.SetBool("DASH",true);
+        _rigidbody.mass = 1f;
         
         DashEffect.gameObject.SetActive(true);
         DashEffect.Play();
@@ -192,7 +193,7 @@ public class Enemy03 : EnemyBase
  
         _navMeshAgent.speed = 15f;
         _animator.SetFloat("NORMAL", 2);
-        _animator.SetFloat("moveSpeed", 2f);
+        FadeMoveFloat(2f);
         attackcollider.enabled = true;
         // NavMesh 위의 유효한 위치인지 재확인 후 이동
         if (UnityEngine.AI.NavMesh.SamplePosition(_dashTargetPos, out UnityEngine.AI.NavMeshHit hit, 2.0f, UnityEngine.AI.NavMesh.AllAreas))
@@ -226,14 +227,39 @@ public class Enemy03 : EnemyBase
         _navMeshAgent.isStopped = true;
         _navMeshAgent.speed = stat.Speed; // 원래 속도로 복구
         _animator.SetBool("DASH", false);
-        _animator.SetFloat("moveSpeed", 0);
+        FadeMoveFloat(0);
         _animator.SetFloat("NORMAL", 1);
         DashEffect.Stop();
+        _rigidbody.mass = 2000f;
         DashEffect.gameObject.SetActive(false);
         attackcollider.enabled = false;
         SetAttackArange(false,0);
         IsAttack = false;
         _behavior.SetVariableValue("IsAttack", IsAttack);
+    }
+    
+    public void FadeMoveFloat(float targetValue, float duration = 0.5f)
+    {
+        StartCoroutine(CoUpdateAnimFloat(targetValue, duration));
+    }
+
+    private IEnumerator CoUpdateAnimFloat(float targetValue, float duration)
+    {
+        float startValue = _animator.GetFloat("moveSpeed");
+        float elapsedTime = 0f;
+
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            // 0에서 1 사이의 진행률 계산
+            float nextValue = Mathf.Lerp(startValue, targetValue, elapsedTime / duration);
+        
+            _animator.SetFloat("moveSpeed", nextValue);
+            yield return null;
+        }
+
+        // 마지막에 정확한 목표값으로 설정
+        _animator.SetFloat("moveSpeed", targetValue);
     }
     #endregion
 
@@ -291,7 +317,7 @@ public class Enemy03 : EnemyBase
 
             // 2f, 2f는 각각 폭과 지속시간
             SetAttackArange(true, i, 2f, 2f, ShooBall);
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.2f);
         }
 
         IsAttack = false;
@@ -352,7 +378,7 @@ public class Enemy03 : EnemyBase
                 _dashTargetPos = transform.position + (transform.forward * maxDistance);
             }
 
-            rangeCoroutine = StartCoroutine(AnimateRangeSize(index,rayDir, targetDistance * 2f, duration,action));
+            StartCoroutine(AnimateRangeSize(index,rayDir, targetDistance * 2f, duration,action));
         }
         else
         {
@@ -382,7 +408,7 @@ public class Enemy03 : EnemyBase
         Vector3 finalSize = attackRanges[index].size;
         finalSize.y = targetY;
         attackRanges[index].size = finalSize;
-        rangeCoroutine = null;
+        
     
         // 이펙트 비활성화 및 액션 시작
         ProjectilePos.transform.rotation = Quaternion.LookRotation(dir);

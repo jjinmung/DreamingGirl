@@ -104,14 +104,11 @@ public class UIManager
 		return popup;
     }
 	
-	public void ShowFloatingText(Vector3 worldPos, string message, Color color,bool isCritical,float duration=1f)
+	public void ShowFloatingText(Vector3 pos, string message, Color color,float duration=1.2f,float size=50f,bool isRandom=false)
 	{
 		
-		// 1. 월드 좌표를 화면 좌표로 변환 (Screen Space Overlay 기준)
-		Vector3 screenPos = Camera.main.WorldToScreenPoint(worldPos);
-		// 2. ResourceManager를 통해 생성
-		var floatingText = MakeSubItem<UI_FloatingText>(Address.UI_FloatingText);
-		floatingText.GetComponent<UI_FloatingText>().Init(screenPos,message, color,isCritical,duration);
+		var floatingText = Managers.Resource.Instantiate(Address.UI_FloatingText);
+		floatingText.GetComponent<UI_FloatingText>().Init(pos,message, color,duration,size,isRandom);
 	}
 
     public void ClosePopupUI(UI_Popup popup)

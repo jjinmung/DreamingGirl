@@ -112,11 +112,9 @@ public class PlayerManager : MonoBehaviour
 
     public void LevelUp()
     {
-        var percentHp = data.currentHp / data.maxHp.TotalValue;
         AddPermanentStat(PlayerStat.MaxHP, 0.1f, true);
         AddPermanentStat(PlayerStat.Attack, 0.1f, true);
-        data.currentHp = data.maxHp.TotalValue*percentHp;
-        _playerHpBar.SetMaxHP(data.maxHp.TotalValue,data.currentHp);
+        
 
         StartCoroutine(SelectAbility());
     }
@@ -136,7 +134,7 @@ public class PlayerManager : MonoBehaviour
     IEnumerator SelectAbility()
     {
         _playerController.LVPParticle.Play();
-        Managers.UI.ShowFloatingText(Trans.position, "Level UP!", Color.yellow,false,1.5f);
+        Managers.UI.ShowFloatingText(Trans.position, "Level UP!", Color.yellow,1.5f,60);
         yield return new WaitForSeconds(1.5f);
         Managers.UI.ShowPopupUI<UI_Ability>();
         //시간 정지
@@ -145,6 +143,8 @@ public class PlayerManager : MonoBehaviour
     
     public void AddPermanentStat(PlayerStat type, float amount, bool isPercent = false)
     {
+        var percentHp = data.currentHp / data.maxHp.TotalValue;
+        
         Stat targetStat = GetStat(type);
         if (targetStat == null) return;
 
@@ -154,6 +154,11 @@ public class PlayerManager : MonoBehaviour
         // 공격 속도일 경우 애니메이터 즉시 갱신
         if (type == PlayerStat.attackSpeed)
             _playerAnim.SetFloat("AttackSpeed", data.attackSpeed.TotalValue);
+        if (type == PlayerStat.MaxHP)
+        {
+            data.currentHp = data.maxHp.TotalValue*percentHp;
+            _playerHpBar.SetMaxHP(data.maxHp.TotalValue,data.currentHp);
+        }
     }
 
     public Stat GetStat(PlayerStat type)
@@ -178,7 +183,7 @@ public class PlayerManager : MonoBehaviour
             var healamount = data.currentHp+amount <=data.maxHp.TotalValue? amount:data.maxHp.TotalValue- data.currentHp;
             data.currentHp = Mathf.Clamp(data.currentHp + healamount, 0, data.maxHp.TotalValue);
             TakeDamageAction?.Invoke(-healamount); // 기존 로직 유지
-            Managers.UI.ShowFloatingText(Trans.position, $"+{(int)healamount}", Color.green, false);
+            Managers.UI.ShowFloatingText(Trans.position, $"+{Mathf.RoundToInt(healamount)}", Color.green, 1f);
         }
 
     }

@@ -93,15 +93,14 @@ public class EnemySpawner : MonoBehaviour
         {
             enemy.SetLayerRecursively("Enemy");
             
-            var hpBar = Managers.UI.MakeSubItem<UI_EnemyHPBar>(Address.Enemy_HP_BAR);
-            var enemyBase = enemy.GetComponent<EnemyBase>();
-            hpBar.SetMaxHP(enemyBase.stat.MaxHp);
-            hpBar.GetComponentInChildren<HealthBarController>().target = enemy.transform;
 
-            enemyBase.takeDamageAction -= hpBar.TakeDamage;
-            enemyBase.takeDamageAction += hpBar.TakeDamage;
-            enemyBase.dieAcation -= hpBar.Destroy;
-            enemyBase.dieAcation += hpBar.Destroy;
+            var enemyBase = enemy.GetComponent<EnemyBase>();
+            enemyBase.EnemyHpBar.gameObject.SetActive(true);
+            enemyBase.EnemyHpBar.SetMaxHP(enemyBase.stat.MaxHp);
+            enemyBase.takeDamageAction -= enemyBase.EnemyHpBar.TakeDamage;
+            enemyBase.takeDamageAction += enemyBase.EnemyHpBar.TakeDamage;
+            enemyBase.dieAcation -= enemyBase.EnemyHpBar.SetFalse;
+            enemyBase.dieAcation += enemyBase.EnemyHpBar.SetFalse;
         }
     }
 

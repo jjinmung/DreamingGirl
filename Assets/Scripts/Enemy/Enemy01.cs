@@ -7,8 +7,9 @@ using UnityEngine.Rendering.Universal;
 public class Enemy01 : EnemyBase
 {
     [SerializeField]private DecalProjector AttackRange;
+    
+    
     private Coroutine rangeCoroutine;
-    private int enemyID = 1;
     public override void Attack()
     {
         if(isDead) return;
