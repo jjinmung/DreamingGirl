@@ -10,8 +10,8 @@ NativeFormatImporter:
   assetBundleVariant: 
 AssetOrigin:
   serializedVersion: 1
-  productId: 255608
-  packageName: Master Stylized Projectile
-  packageVersion: 1.0
-  assetPath: Assets/MasterStylizedProjectiles/Projectiles/Common/Materials/Flare6cg.mat
-  uploadId: 825804
+  productId: 164961
+  packageName: Character Auras
+  packageVersion: 1.4
+  assetPath: Assets/VFX/Projectiles/Projectiles/Common/Materials/Flare6cg.mat
+  uploadId: 724038
