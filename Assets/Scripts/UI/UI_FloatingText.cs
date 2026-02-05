@@ -23,7 +23,10 @@ public class UI_FloatingText : MonoBehaviour
         _text.fontSize = size;
         _text.color = color;
         _text.alpha = 1f;
-        var textPos =isRandom?pos+new Vector3(Random.Range(-0.5f,0.5f),0,0):pos;
+        var randomX = Random.Range(-0.5f, 0.5f);
+        var randomYZ = Random.Range(-0.2f, -0.5f);
+        
+        var textPos =isRandom?pos+new Vector3(randomX,randomYZ,-randomYZ):pos;
         transform.position = textPos;
         // 2. 크리티컬 연출 추가
         if (isRandom)

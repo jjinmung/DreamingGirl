@@ -7,7 +7,7 @@
       "Damage": "50",
       "Speed": "1",
       "AttackDelay": "5",
-      "Exp": "30"
+      "Exp": "20"
     },
     {
       "ID": "2",
@@ -16,12 +16,12 @@
       "Damage": "45",
       "Speed": "0.7",
       "AttackDelay": "5",
-      "Exp": "35"
+      "Exp": "25"
     },
     {
       "ID": "3",
       "Name": "waterBoss",
-      "MaxHp": "500",
+      "MaxHp": "1000",
       "Damage": "50",
       "Speed": "1",
       "AttackDelay": "4",
@@ -31,7 +31,7 @@
   "PlayerBasicStat": [
     {
       "ID": "1",
-      "MaxHp": "500",
+      "MaxHp": "300",
       "Damage": "30",
       "Speed": "5",
       "DashCooldown": "5",

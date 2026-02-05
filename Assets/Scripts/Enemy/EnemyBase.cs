@@ -90,10 +90,13 @@ public abstract class EnemyBase : MonoBehaviour,IDamageable
         if (isDead) return;
         stat.currentHp = Mathf.Clamp(stat.currentHp - damage, 0, stat.MaxHp);
         var col = color == default ? Color.white : color;
-        if(color ==default)
+        if(color ==default)//일반 데미지
             Managers.UI.ShowFloatingText(transform.position,$"-{(int)damage}",col,1f);
-        else
+        else if(color == Color.red)//크리티컬 데미지
+            Managers.UI.ShowFloatingText(transform.position,$"-{(int)damage}",col,1f,50f,isRandom);
+        else//추가 데미지
             Managers.UI.ShowFloatingText(transform.position,$"-{(int)damage}",col,1f,40f,isRandom);
+            
         
         if (stat.currentHp <= 0)
         {

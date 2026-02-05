@@ -183,16 +183,14 @@ public class UI_PassiveSkill : UI_Popup
             // 1. 재화 차감 및 데이터 추가
             Managers.Player.AddGold(-skillData.price);
             Managers.Data.SaveData.player.ownedPassives.Add(selectedSkillID);
-            Managers.Data.SaveData.player.gold -= skillData.price;
+            
             // 2. 패시브 효과 즉시 적용 (Player에게 알림)
             //skillData.GetEffect().Apply();
 
             // 3. UI 갱신
             RefreshUI();
             ShowInfo(selectedSkillID);
-        
-            // 4. 저장
-            Managers.Data.SaveGame();
+            
             Debug.Log($"{selectedSkillID} 구매 성공!");
         }
         else

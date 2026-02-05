@@ -1,4 +1,5 @@
 
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
@@ -76,6 +77,11 @@ public class Enemy02 : EnemyBase
     public void HitFinish()
     {
         _navMeshAgent.isStopped = false;
+    }
+    //죽을 때 남은 이펙트 제거
+    private void OnDisable()
+    {
+        projectile.Stop();
     }
 
     #endregion

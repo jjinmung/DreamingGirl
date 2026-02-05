@@ -1,8 +1,6 @@
 using UnityEngine;
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using static Define;
 
 public class PlayerManager : MonoBehaviour
@@ -92,6 +90,21 @@ public class PlayerManager : MonoBehaviour
         data.currentHp = Mathf.Clamp(data.currentHp - damage, 0, data.maxHp.TotalValue);
         TakeDamageAction?.Invoke(damage);
         if (data.currentHp <= 0) Die();
+        if (_playerCombat.IsPactAbyss)
+        {
+            if (data.currentHp / data.maxHp.TotalValue <= _playerCombat.ParctAyssStartRatio)
+            {
+                if (!_playerController.PactAbyssParticle.isPlaying)
+                {
+                    _playerController.PactAbyssParticle.Play();
+                }
+                
+            }
+            else
+            {
+                _playerController.PactAbyssParticle.Stop();
+            }
+        }
     }
 
     public void Die() => DieAcation?.Invoke();
@@ -99,8 +112,10 @@ public class PlayerManager : MonoBehaviour
     public void AddGold(int amount)
     {
         data.gold += amount;
-        
         OnDataChanged?.Invoke();
+        //데이터 세이브
+        Managers.Data.SaveData.player.gold += amount;
+        Managers.Data.SaveGame();
     }
     
 
@@ -144,7 +159,7 @@ public class PlayerManager : MonoBehaviour
     public void AddPermanentStat(PlayerStat type, float amount, bool isPercent = false)
     {
         var percentHp = data.currentHp / data.maxHp.TotalValue;
-        
+
         Stat targetStat = GetStat(type);
         if (targetStat == null) return;
 
@@ -158,6 +173,14 @@ public class PlayerManager : MonoBehaviour
         {
             data.currentHp = data.maxHp.TotalValue*percentHp;
             _playerHpBar.SetMaxHP(data.maxHp.TotalValue,data.currentHp);
+            if(!isPercent)
+                Managers.UI.ShowFloatingText(Trans.position, $"+{amount}", Color.blue,1.5f,60);
+        }
+
+        if (type == PlayerStat.Attack)
+        {
+            if(!isPercent)
+                Managers.UI.ShowFloatingText(Trans.position, $"+{amount}", Color.magenta,1.5f,60);
         }
     }
 
@@ -209,7 +232,7 @@ public class PlayerManager : MonoBehaviour
         _playerRb.useGravity = isActive;
         _playerHpBar.gameObject.SetActive(isActive);
         _playerController.InputActive(isActive);
-        
+        _playerController.DivineOrbs.gameObject.SetActive(isActive);
         if (isActive)
         {
             _playerController.gameObject.SetLayerRecursively("Char");

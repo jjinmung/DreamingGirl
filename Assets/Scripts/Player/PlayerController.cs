@@ -19,7 +19,7 @@ public class PlayerController : MonoBehaviour
     public ParticleSystem StatUpParticle;
     public ParticleSystem PactAbyssParticle;
     public TrailRenderer[] ThunderTrail;
-    
+    public DynamicParticleRotator DivineOrbs;
     
     [HideInInspector]public MotionTrail motionTrail;
     [HideInInspector]public AbilityID[] ActiveSkills;
@@ -34,14 +34,17 @@ public class PlayerController : MonoBehaviour
     private float[] _lastSkillTime = new  float[5]{-999f,-999f,-999f,-999f,-999f};
     private void Awake()
     {
+        //컴포넌트 캐싱
         _movement = GetComponent<PlayerMovement>();
         _combat = GetComponent<PlayerCombat>();
         _interaction= GetComponentInChildren<PlayerInteraction>();
         _animator = GetComponent<Animator>();
         _attackcollider= GetComponentInChildren<SphereCollider>();
+        DivineOrbs = GetComponentInChildren<DynamicParticleRotator>();
         
         _attackcollider.enabled = false;
         
+        //액티브스킬 초기화
         ActiveSkills = new AbilityID[4]
         {
             AbilityID.None,
@@ -49,10 +52,13 @@ public class PlayerController : MonoBehaviour
             AbilityID.None,
             AbilityID.None,
         };
+        
+        //이펙트 초기화 
         motionTrail = FindAnyObjectByType<MotionTrail>();
         if (motionTrail != null)
             motionTrail.TargetSkinMeshes = GetComponentsInChildren<SkinnedMeshRenderer>();
         motionTrail.gameObject.SetActive(false);
+        DivineOrbs.SetOrbs(0);
     }
 
     private void Start()

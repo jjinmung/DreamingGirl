@@ -288,7 +288,7 @@ public class StageManager : MonoBehaviour
         switch (currentRoomNode.type)
         {
             case RoomType.Monster:
-                int spawnCount = currentDepth * Random.Range(0, 2) + 5; 
+                int spawnCount = Random.Range(-3, 3) + currentDepth+5; 
                 enemySpawner.SpawnCount = spawnCount;
                 enemySpawner.SpawnEnemys();
                 break;

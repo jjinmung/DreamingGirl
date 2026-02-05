@@ -1,6 +1,8 @@
 using System;
 using Unity.VisualScripting;
 using UnityEngine;
+using Random = UnityEngine.Random;
+
 
 public class PlayerAttack : MonoBehaviour
 {
@@ -14,7 +16,19 @@ public class PlayerAttack : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Enemy"))
         {
-            other.gameObject.GetComponent<IDamageable>().TakeDamage(player.Damage);;
+            var ratio = Managers.Player.Control.PactAbyssParticle.isPlaying
+                ? 1+Managers.Player.Combat.ParctAyssAttackRatio
+                : 1;
+            float critcal =Random.Range(0, 100);
+            if (critcal <= Managers.Player.Data.criticalChance.TotalValue)//크리티컬일 때
+            {
+                other.gameObject.GetComponent<IDamageable>().TakeDamage(player.Damage*1.5f*ratio,Color.red);
+            }
+            else
+            {
+                other.gameObject.GetComponent<IDamageable>().TakeDamage(player.Damage*ratio);   
+            }
+            
             
             Managers.Player.OnDamageDealt?.Invoke(player.Damage);
             var enemyBase = other.gameObject.GetComponent<EnemyBase>();

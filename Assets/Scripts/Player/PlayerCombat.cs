@@ -9,6 +9,8 @@ public class PlayerCombat : MonoBehaviour
     public bool IsIceAttack = false;
     public bool IsFireAttack = false;
     public bool IsPactAbyss=false;
+    public float ParctAyssAttackRatio = 0f;
+    public float ParctAyssStartRatio = 0;
     public float FireDamageRatio = 0f;
     public float IceDamageRatio = 0f;
     
