@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class PlayerInteraction : MonoBehaviour
@@ -50,5 +51,11 @@ public class PlayerInteraction : MonoBehaviour
                 Debug.Log("상호작용 범위 벗어남");
             }
         }
+    }
+
+    private void OnDestroy()
+    {
+        if (Managers.Input == null) return;
+        Managers.Input.OnInteract -= HandleInteractInput;
     }
 }

@@ -57,6 +57,7 @@ public class CameraManager : MonoBehaviour
         camSeq.AppendInterval(3f); 
 
         camSeq.AppendCallback(() => {
+            Managers.Resource.Clear();
             SceneManager.sceneLoaded += OnBattleSceneLoaded;
             SceneManager.LoadScene("BattleScene");
         });
@@ -201,6 +202,39 @@ public class CameraManager : MonoBehaviour
             
             _quarterViewCam.Priority = 20;
             _isQuarterView = true;
+        }
+    }
+    
+    public void BattleToLoby()
+    {
+        Sequence camSeq = DOTween.Sequence();
+        camSeq.AppendInterval(1f);
+        
+        camSeq.AppendCallback(() =>
+        {
+            var battleUI = Managers.UI.SceneUI as UI_BattleScene;
+            battleUI.AllUIActive(false);
+            battleUI.FadeOut(1f);
+        });
+
+        camSeq.AppendInterval(2f); 
+
+        camSeq.AppendCallback(() =>
+        {
+            Managers.Resource.Clear();
+            Managers.Stage.Clear();
+            SceneManager.sceneLoaded += OnLobySceneLoaded;
+            SceneManager.LoadScene("LobyScene");
+        });
+    }
+
+    private void OnLobySceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "LobyScene")
+        {
+            LobyInit();
+            Managers.UI.ShowSceneUI<UI_LobyScene>();
+            Managers.Data.ClearAbility();
         }
     }
 

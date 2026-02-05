@@ -149,7 +149,7 @@ AnimatorStateMachine:
     m_Position: {x: -10, y: -90, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1726298152503628496}
-    m_Position: {x: 270, y: -90, z: 0}
+    m_Position: {x: 270, y: -80, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 3750402820996174759}
     m_Position: {x: 190, y: 0, z: 0}
@@ -200,6 +200,12 @@ AnimatorController:
   - m_Name: DEATH 0
     m_Type: 9
     m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 9100000}
+  - m_Name: MoveAnim
+    m_Type: 1
+    m_DefaultFloat: 1
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 9100000}
@@ -333,13 +339,13 @@ AnimatorState:
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
   m_Mirror: 0
-  m_SpeedParameterActive: 0
+  m_SpeedParameterActive: 1
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
   m_Motion: {fileID: -1770837997721470756}
   m_Tag: 
-  m_SpeedParameter: 
+  m_SpeedParameter: MoveAnim
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 

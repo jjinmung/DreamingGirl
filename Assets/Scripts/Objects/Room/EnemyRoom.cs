@@ -3,7 +3,6 @@ using UnityEngine;
 public class EnemyRoom :Room
 {
     private EnemySpawner _spawner;
-    public SpawnData[] enemiesToSpawn;
     public int spawnCount;
     public EnemySpawner Spawner
     {

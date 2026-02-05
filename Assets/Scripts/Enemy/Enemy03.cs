@@ -99,7 +99,6 @@ public class Enemy03 : EnemyBase
 
     protected override void TakeDamageHandler(float damage)
     {
-        _navMeshAgent.isStopped = true;
         hitEffect();
     }
 
@@ -192,7 +191,7 @@ public class Enemy03 : EnemyBase
         _navMeshAgent.isStopped = false;
  
         _navMeshAgent.speed = 15f;
-        _animator.SetFloat("NORMAL", 2);
+        _animator.SetFloat("MoveAnim", 2);
         FadeMoveFloat(2f);
         attackcollider.enabled = true;
         // NavMesh 위의 유효한 위치인지 재확인 후 이동
@@ -228,7 +227,7 @@ public class Enemy03 : EnemyBase
         _navMeshAgent.speed = stat.Speed; // 원래 속도로 복구
         _animator.SetBool("DASH", false);
         FadeMoveFloat(0);
-        _animator.SetFloat("NORMAL", 1);
+        _animator.SetFloat("MoveAnim", 1);
         DashEffect.Stop();
         _rigidbody.mass = 2000f;
         DashEffect.gameObject.SetActive(false);

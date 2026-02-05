@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System;
+using UnityEngine.SceneManagement;
 
 public class InputManager : MonoBehaviour
 {
@@ -15,6 +16,8 @@ public class InputManager : MonoBehaviour
     public event Action OnSkill3;
     public event Action OnSkill4;
     public bool IsAttackPressed { get; private set; }
+
+    private bool IsEscActive = false;
     private void Awake()
     {
         _playerAction = new PlayerAction();
@@ -38,8 +41,29 @@ public class InputManager : MonoBehaviour
         _playerAction.Player.Skill2.performed += ctx => OnSkill2?.Invoke();
         _playerAction.Player.Skill3.performed += ctx => OnSkill3?.Invoke();
         _playerAction.Player.Skill4.performed += ctx => OnSkill4?.Invoke();
-        
-        
+
+        _playerAction.Player.ESC.performed += ctx =>
+        {
+            var scene = SceneManager.GetActiveScene();
+            if (scene.name.Equals("BattleScene")&&Managers.Stage.CanEsc)
+            {
+                if (!IsEscActive)
+                {
+                    Managers.UI.ShowPopupUI<UI_Pause>();
+                    Time.timeScale = 0f;
+                }
+                else
+                {
+                    Managers.UI.ClosePopupUI();
+                    Time.timeScale = 1f;
+                }
+
+                IsEscActive = !IsEscActive;
+
+            }
+           
+        };
+
     }
 
     private void OnDisable()

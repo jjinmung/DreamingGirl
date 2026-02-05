@@ -16485,7 +16485,7 @@ GameObject:
   - component: {fileID: 1287324843926803331}
   - component: {fileID: 1739649615019929484}
   - component: {fileID: 7112916430226892496}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Basic Orb 2 (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21335,6 +21335,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 182f937f166944748d9e52c03a94f6f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  attackInterval: 0.5
 --- !u!1 &1908050427687602971
 GameObject:
   m_ObjectHideFlags: 0
@@ -26755,7 +26756,7 @@ GameObject:
   - component: {fileID: 4679053783996251257}
   - component: {fileID: 5962615958200284583}
   - component: {fileID: 5943190488104530560}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Basic Orb 2 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -31605,6 +31606,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 182f937f166944748d9e52c03a94f6f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  attackInterval: 0.5
 --- !u!1 &3055489722776172288
 GameObject:
   m_ObjectHideFlags: 0
@@ -32244,7 +32246,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2237009920964865675}
   - component: {fileID: 139757631195124851}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Divine_Orbs
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -32282,7 +32284,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa2b02d4c6a843b0822a8691b02c0062, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotateSpeed: 100
+  rotateSpeed: 150
   radius: 1.5
 --- !u!1 &4148167245713531341
 GameObject:
@@ -32439,7 +32441,7 @@ GameObject:
   - component: {fileID: 8892565087901101798}
   - component: {fileID: 6011768923998063374}
   - component: {fileID: 3176044456679120225}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Basic Orb 2 (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -37289,6 +37291,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 182f937f166944748d9e52c03a94f6f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  attackInterval: 0.5
 --- !u!1 &4457830785820387705
 GameObject:
   m_ObjectHideFlags: 0
@@ -37302,7 +37305,7 @@ GameObject:
   - component: {fileID: 468042236367491732}
   - component: {fileID: 7536484904164997564}
   - component: {fileID: 2884167776834185999}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Basic Orb 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42152,6 +42155,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 182f937f166944748d9e52c03a94f6f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  attackInterval: 0.5
 --- !u!1 &4575518983531726393
 GameObject:
   m_ObjectHideFlags: 0

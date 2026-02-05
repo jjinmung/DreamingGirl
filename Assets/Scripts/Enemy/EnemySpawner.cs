@@ -9,13 +9,20 @@ using Random = UnityEngine.Random;
 public class SpawnData
 {
     public int ID; 
-    public float spawnWeight;      
+    public float spawnWeight;
+
+    public SpawnData(int id, float weight)
+    {
+        ID = id;
+        spawnWeight = weight;
+    }
 }
 
 public class EnemySpawner : MonoBehaviour
 {
     public EnemyRoom Room;
     public GameObject[] PatrolPoints;
+
     
     public float spawnWidth = 10f; // 가로 길이 (X축)
     public float spawnDepth = 5f;  // 세로 길이 (Z축)
@@ -106,15 +113,15 @@ public class EnemySpawner : MonoBehaviour
 
     private SpawnData GetWeightedRandomEnemy()
     {
-        if (Room.enemiesToSpawn.Length == 0) return null;
+        if (Managers.Stage.spawnDatas.Length == 0) return null;
 
         // 1. 가중치 기반 적 선택 로직 
-        float totalWeight = Room.enemiesToSpawn.Sum(data => data.spawnWeight);
+        float totalWeight = Managers.Stage.spawnDatas.Sum(data => data.spawnWeight);
         float pivot = Random.Range(0, totalWeight);
         float cumulative = 0;
         SpawnData selectedEnemy = null;
 
-        foreach (var data in Room.enemiesToSpawn)
+        foreach (var data in Managers.Stage.spawnDatas)
         {
             cumulative += data.spawnWeight;
             if (pivot <= cumulative)

@@ -63,18 +63,22 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
-        
-        //대쉬 이벤트 구독
+        // 안전하게 기존 구독 해제 후 재등록
         Managers.Input.OnDash -= HandleDashInput;
         Managers.Input.OnDash += HandleDashInput;
-        
-        // 스킬 이벤트 구독
-        Managers.Input.OnSkill1 += () => HandleSkillInput(1);
-        Managers.Input.OnSkill2 += () => HandleSkillInput(2);
-        Managers.Input.OnSkill3 += () => HandleSkillInput(3);
-        Managers.Input.OnSkill4 += () => HandleSkillInput(4);
-        
+    
+        // 람다 대신 메서드 참조를 위해 수정 (Action<int>를 지원하지 않는다면 아래처럼)
+        Managers.Input.OnSkill1 -= InputSkill1; Managers.Input.OnSkill1 += InputSkill1;
+        Managers.Input.OnSkill2 -= InputSkill2; Managers.Input.OnSkill2 += InputSkill2;
+        Managers.Input.OnSkill3 -= InputSkill3; Managers.Input.OnSkill3 += InputSkill3;
+        Managers.Input.OnSkill4 -= InputSkill4; Managers.Input.OnSkill4 += InputSkill4;
     }
+
+// 델리게이트용 래핑 메서드들
+    private void InputSkill1() => HandleSkillInput(1);
+    private void InputSkill2() => HandleSkillInput(2);
+    private void InputSkill3() => HandleSkillInput(3);
+    private void InputSkill4() => HandleSkillInput(4);
     private void FixedUpdate()
     {
         _inputVector = Managers.Input.GetMoveInput();
@@ -231,6 +235,19 @@ public class PlayerController : MonoBehaviour
         _combat.ClearBuffer();
         
     }
-    
+    private void OnDestroy()
+    {
+        // 내가 죽을 때, 매니저에게 내 이름 빼달라고 확실히 말하기
+        if (Managers.Input != null)
+        {
+            Managers.Input.OnDash -= HandleDashInput;
+        
+            // 람다식(Skill1~4)들도 메서드로 빼서 여기서 다 빼줘야 합니다!
+            Managers.Input.OnSkill1 -= InputSkill1;
+            Managers.Input.OnSkill2 -= InputSkill2;
+            Managers.Input.OnSkill3 -= InputSkill3;
+            Managers.Input.OnSkill4 -= InputSkill4;
+        }
+    }
     
 }

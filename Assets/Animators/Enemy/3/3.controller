@@ -315,7 +315,7 @@ AnimatorState:
   m_TimeParameterActive: 0
   m_Motion: {fileID: -8634130053587902264}
   m_Tag: 
-  m_SpeedParameter: NORMAL
+  m_SpeedParameter: MoveAnim
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
@@ -527,7 +527,7 @@ AnimatorController:
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 9100000}
-  - m_Name: NORMAL
+  - m_Name: MoveAnim
     m_Type: 1
     m_DefaultFloat: 1
     m_DefaultInt: 0

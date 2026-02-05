@@ -11,7 +11,8 @@ public class StageManager : MonoBehaviour
 {
     public event Action ExitRoom;
     public event Action EnterRoom;
-    
+
+    public bool CanEsc = true;
     
     public int StageCount = 10;
     [Range(0, 1f)]
@@ -20,7 +21,11 @@ public class StageManager : MonoBehaviour
     public int TotalGold;
     public float PlayTime;
     public int TotalKill;
-    
+    public SpawnData[] spawnDatas = new SpawnData[2]
+    {
+        new SpawnData(1,10f),
+        new SpawnData(2,10f),
+    };
     private List<List<RoomNode>> stageMap = new();
     private RoomNode currentRoomNode;
     private RoomNode lobyNode;
@@ -164,6 +169,7 @@ public class StageManager : MonoBehaviour
 
     public void OnExitRoom(Door exitDoor)
     {
+        CanEsc = false;
         currentExitDoor = exitDoor;
         doorIndex = currentRoom.doors.IndexOf(exitDoor);
         ExitRoom?.Invoke();
@@ -280,6 +286,8 @@ public class StageManager : MonoBehaviour
         
         Managers.Player.EnterRoom();
         _battleUI.SetMap(currentRoomNode.nextNodes, currentDepth);
+
+        CanEsc = true;
     }
     
 
@@ -288,7 +296,8 @@ public class StageManager : MonoBehaviour
         switch (currentRoomNode.type)
         {
             case RoomType.Monster:
-                int spawnCount = Random.Range(-3, 3) + currentDepth+5; 
+                int spawnCount = Random.Range(-2, 4) + currentDepth+5; 
+                spawnDatas[1].spawnWeight=currentDepth*2;
                 enemySpawner.SpawnCount = spawnCount;
                 enemySpawner.SpawnEnemys();
                 break;
@@ -396,5 +405,41 @@ public class StageManager : MonoBehaviour
     {
         TotalGold += amount;
         Managers.UI.ShowFloatingText(Managers.Player.Trans.position, $"+{amount}gold", Color.yellow, 1.5f);
+    }
+
+    public void Clear()
+    {
+        // 1. 코루틴 중단 (실행 중인 이동/연출 코루틴 정지)
+        StopAllCoroutines();
+
+        // 2. 이벤트 구독 해제 (매우 중요)
+        ExitRoom = null;
+        EnterRoom = null;
+
+        // 3. 리스트 및 노드 데이터 초기화
+        foreach (var layer in stageMap)
+        {
+            foreach (var node in layer)
+            {
+                node.nextNodes.Clear();
+            }
+
+            layer.Clear();
+        }
+
+        stageMap.Clear();
+
+        // 4. 컴포넌트 및 외부 객체 참조 제거
+        currentRoom = null;
+        currentRoomNode = null;
+        lobyNode = null;
+        enemySpawner = null;
+        currentExitDoor = null;
+        _battleUI = null;
+        surface = null;
+        
+        
+        currentDepth = 0;
+        killCount = 0;
     }
 }

@@ -15,10 +15,15 @@ public class fireTile : MonoBehaviour
     
     public float DamageInterval = 1.0f; // 데미지 주기 (1초)
     private float _nextDamageTime = 0f;  // 다음 데미지 발생 시간 저
-    private void Start()
+    private void Awake()
     {
         _collider = GetComponent<BoxCollider>();
         effect =GetComponentInChildren<CFXR_Effect>();
+        
+    }
+
+    private void OnEnable()
+    {
         playFire();
     }
 

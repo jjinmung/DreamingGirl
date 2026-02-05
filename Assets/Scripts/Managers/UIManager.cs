@@ -10,6 +10,7 @@ public class UIManager
 
     Stack<UI_Popup> _popupStack = new Stack<UI_Popup>();
     UI_Scene _sceneUI = null;
+    public UI_Scene SceneUI => _sceneUI;
     public GameObject Root
     {
         get

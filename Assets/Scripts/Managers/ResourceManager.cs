@@ -205,6 +205,7 @@ public class ResourceManager : MonoBehaviour
         }
         _resources.Clear();
     }
+    
 }
 
 

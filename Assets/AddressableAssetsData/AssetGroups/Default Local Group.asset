@@ -166,6 +166,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: be27d5ef5c1c1704d9fdd2c8f736b935
+    m_Address: Assets/Prefabs/UI/Popup/UI_Pause.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: beb99d1ccb44833489d778aa855e64fa
     m_Address: Assets/Prefabs/Map/MonsterMap/2DoorMonsterRoom_2.prefab
     m_ReadOnly: 0

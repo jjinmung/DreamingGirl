@@ -151,9 +151,11 @@ public abstract class EnemyBase : MonoBehaviour,IDamageable
         TakeDamage(damagePerSecond,Color.cyan,true);
         stat.Speed *= 0.5f;
         _behavior.SetVariableValue("Speed", stat.Speed);
+        _animator.SetFloat("MoveAnim", 0.5f);
         yield return new WaitForSeconds(duration); // 3초 
         stat.Speed *= 2f;
         _behavior.SetVariableValue("Speed", stat.Speed);
+        _animator.SetFloat("MoveAnim", 1f);
         if (fireParticle != null) IceParticle.Stop();
     }
 

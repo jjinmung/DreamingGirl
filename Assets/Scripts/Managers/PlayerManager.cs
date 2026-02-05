@@ -75,6 +75,7 @@ public class PlayerManager : MonoBehaviour
         {
             _playerController.ActiveSkills[i] = AbilityID.None;
         }
+        _playerController.PactAbyssParticle.Stop();
     }
 
     void SubscribeEvent()
@@ -92,18 +93,7 @@ public class PlayerManager : MonoBehaviour
         if (data.currentHp <= 0) Die();
         if (_playerCombat.IsPactAbyss)
         {
-            if (data.currentHp / data.maxHp.TotalValue <= _playerCombat.ParctAyssStartRatio)
-            {
-                if (!_playerController.PactAbyssParticle.isPlaying)
-                {
-                    _playerController.PactAbyssParticle.Play();
-                }
-                
-            }
-            else
-            {
-                _playerController.PactAbyssParticle.Stop();
-            }
+            AdjustPactAbyss();
         }
     }
 
@@ -123,7 +113,22 @@ public class PlayerManager : MonoBehaviour
     {
         OnLevelUp?.Invoke(amount);
     }
-    
+
+    public void AdjustPactAbyss()
+    {
+        if (data.currentHp / data.maxHp.TotalValue <= _playerCombat.ParctAyssStartRatio)
+        {
+            if(_playerController.PactAbyssParticle.isPlaying) return;
+            _playerController.PactAbyssParticle.Play();
+            AddPermanentStat(PlayerStat.Attack,_playerCombat.ParctAyssAttackRatio,true);
+        }
+        else
+        {
+            if(!_playerController.PactAbyssParticle.isPlaying) return;
+            _playerController.PactAbyssParticle.Stop();
+            AddPermanentStat(PlayerStat.Attack,-_playerCombat.ParctAyssAttackRatio,true);
+        }
+    }
 
     public void LevelUp()
     {
@@ -136,14 +141,13 @@ public class PlayerManager : MonoBehaviour
 
     public void LevelReset()
     {
-        for (int i = 0; i < data.level-1; i++)
-        {
-            AddPermanentStat(PlayerStat.MaxHP, -0.1f, true);
-            AddPermanentStat(PlayerStat.Attack, -0.1f, true);
-        }
         data.level = 1;
         data.currentExp = 0;
         data.nextLevelExp = 100;
+        data.maxHp.flatBonus = 0;
+        data.maxHp.percentBonus = 0;
+        data.damage.flatBonus = 0;
+        data.damage.percentBonus = 0;
     }
 
     IEnumerator SelectAbility()
@@ -155,6 +159,7 @@ public class PlayerManager : MonoBehaviour
         //시간 정지
         Time.timeScale = 0;
     }
+    
     
     public void AddPermanentStat(PlayerStat type, float amount, bool isPercent = false)
     {
@@ -173,13 +178,13 @@ public class PlayerManager : MonoBehaviour
         {
             data.currentHp = data.maxHp.TotalValue*percentHp;
             _playerHpBar.SetMaxHP(data.maxHp.TotalValue,data.currentHp);
-            if(!isPercent)
+            if(!isPercent&&amount>0)
                 Managers.UI.ShowFloatingText(Trans.position, $"+{amount}", Color.blue,1.5f,60);
         }
 
         if (type == PlayerStat.Attack)
         {
-            if(!isPercent)
+            if(!isPercent&&amount>0)
                 Managers.UI.ShowFloatingText(Trans.position, $"+{amount}", Color.magenta,1.5f,60);
         }
     }
@@ -207,6 +212,11 @@ public class PlayerManager : MonoBehaviour
             data.currentHp = Mathf.Clamp(data.currentHp + healamount, 0, data.maxHp.TotalValue);
             TakeDamageAction?.Invoke(-healamount); // 기존 로직 유지
             Managers.UI.ShowFloatingText(Trans.position, $"+{Mathf.RoundToInt(healamount)}", Color.green, 1f);
+            
+            if (_playerCombat.IsPactAbyss)
+            {
+                AdjustPactAbyss();
+            }
         }
 
     }
@@ -255,6 +265,10 @@ public class PlayerManager : MonoBehaviour
             _playerController.StopDashPhysics();
             _playerController.CurrentState = PlayerController.PlayerState.Idle;
             _playerAnim.SetFloat("MOVE", 0);
+        }
+        else
+        {
+            PlayerInit();
         }
     }
     public void FadeMoveFloat(float targetValue, float duration = 0.5f)

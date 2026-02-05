@@ -102,6 +102,9 @@ public class UI_PlayerHPBar : UI_Base
     public void Destroy()
     {
         Managers.Resource.Destroy(gameObject);
+        Managers.Player.TakeDamageAction-=TakeDamage;
+        Managers.Player.DieAcation -= Destroy;
+
     }
 
 }

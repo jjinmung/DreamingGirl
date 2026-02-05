@@ -111,7 +111,6 @@ public class DataManager
         // 3. JSON 변환 및 저장
         string json = JsonConvert.SerializeObject(SaveData, Formatting.Indented);
         File.WriteAllText(CurrentSavePath, json);
-        Debug.Log($"Saved. Total PlayTime: {GetFormattedPlayTime()}");
     }
 
     public void LoadGame(bool isNew = false)
@@ -168,15 +167,12 @@ public class DataManager
         SaveData data = JsonConvert.DeserializeObject<SaveData>(json);
 
         // 슬롯에 표시될 텍스트 예시: "마지막 접속 시간 : 2023-10-27 15:30 \n 플레이 시간 : 00:00:00 \n 현재 골드 : 100"
-        return $" 마지막 접속 시간 : {data.settings.lastSaveDate}\n 플레이 시간 : {GetFormattedPlayTime()}\n " +
+        return $" 마지막 접속 시간 : {data.settings.lastSaveDate}\n 플레이 시간 : {GetFormattedPlayTime(data.settings.playTime)}\n " +
                $"현재 골드 : {data.player.gold}";
     }
     
-    public string GetFormattedPlayTime()
+    public string GetFormattedPlayTime(float totalSeconds )
     {
-        // 누적 시간 + 현재 세션 진행 시간
-        float totalSeconds = SaveData.settings.playTime;
-        
         TimeSpan t = TimeSpan.FromSeconds(totalSeconds);
         return string.Format("{0:D2}:{1:D2}:{2:D2}", 
             t.Hours + (t.Days * 24), // 24시간 넘어가도 시간으로 표시
