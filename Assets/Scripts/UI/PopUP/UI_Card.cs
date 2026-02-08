@@ -30,7 +30,8 @@ public class UI_Card : UI_Base
 
     enum Texts
     {
-        Card_Text,
+        NameText,
+        DescriptionText,
     }
 
 
@@ -48,8 +49,10 @@ public class UI_Card : UI_Base
         if (abilityInstance != null)
         {
             GetImage((int)Images.Card_Icon).sprite = abilityInstance.data.icon;
-            if(GetText((int)Texts.Card_Text)!=null)
-                GetText((int)Texts.Card_Text).text = abilityInstance.data.description[abilityInstance.stack];
+            if(GetText((int)Texts.DescriptionText)!=null)
+                GetText((int)Texts.DescriptionText).text = abilityInstance.data.description[abilityInstance.stack];
+            if (GetText((int)Texts.NameText) != null)
+                GetText((int)Texts.NameText).text = abilityInstance.data.abilityName;
             var stack = abilityInstance.stack;
             for (int i = 0; i < stack; i++)
             {

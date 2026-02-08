@@ -11,6 +11,11 @@ public static class Extension
 		UI_Base.BindEvent(go, action, type);
 	}
 	
+	public static void ClearEvent(this GameObject go)
+	{
+		UI_Base.EventClear(go);
+	}
+	
 	public static void SetLayerRecursively(this GameObject obj, string layer)
 	{
 		var newLayer = LayerMask.NameToLayer(layer);

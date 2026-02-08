@@ -34,4 +34,12 @@ public class UI_EventHandler : MonoBehaviour, IPointerClickHandler, IDragHandler
 		if (OnExitHandler != null)
 			OnExitHandler.Invoke(eventData);
 	}
+
+	public void ClearEvent()
+	{
+		OnClickHandler = null;
+		OnDragHandler = null;
+		OnEnterHandler = null;
+		OnExitHandler = null;
+	}
 }

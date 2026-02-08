@@ -237,16 +237,18 @@ public class PlayerController : MonoBehaviour
     }
     private void OnDestroy()
     {
-        // 내가 죽을 때, 매니저에게 내 이름 빼달라고 확실히 말하기
-        if (Managers.Input != null)
+        if (Managers.Instance != null) 
         {
-            Managers.Input.OnDash -= HandleDashInput;
-        
-            // 람다식(Skill1~4)들도 메서드로 빼서 여기서 다 빼줘야 합니다!
-            Managers.Input.OnSkill1 -= InputSkill1;
-            Managers.Input.OnSkill2 -= InputSkill2;
-            Managers.Input.OnSkill3 -= InputSkill3;
-            Managers.Input.OnSkill4 -= InputSkill4;
+            // 인스턴스가 있을 때만 안전하게 이벤트 해제
+            var input = Managers.Input; 
+            if (input != null)
+            {
+                input.OnDash -= HandleDashInput;
+                input.OnSkill1 -= InputSkill1;
+                input.OnSkill2 -= InputSkill2;
+                input.OnSkill3 -= InputSkill3;
+                input.OnSkill4 -= InputSkill4;
+            }
         }
     }
     

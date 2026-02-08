@@ -68,6 +68,13 @@ public abstract class UI_Base : MonoBehaviour
 		}
 	}
 	
+	public static void EventClear(GameObject go)
+	{
+		UI_EventHandler evt = go.GetComponent<UI_EventHandler>();
+		if(evt!=null)
+			evt.ClearEvent();
+	}
+	
 	protected virtual void OnEnter(PointerEventData eventData)
 	{
 		eventData.pointerEnter.transform.localScale = new Vector3(1.2f, 1.2f, 1.2f);
