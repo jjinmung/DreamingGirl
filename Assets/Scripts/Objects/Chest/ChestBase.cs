@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
 
@@ -12,7 +13,7 @@ public class ChestBase:MonoBehaviour,IInteractable
     {
         ChsetLid.DOLocalRotate(Open,1f).SetEase(Ease.InOutQuad);
     }
-    public void OnInteract()
+    public async Task OnInteract()
     {
         if (_canInteract)
         {

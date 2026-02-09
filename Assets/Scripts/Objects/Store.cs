@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using DG.Tweening;
 using Unity.Cinemachine;
 using UnityEngine;
@@ -10,7 +11,7 @@ public class Store : MonoBehaviour,IInteractable
     Vector3 defalutRoation = new Vector3(0,90,0);
     Vector3 InteractionRotation = new Vector3(0,60,0);
     public bool IsInteractable => true;
-    public void OnInteract()
+    public async Task OnInteract()
     {
         Managers.Camera.SetStoreCam(!IsInteracting);
         Managers.Player.Control.InputActive(IsInteracting);

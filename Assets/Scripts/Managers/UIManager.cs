@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using DG.Tweening;
 using Unity.Behavior;
 using UnityEngine;
@@ -39,9 +40,9 @@ public class UIManager
         }
     }
 
-	public T MakeSubItem<T>(string addrres, Transform parent = null) where T : Component
+	public async Task<T> MakeSubItem<T>(string addrres, Transform parent = null) where T : Component
 	{
-		GameObject go = Managers.Resource.Instantiate(addrres);
+		GameObject go = await Managers.Resource.InstantiateAsync(addrres);
 		if (parent != null)
 			go.transform.SetParent(parent);
 		else
@@ -63,6 +64,7 @@ public class UIManager
 
 		return sceneUI;
 	}
+	
 
 	public T LoadScene<T>(string address = null) where T : UI_Scene
 	{
@@ -74,12 +76,12 @@ public class UIManager
 		return null;
 	}
 
-	public T ShowPopupUI<T>(string address = null) where T : UI_Popup
+	public async Task<T> ShowPopupUI<T>(string address = null) where T : UI_Popup
     {
         if (string.IsNullOrEmpty(address))
 	        address = typeof(T).Name;
 
-        GameObject go = Managers.Resource.Instantiate($"Assets/Prefabs/UI/Popup/{address}.prefab");
+        GameObject go = await Managers.Resource.InstantiateAsync($"Assets/Prefabs/UI/Popup/{address}.prefab");
         T popup = go.GetOrAddComponent<T>();
         _popupStack.Push(popup);
 

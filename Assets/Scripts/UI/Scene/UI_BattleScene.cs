@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -69,11 +70,7 @@ public class UI_BattleScene : UI_Scene
         Managers.Stage.EnterRoom += HandleEnterRoom;
         Managers.Player.OnDataChanged -= RefreshGoldUI;
         Managers.Player.OnDataChanged += RefreshGoldUI;
-
-        // 초기 연출
-        var fadeImg = GetImage((int)Images.FadeOut);
-        fadeImg.color = Color.black;
-        fadeImg.DOFade(0f, 4f).SetEase(Ease.InQuad);
+        
 
         //골드 UI동기화
         RefreshGoldUI();
@@ -96,6 +93,19 @@ public class UI_BattleScene : UI_Scene
         
         Managers.Player.Control.OnUseActiveSKill -= UseSkill;
         Managers.Player.Control.OnUseActiveSKill += UseSkill;
+        
+        
+        // 초기 연출
+        AllUIActive(false);
+        var fadeImg = GetImage((int)Images.FadeOut);
+        fadeImg.color = Color.black;
+        fadeImg.DOFade(0f, 2f).
+            SetEase(Ease.InQuad)
+            .SetDelay(1f)
+            .OnComplete(() =>
+            {
+                LobyUIActive();
+            });
     }
     
     private void HandleExitRoom() => FadeOut(2f);
@@ -130,7 +140,7 @@ public class UI_BattleScene : UI_Scene
   
 
     #region 맵 관련 함수
-    public void SetMap(List<RoomNode> roomNodes,int depth)
+    public async Task SetMap(List<RoomNode> roomNodes,int depth)
     {
         GetText((int)Texts.StageText).text = $"{depth}";
         
@@ -145,31 +155,31 @@ public class UI_BattleScene : UI_Scene
         // 2. 개수에 따른 로직 분기 
         if (count == 1)
         {
-            SetNodeActive(1, true, roomNodes[0].type); // Node2만 활성화
+            await SetNodeActive(1, true, roomNodes[0].type); // Node2만 활성화
         }
         else if (count == 2)
         {
-            SetNodeActive(0, true, roomNodes[0].type); // Node1
-            SetNodeActive(2, true, roomNodes[1].type); // Node3
+            await SetNodeActive(0, true, roomNodes[0].type); // Node1
+            await SetNodeActive(2, true, roomNodes[1].type); // Node3
         }
         else if (count == 3)
         {
-            for (int i = 0; i < 3; i++) SetNodeActive(i, true, roomNodes[i].type);
+            for (int i = 0; i < 3; i++) await SetNodeActive(i, true, roomNodes[i].type);
         }
     }
 
-    private void SetNodeActive(int index, bool isActive, Define.RoomType type)
+    private async Task SetNodeActive(int index, bool isActive, Define.RoomType type)
     {
         // Line은 GameObjects enum 순서대로 (0, 1, 2)
         // Node는 Images enum 순서대로 (FadeOut이 0이므로 Node1은 1, 2, 3)
         GetObject(index).SetActive(isActive);
         if (isActive)
         {
-            GetImage(index + 1).sprite = GetSprite(type);
+            GetImage(index + 1).sprite = await GetSprite(type);
         }
     }
 
-    private Sprite GetSprite(Define.RoomType type)
+    private async Task<Sprite> GetSprite(Define.RoomType type)
     {
         if (_spriteCache.TryGetValue(type, out Sprite cachedSprite))
             return cachedSprite;
@@ -184,7 +194,7 @@ public class UI_BattleScene : UI_Scene
 
         if (string.IsNullOrEmpty(address)) return null;
 
-        Sprite sprite = Managers.Resource.Load<Sprite>(address);
+        Sprite sprite = await Managers.Resource.LoadAsync<Sprite>(address);
         _spriteCache[type] = sprite;
         return sprite;
     }

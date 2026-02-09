@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
@@ -26,9 +27,9 @@ public class PlayerUnit : MonoBehaviour,IDamageable
     }
     
 
-    private void ShowBloodEffect()
+    private async Task ShowBloodEffect()
     {
-        var blood = Managers.Resource.Instantiate(Address.UI_Blood);
+        var blood = await Managers.Resource.InstantiateAsync(Address.UI_Blood);
         var image = blood.GetComponentInChildren<Image>();
     
         float duration = 0.5f;

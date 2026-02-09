@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class Managers : MonoBehaviour
@@ -22,12 +23,12 @@ public class Managers : MonoBehaviour
     public static StageManager Stage => Instance._stage;
     public static DataManager Data => Instance._data;
 
-    void Awake()
+    async void Awake()
     {
-        Init();
+        await Init();
     }
 
-    static void Init()
+    static async Task Init()
     {
         if (_instance == null)
         {
@@ -50,9 +51,10 @@ public class Managers : MonoBehaviour
             _instance._sound = new  SoundManager();
             _instance._data = new DataManager();
             
-            _instance._data.Init();
-            _instance._camera.LobyInit();
             _instance._ui.ShowSceneUI<UI_LobyScene>();
+            _instance._camera.LobyInit();
+            await _instance._data.Init();
+            
         }
 
     }

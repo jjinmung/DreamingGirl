@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using System.Threading.Tasks;
 using DG.Tweening;
 using Unity.Cinemachine;
 using UnityEngine.SceneManagement;
@@ -63,11 +64,11 @@ public class CameraManager : MonoBehaviour
         });
     }
 
-    private void OnBattleSceneLoaded(Scene scene, LoadSceneMode mode)
+    private async void OnBattleSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         if (scene.name == "BattleScene")
         {
-            var go = Managers.Player.CreatePlayer();
+            var go = await Managers.Player.CreatePlayer();
             _player= go.transform;
             Managers.Camera.BattleInit();
             Managers.Camera.SetTarget(_player);

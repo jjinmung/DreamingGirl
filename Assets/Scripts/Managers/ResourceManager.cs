@@ -1,5 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Unity.Behavior;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -24,6 +26,143 @@ public class ResourceManager : MonoBehaviour
             return root;
         }
     }
+    #region Async Load (비동기 로드)
+
+    // [LoadAsync] 단일 에셋 비동기 로드
+    public async Task<T> LoadAsync<T>(string address) where T : Object
+    {
+        // 1. 이미 캐싱되어 있다면 바로 반환
+        if (_resources.TryGetValue(address, out AsyncOperationHandle handle))
+        {
+            // 이미 완료된 핸들이라면 결과 반환
+            if (handle.IsDone)
+                return handle.Result as T;
+            
+            // 아직 로딩 중이라면 로딩 완료까지 대기
+            await handle.Task;
+            return handle.Result as T;
+        }
+
+        // 2. 새로 로드
+        var loadHandle = Addressables.LoadAssetAsync<T>(address);
+        _resources.Add(address, loadHandle);
+
+        await loadHandle.Task;
+
+        if (loadHandle.Status == AsyncOperationStatus.Succeeded)
+            return loadHandle.Result;
+        
+        Debug.LogError($"[ResourceManager] Failed to load async: {address}");
+        return null;
+    }
+
+    // [LoadAllAsync] 라벨 기반 다중 에셋 비동기 로드
+    public async Task<T[]> LoadAllAsync<T>(string label) where T : Object
+    {
+        if (_resources.TryGetValue(label, out AsyncOperationHandle handle))
+        {
+            await handle.Task;
+            var cachedResult = handle.Result as IList<T>;
+            return cachedResult?.ToArray();
+        }
+
+        var loadHandle = Addressables.LoadAssetsAsync<T>(label, null);
+    
+        // 로드가 끝나기 전에 딕셔너리에 추가 (중복 호출 방지)
+        if (!_resources.ContainsKey(label))
+            _resources.Add(label, loadHandle);
+
+        await loadHandle.Task;
+
+        if (loadHandle.Status == AsyncOperationStatus.Succeeded)
+        {
+            // 핵심: Result(IList<T>)를 ToArray()를 통해 T[]로 변환
+            IList<T> resultList = loadHandle.Result;
+            return resultList.ToArray();
+        }
+
+        return null;
+    }
+    
+    
+    #endregion
+
+    #region Async Instantiate (비동기 생성)
+
+    // [InstantiateAsync] 풀링을 포함한 비동기 생성
+    public async Task<GameObject> InstantiateAsync(string address, Vector3 position = default, Quaternion rotation = default, Transform parent = null)
+    {
+        // 1. 풀에 남아있는게 있는지 확인 (풀링은 동기적으로 처리 가능)
+        if (_pools.ContainsKey(address) && _pools[address].Count > 0)
+        {
+            GameObject go = _pools[address].Dequeue();
+            go.SetActive(true);
+            
+            SetTransformAndAgent(go, position, rotation, parent);
+            return go;
+        }
+
+        // 2. 없다면 비동기로 에셋 로드 후 생성
+        GameObject prefab = await LoadAsync<GameObject>(address);
+        if (prefab == null) return null;
+
+        GameObject spawned = Object.Instantiate(prefab);
+        spawned.name = prefab.name;
+
+        // 풀링 정보 기입
+        // (GetOrAddComponent는 확장 메서드로 정의되어 있다고 가정)
+        PooledObject po = spawned.GetComponent<PooledObject>();
+        if (po == null) po = spawned.AddComponent<PooledObject>();
+        po.address = address;
+
+        SetTransformAndAgent(spawned, position, rotation, parent);
+
+        return spawned;
+    }
+
+    
+    // [Instantiate] AssetReference 기반 생성
+    public async Task<GameObject> InstantiateAsync(AssetReference assetRef, Vector3 position = default, Quaternion rotation = default, Transform parent = null)
+    {
+        if (assetRef == null || !assetRef.RuntimeKeyIsValid())
+        {
+            Debug.LogError("[ResourceManager] Invalid AssetReference");
+            return null;
+        }
+
+        // RuntimeKey를 문자열 키로 변환하여 기존 로직 재활용
+        string key = assetRef.RuntimeKey.ToString();
+        
+        // 내부적으로 기존의 string 기반 Instantiate를 호출합니다.
+        return await InstantiateAsync(key, position, rotation, parent);
+    }
+    // 에이전트 및 트랜스폼 설정을 위한 헬퍼 함수
+    private void SetTransformAndAgent(GameObject go, Vector3 position, Quaternion rotation, Transform parent)
+    {
+        if (parent == null)
+            go.transform.SetParent(Pool.transform);
+        else
+            go.transform.SetParent(parent);
+
+        NavMeshAgent agent = go.GetComponent<NavMeshAgent>();
+        if (agent != null)
+        {
+            // 에이전트 위치 초기화 팁: 비활성화 후 워프
+            agent.enabled = false;
+            go.transform.SetPositionAndRotation(position, rotation);
+            agent.enabled = true;
+            agent.Warp(position);
+        }
+        else
+        {
+            go.transform.SetPositionAndRotation(position, rotation);
+        }
+    }
+
+    #endregion
+
+    #region 동기 로드
+
     // [Load] 에셋 로드 (동기)
     public T Load<T>(string address) where T : Object
     {
@@ -66,6 +205,21 @@ public class ResourceManager : MonoBehaviour
         return null;
     }
 
+   
+
+    // [Load] AssetReference 기반 로드
+    public T Load<T>(AssetReference assetRef) where T : Object
+    {
+        if (assetRef == null || !assetRef.RuntimeKeyIsValid())
+            return null;
+
+        return Load<T>(assetRef.RuntimeKey.ToString());
+    }
+    
+
+    #endregion
+    
+    #region 동기 생성
     // [Instantiate / Spawn] 풀링을 포함한 생성
     public GameObject Instantiate(string address, Vector3 position = default, Quaternion rotation = default, Transform parent = null)
     {
@@ -114,16 +268,7 @@ public class ResourceManager : MonoBehaviour
 
         return go;
     }
-
-    // [Load] AssetReference 기반 로드
-    public T Load<T>(AssetReference assetRef) where T : Object
-    {
-        if (assetRef == null || !assetRef.RuntimeKeyIsValid())
-            return null;
-
-        return Load<T>(assetRef.RuntimeKey.ToString());
-    }
-
+    
     // [Instantiate] AssetReference 기반 생성
     public GameObject Instantiate(AssetReference assetRef, Vector3 position = default, Quaternion rotation = default, Transform parent = null)
     {
@@ -139,6 +284,11 @@ public class ResourceManager : MonoBehaviour
         // 내부적으로 기존의 string 기반 Instantiate를 호출합니다.
         return Instantiate(key, position, rotation, parent);
     }
+
+    #endregion
+   
+
+   
     // [Destroy / Release] 풀로 반납
     public void Destroy(GameObject go, float delay=0f)
     {

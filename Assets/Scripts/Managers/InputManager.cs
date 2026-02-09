@@ -42,14 +42,14 @@ public class InputManager : MonoBehaviour
         _playerAction.Player.Skill3.performed += ctx => OnSkill3?.Invoke();
         _playerAction.Player.Skill4.performed += ctx => OnSkill4?.Invoke();
 
-        _playerAction.Player.ESC.performed += ctx =>
+        _playerAction.Player.ESC.performed += async ctx =>
         {
             var scene = SceneManager.GetActiveScene();
             if (scene.name.Equals("BattleScene")&&Managers.Stage.CanEsc)
             {
                 if (!IsEscActive)
                 {
-                    Managers.UI.ShowPopupUI<UI_Pause>();
+                    await Managers.UI.ShowPopupUI<UI_Pause>();
                     Time.timeScale = 0f;
                 }
                 else

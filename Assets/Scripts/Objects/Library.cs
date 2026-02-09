@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class Library:MonoBehaviour,IInteractable
@@ -5,8 +6,8 @@ public class Library:MonoBehaviour,IInteractable
     public bool IsInteractable => canInteract;
     private bool canInteract=true;
 
-    public void OnInteract()
+    public async Task OnInteract()
     {
-        Managers.UI.ShowPopupUI<UI_PassiveSkill>();
+        await Managers.UI.ShowPopupUI<UI_PassiveSkill>();
     }
 }

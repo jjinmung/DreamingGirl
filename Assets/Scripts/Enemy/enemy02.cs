@@ -1,6 +1,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
@@ -47,12 +48,13 @@ public class Enemy02 : EnemyBase
         _behavior.SetVariableValue("PatrolPoints", patrolPoints);
     }
 
-    public void SetAttackArange(bool isAcive)
+    public async Task SetAttackArange(bool isAcive)
     {
         if (isAcive)
         {
             var tarpos = _player.transform.position;
-            attackRange = Managers.Resource.Instantiate(Address.CircleAttackRange, tarpos+(Vector3.up*0.1f),Quaternion.Euler(90,0,0)).GetComponent<CircleAttackRange>();
+            var go = await Managers.Resource.InstantiateAsync(Address.CircleAttackRange, tarpos+(Vector3.up*0.1f),Quaternion.Euler(90,0,0));
+            attackRange= go.GetComponent<CircleAttackRange>();
             attackRange.Init(projectile.duration,stat.Damage);
         }
         else

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using DG.Tweening;
 using Unity.Behavior;
 using UnityEngine;
@@ -50,7 +51,7 @@ public abstract class EnemyBase : MonoBehaviour,IDamageable
     [SerializeField]private Material _deathMat;
 
     
-    public virtual void Init(int id)
+    public virtual async Task Init(int id)
     {
         // 데이터 로드
         stat = new EnemyStat(Managers.Data.MonsterDict[id]);

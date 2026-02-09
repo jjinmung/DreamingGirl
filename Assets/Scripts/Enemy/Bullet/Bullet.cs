@@ -94,8 +94,8 @@ namespace MasterStylizedProjectile
             
             if (OnHitEffect != null)
             {
-                var onHitObj = 
-                    Managers.Resource.Instantiate(OnHitEffect, 
+                var onHitObj =  
+                    Managers.Resource.InstantiateAsync(OnHitEffect, 
                     transform.position, Quaternion.Euler(transform.eulerAngles.x, transform.eulerAngles.y, transform.eulerAngles.z));
                 
                 /*var onHit = onHitObj.gameObject.AddComponent<AudioTrigger>();

@@ -35,7 +35,7 @@ namespace MasterStylizedProjectile
             //StartCoroutine(ShootIE());
         }
         
-        public void DoShoot()
+        public async void DoShoot()
         {
             //var targetPos = GetMouseTargetPos();
             //var targetDir = targetPos - StartNodeTrans.position;
@@ -46,8 +46,8 @@ namespace MasterStylizedProjectile
             
             if (startEffect != null)
             {
-                var StartPar = 
-                    Managers.Resource.Instantiate(startEffect, 
+                var StartPar =  await 
+                    Managers.Resource.InstantiateAsync(startEffect, 
                         StartNodeTrans.position, Quaternion.identity);
                 StartPar.transform.forward = targetDir;
 
@@ -60,8 +60,8 @@ namespace MasterStylizedProjectile
             }
             if (BulletEffect != null)
             {
-                var bulletObj = 
-                    Managers.Resource.Instantiate(BulletEffect, 
+                var bulletObj = await 
+                    Managers.Resource.InstantiateAsync(BulletEffect, 
                         StartNodeTrans.position, Quaternion.identity);
                 bulletObj.transform.forward = targetDir;
 

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 using DG.Tweening;
 using Unity.AI.Navigation;
@@ -75,7 +76,7 @@ public class StageManager : MonoBehaviour
 
     
     
-    public void GenerateMap()
+    public async Task GenerateMap()
     {
         currentDepth = 0;
         stageMap.Clear();
@@ -118,18 +119,21 @@ public class StageManager : MonoBehaviour
         //로비방 로드
         lobyNode.nextNodes.Add(stageMap[0][0]);
         currentRoomNode = lobyNode;
-        currentRoom = Managers.Resource.Instantiate(lobyNode.address,Vector3.zero,default,Root.transform).GetComponent<Room>();
+        var go = await Managers.Resource.InstantiateAsync(lobyNode.address, Vector3.zero, default, Root.transform);
+        currentRoom =go.GetComponent<Room>();
     }
     
 
-    public void ChangeRoom()
+    public async Task ChangeRoom()
     {
         
         Managers.Resource.Destroy(currentRoom.gameObject);
         currentRoomNode = currentRoomNode.nextNodes[doorIndex];
         currentDepth++;
         TotalGold += currentDepth * 15;
-        currentRoom = Managers.Resource.Instantiate(currentRoomNode.address, Vector3.zero,default,Root.transform).GetComponent<Room>();
+        var go = await Managers.Resource.InstantiateAsync(currentRoomNode.address, Vector3.zero, default,
+            Root.transform);
+        currentRoom = go.GetComponent<Room>();
         currentRoom.CloseImmediately();
         if (currentRoomNode.type == RoomType.Monster)
         {
@@ -243,7 +247,19 @@ public class StageManager : MonoBehaviour
         Time.timeScale = 1f;
         
         yield return waitForOne;
-        var ui = Managers.UI.ShowPopupUI<UI_StageEnding>();
+        var task = Managers.UI.ShowPopupUI<UI_StageEnding>();
+
+        // Task가 완료될 때까지 코루틴 대기
+        yield return new WaitUntil(() => task.IsCompleted);
+
+        //만약 Task 내부에서 예외가 발생했다면 처리
+        if (task.IsFaulted)
+        {
+            Debug.LogError(task.Exception);
+            yield break;
+        }
+
+        var ui = task.Result; 
         ui.SetText(true,PlayTime,TotalKill,TotalGold);
 
     }
@@ -265,12 +281,24 @@ public class StageManager : MonoBehaviour
     IEnumerator EnterToNextRoomCoroutine()
     {
         // 1. 방 타입에 따른 초기 설정 (Spawn / Boss 생성 / Event)
-        Enemy03 boss = InitializeRoomContent();
+        var task = InitializeRoomContent();
 
-        // 2. 플레이어 이동 및 연출
+        // 2. Task가 완료될 때까지 코루틴 대기
+        yield return new WaitUntil(() => task.IsCompleted);
+
+        // 3. 만약 Task 내부에서 예외가 발생했다면 처리
+        if (task.IsFaulted)
+        {
+            Debug.LogError(task.Exception);
+            yield break;
+        }
+
+        // 4. 결과값 가져오기
+        Enemy03 boss = task.Result;
+        
+        //플레이어 이동 및 연출
         yield return StartPlayerEntranceSequence();
-
-        // 3. 카메라 및 보스 등장 연출
+        // 5. 카메라 및 보스 등장 연출
         if (currentRoomNode.type == RoomType.Boss)
         {
             yield return StartBossEncounterSequence(boss);
@@ -281,7 +309,7 @@ public class StageManager : MonoBehaviour
             yield return waitForTwo;
         }
 
-        // 4. UI 설정 및 전투 개시
+        // 6. UI 설정 및 전투 개시
         SetupBattleUI();
         
         Managers.Player.EnterRoom();
@@ -291,19 +319,19 @@ public class StageManager : MonoBehaviour
     }
     
 
-    private Enemy03 InitializeRoomContent()
+    private async Task<Enemy03> InitializeRoomContent()
     {
         switch (currentRoomNode.type)
         {
             case RoomType.Monster:
-                int spawnCount = Random.Range(-2, 4) + currentDepth+5; 
+                int spawnCount = Random.Range(-2, 4) + currentDepth+10; 
                 spawnDatas[1].spawnWeight=currentDepth*2;
                 enemySpawner.SpawnCount = spawnCount;
                 enemySpawner.SpawnEnemys();
                 break;
 
             case RoomType.Boss:
-                var bossObj = Managers.Resource.Instantiate(Address.Boss, currentRoom.BossPos.position,Quaternion.Euler(0,180,0));
+                var bossObj = await Managers.Resource.InstantiateAsync(Address.Boss, currentRoom.BossPos.position,Quaternion.Euler(0,180,0));
                 var boss = bossObj.GetComponent<Enemy03>();
                 boss.gameObject.SetLayerRecursively("Default");
                 return boss;

@@ -54,9 +54,9 @@ public class UI_LobyScene : UI_Scene
         }
         
         GetText((int)Texts.PlayNewText).gameObject.BindEvent(OnClickedPlay);
-        GetText((int)Texts.PlayContinueText).gameObject.BindEvent((data) =>
+        GetText((int)Texts.PlayContinueText).gameObject.BindEvent(async (data) =>
         {
-            Managers.UI.ShowPopupUI<UI_SaveData>();
+            await Managers.UI.ShowPopupUI<UI_SaveData>();
         });
        
         

@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Threading.Tasks;
 using PixPlays.ElementalVFX;
 using Unity.Cinemachine;
 using UnityEngine;
@@ -35,10 +36,10 @@ public class Enemy03 : EnemyBase
         attackRanges = GetComponentsInChildren<DecalProjector>(true);
     }
 
-    public override void Init(int id)
+    public override async Task Init(int id)
     {
         base.Init(id);
-        var hpBar = Managers.UI.MakeSubItem<UI_EnemyHPBar>(Address.Boss_HP_BAR);
+        var hpBar = await Managers.UI.MakeSubItem<UI_EnemyHPBar>(Address.Boss_HP_BAR);
         //위치 초기화
         RectTransform rect = hpBar.GetComponent<RectTransform>();
         if (rect != null)

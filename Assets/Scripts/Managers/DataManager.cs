@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using UnityEngine;
 using Newtonsoft.Json; 
 using Data;
@@ -35,10 +36,10 @@ public class DataManager
     private float _sessionStartTime;
     
     private Vector3 StartPos = new Vector3(12f, 0f, 5f);
-    public void Init()
+    public async Task Init()
     {
         // 1. 정적 데이터 json파일 로드
-        StaticDataRoot root = LoadStaticData("StaticData");
+        StaticDataRoot root = await LoadStaticData("StaticData");
         if (root == null) return;
 
         // 몬스터 딕셔너리 채우기
@@ -51,7 +52,7 @@ public class DataManager
         
         //패시브 스킬 딕셔너리 채우기
         PassiveDict = new Dictionary<PassiveSkillID, PassiveData>();
-        PassiveData[] passiveDatas = Managers.Resource.LoadAll<PassiveData>("PassiveSkill");
+        PassiveData[] passiveDatas = await Managers.Resource.LoadAllAsync<PassiveData>("PassiveSkill");
         if (passiveDatas != null)
         {
             foreach (var data in passiveDatas)
@@ -63,7 +64,7 @@ public class DataManager
         
         //어빌리티 스킬 딕셔너리 채우기
         AbilityDict = new Dictionary<AbilityID, AbilityInstance>();
-        AbilityData[] abilityDatas = Managers.Resource.LoadAll<AbilityData>("Ability");
+        AbilityData[] abilityDatas = await Managers.Resource.LoadAllAsync<AbilityData>("Ability");
         if (abilityDatas != null)
         {
             foreach (var data in abilityDatas)
@@ -179,9 +180,9 @@ public class DataManager
             t.Minutes, 
             t.Seconds);
     }
-    private StaticDataRoot LoadStaticData(string path)
+    private async Task<StaticDataRoot> LoadStaticData(string path)
     {
-        TextAsset asset = Managers.Resource.Load<TextAsset>($"Assets/Json/{path}.json");
+        TextAsset asset = await Managers.Resource.LoadAsync<TextAsset>($"Assets/Json/{path}.json");
 
         if (asset == null)
         {

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic; // List 사용을 위해 추가
 using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AI; // NavMesh 사용을 위해 필수
 using Random = UnityEngine.Random;
@@ -43,7 +44,7 @@ public class EnemySpawner : MonoBehaviour
     }
 
 
-    private void SpawnEnemy()
+    private async Task SpawnEnemy()
     {
         // 1. 가중치 기반 선택 (로직 분리 추천)
         SpawnData selectedEnemy = GetWeightedRandomEnemy();
@@ -55,7 +56,7 @@ public class EnemySpawner : MonoBehaviour
 
         // 3. 생성 및 초기화
         string path = $"Assets/Prefabs/Enemy/{selectedEnemy.ID}.prefab";
-        GameObject go = Managers.Resource.Instantiate(path, spawnPos, Quaternion.Euler(0, Random.Range(0, 360), 0));
+        GameObject go = await Managers.Resource.InstantiateAsync(path, spawnPos, Quaternion.Euler(0, Random.Range(0, 360), 0));
         var enemy = go.GetComponent<EnemyBase>();
         enemy.Init(selectedEnemy.ID);
         enemy.SetAdditionalData(PatrolPoints.ToList()); 

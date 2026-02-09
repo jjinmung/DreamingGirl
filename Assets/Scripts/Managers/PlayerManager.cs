@@ -1,6 +1,7 @@
 using UnityEngine;
 using System;
 using System.Collections;
+using System.Threading.Tasks;
 using static Define;
 
 public class PlayerManager : MonoBehaviour
@@ -35,10 +36,10 @@ public class PlayerManager : MonoBehaviour
 
     
     
-    public GameObject CreatePlayer()
+    public async Task<GameObject> CreatePlayer()
     {
         data = new PlayerData(Managers.Data.PlayerBasicStat[1],Managers.Data.SaveData.player);
-        var playerPrefab = Managers.Resource.Instantiate(Address.Player);
+        var playerPrefab = await Managers.Resource.InstantiateAsync(Address.Player);
         
 
         // 생성 시점에 모든 컴포넌트를 한 번만 캐싱
@@ -155,7 +156,13 @@ public class PlayerManager : MonoBehaviour
         _playerController.LVPParticle.Play();
         Managers.UI.ShowFloatingText(Trans.position, "Level UP!", Color.yellow,1.5f,60);
         yield return new WaitForSeconds(1.5f);
-        Managers.UI.ShowPopupUI<UI_Ability>();
+        var task2 = Managers.UI.ShowPopupUI<UI_Ability>();
+        yield return new WaitUntil(() => task2.IsCompleted);
+        if (task2.IsFaulted)
+        {
+            Debug.LogError(task2.Exception);
+            yield break;
+        }
         //시간 정지
         Time.timeScale = 0;
     }
