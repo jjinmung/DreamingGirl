@@ -21,6 +21,9 @@ public static class Address
     public const string EnemyMap = "Assets/Textures/UI/EnemyMap.png";
     public const string EventMap = "Assets/Textures/UI/EventMap.png";
     public const string BossMap = "Assets/Textures/UI/BossMap.png";
+    
+    //사운드
+    public const string LobyBGM = "Assets/Sound/BGM/LobyBGM.mp3";
 
 };
 

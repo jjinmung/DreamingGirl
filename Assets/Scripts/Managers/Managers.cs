@@ -53,6 +53,7 @@ public class Managers : MonoBehaviour
             
             _instance._ui.ShowSceneUI<UI_LobyScene>();
             _instance._camera.LobyInit();
+            await _instance._sound.Init();
             await _instance._data.Init();
             
         }

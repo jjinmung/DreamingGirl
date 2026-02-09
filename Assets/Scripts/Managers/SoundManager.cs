@@ -1,18 +1,21 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using DG.Tweening;
 using UnityEngine;
+using static Define;
 
 public class SoundManager
 {
-    AudioSource[] _audioSources = new AudioSource[(int)Define.Sound.MaxCount];
+    AudioSource[] _audioSources = new AudioSource[(int)Sound.MaxCount];
     Dictionary<string, AudioClip> _audioClips = new Dictionary<string, AudioClip>();
+    public float BGMVolume { get; set; }
 
+    public float EffectVolume { get; set; }
     // MP3 Player   -> AudioSource
     // MP3 음원     -> AudioClip
     // 관객(귀)     -> AudioListener
 
-    public void Init()
+    public async Task Init()
     {
         GameObject root = GameObject.Find("@Sound");
         if (root == null)
@@ -20,7 +23,7 @@ public class SoundManager
             root = new GameObject { name = "@Sound" };
             Object.DontDestroyOnLoad(root);
 
-            string[] soundNames = System.Enum.GetNames(typeof(Define.Sound));
+            string[] soundNames = System.Enum.GetNames(typeof(Sound));
             for (int i = 0; i < soundNames.Length - 1; i++)
             {
                 GameObject go = new GameObject { name = soundNames[i] };
@@ -28,71 +31,91 @@ public class SoundManager
                 go.transform.parent = root.transform;
             }
 
-            _audioSources[(int)Define.Sound.Bgm].loop = true;
+            _audioSources[(int)Sound.Bgm].loop = true;
         }
+
+        BGMVolume = 1f;
+        EffectVolume = 1f;
+        await PlayBgm(Address.LobyBGM);
     }
 
-    public void Clear()
+    // BGM 전용 (비동기 & 페이드)
+    public async Task PlayBgm(string address, float fadeTime = 1.0f)
     {
-        foreach (AudioSource audioSource in _audioSources)
-        {
-            audioSource.clip = null;
-            audioSource.Stop();
-        }
-        _audioClips.Clear();
+	    AudioClip clip = await GetOrAddAudioClip(address, Sound.Bgm);
+	    AudioSource source = _audioSources[(int)Sound.Bgm];
+
+	    if (source.isPlaying)
+	    {
+		    await source.DOFade(0, fadeTime).AsyncWaitForCompletion();
+		    source.Stop();
+	    }
+
+	    source.clip = clip;
+	    source.volume = 0;
+	    source.Play();
+	    source.DOFade(BGMVolume, fadeTime);
     }
 
-    public async Task Play(string path, Define.Sound type = Define.Sound.Effect, float pitch = 1.0f)
+// Effect 전용 (주소 기반 비동기)
+    public async Task PlayEffect(string address, float pitch = 1.0f)
     {
-        AudioClip audioClip = await GetOrAddAudioClip(path, type);
-        Play(audioClip, type, pitch);
+	    AudioClip clip = await GetOrAddAudioClip(address, Sound.Effect);
+	    Play(clip, Sound.Effect, pitch);
     }
 
-	public void Play(AudioClip audioClip, Define.Sound type = Define.Sound.Effect, float pitch = 1.0f)
-	{
-        if (audioClip == null)
-            return;
-
-		if (type == Define.Sound.Bgm)
-		{
-			AudioSource audioSource = _audioSources[(int)Define.Sound.Bgm];
-			if (audioSource.isPlaying)
-				audioSource.Stop();
-
-			audioSource.pitch = pitch;
-			audioSource.clip = audioClip;
-			audioSource.Play();
-		}
-		else
-		{
-			AudioSource audioSource = _audioSources[(int)Define.Sound.Effect];
-			audioSource.pitch = pitch;
-			audioSource.PlayOneShot(audioClip);
-		}
-	}
-
-	async Task<AudioClip> GetOrAddAudioClip(string path, Define.Sound type = Define.Sound.Effect)
+// 공용 핵심 재생 로직 (Private으로 보호)
+    private void Play(AudioClip audioClip, Sound type = Sound.Effect, float pitch = 1.0f)
     {
-		if (path.Contains("Sounds/") == false)
-			path = $"Sounds/{path}";
+	    if (audioClip == null) return;
 
+	    if (type == Sound.Bgm)
+	    {
+		    AudioSource audioSource = _audioSources[(int)Sound.Bgm];
+		    audioSource.pitch = pitch;
+		    audioSource.clip = audioClip;
+		    audioSource.volume = BGMVolume;
+		    audioSource.Play();
+	    }
+	    else
+	    {
+		    // Effect 채널 소스 사용
+		    AudioSource audioSource = _audioSources[(int)Sound.Effect];
+		    audioSource.pitch = pitch;
+		    // PlayOneShot은 여러 소리가 겹쳐서 나게 해줍니다.
+		    audioSource.PlayOneShot(audioClip, EffectVolume);
+	    }
+    }
+
+	
+    
+    // 사운드 중지 기능 추가
+    public void Stop(Define.Sound type)
+    {
+	    AudioSource audioSource = _audioSources[(int)type];
+	    audioSource.Stop();
+    }
+    
+
+	async Task<AudioClip> GetOrAddAudioClip(string address, Sound type = Sound.Effect)
+    {
 		AudioClip audioClip = null;
 
-		if (type == Define.Sound.Bgm)
+		if (type == Sound.Bgm)
 		{
-			audioClip = await Managers.Resource.LoadAsync<AudioClip>(path);
+			audioClip = await Managers.Resource.LoadAsync<AudioClip>(address);
 		}
 		else
 		{
-			if (_audioClips.TryGetValue(path, out audioClip) == false)
+			if (_audioClips.TryGetValue(address, out audioClip) == false)
 			{
-				audioClip =await Managers.Resource.LoadAsync<AudioClip>(path);
-				_audioClips.Add(path, audioClip);
+				audioClip =await Managers.Resource.LoadAsync<AudioClip>(address);
+				_audioClips.Add(address, audioClip);
 			}
 		}
 
 		if (audioClip == null)
-			Debug.Log($"AudioClip Missing ! {path}");
+			Debug.Log($"AudioClip Missing ! {address}");
 
 		return audioClip;
     }
