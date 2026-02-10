@@ -1,6 +1,7 @@
 using UnityEngine;
 using System;
 using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using Unity.Cinemachine;
 using UnityEngine.SceneManagement;
@@ -49,7 +50,7 @@ public class CameraManager : MonoBehaviour
     {
         Sequence camSeq = DOTween.Sequence();
         camSeq.AppendInterval(1f);
-        
+        Managers.Sound.StopFade(Define.Sound.Bgm);
         camSeq.AppendCallback(() => {
             _defalutCam.Priority = 5;
             _startCam.Priority = 10;
@@ -68,12 +69,25 @@ public class CameraManager : MonoBehaviour
     {
         if (scene.name == "BattleScene")
         {
+            var battleUI = await Managers.UI.ShowSceneUI<UI_BattleScene>();
+            battleUI.Init();
+            
+            //맵 생성
+            await Managers.Stage.Init();
+            
+            //캐릭터 생성
             var go = await Managers.Player.CreatePlayer();
             _player= go.transform;
+            
+            //카메라 세팅
             Managers.Camera.BattleInit();
             Managers.Camera.SetTarget(_player);
-            Managers.Stage.Init();
-            Managers.UI.ShowSceneUI<UI_BattleScene>();
+            
+            //씬 세팅
+            battleUI.LazyInit();
+            
+            //bgm세팅
+            Managers.Sound.PlayBgm(Address.StoreMapBGM).Forget();
             SceneManager.sceneLoaded -= OnBattleSceneLoaded;
         }
     }
@@ -210,7 +224,7 @@ public class CameraManager : MonoBehaviour
     {
         Sequence camSeq = DOTween.Sequence();
         camSeq.AppendInterval(1f);
-        
+        Managers.Sound.StopFade(Define.Sound.Bgm);
         camSeq.AppendCallback(() =>
         {
             var battleUI = Managers.UI.SceneUI as UI_BattleScene;
@@ -229,13 +243,14 @@ public class CameraManager : MonoBehaviour
         });
     }
 
-    private void OnLobySceneLoaded(Scene scene, LoadSceneMode mode)
+    private async void OnLobySceneLoaded(Scene scene, LoadSceneMode mode)
     {
         if (scene.name == "LobyScene")
         {
             LobyInit();
-            Managers.UI.ShowSceneUI<UI_LobyScene>();
             Managers.Data.ClearAbility();
+            Managers.Sound.PlayBgm(Address.LobyBGM).Forget();
+            await Managers.UI.ShowSceneUI<UI_LobyScene>();
         }
     }
 

@@ -2,6 +2,7 @@ using UnityEngine;
 using System;
 using System.Collections;
 using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using static Define;
 
 public class PlayerManager : MonoBehaviour
@@ -36,7 +37,7 @@ public class PlayerManager : MonoBehaviour
 
     
     
-    public async Task<GameObject> CreatePlayer()
+    public async UniTask<GameObject> CreatePlayer()
     {
         data = new PlayerData(Managers.Data.PlayerBasicStat[1],Managers.Data.SaveData.player);
         var playerPrefab = await Managers.Resource.InstantiateAsync(Address.Player);
@@ -137,7 +138,7 @@ public class PlayerManager : MonoBehaviour
         AddPermanentStat(PlayerStat.Attack, 0.1f, true);
         
 
-        StartCoroutine(SelectAbility());
+        SelectAbilityAsync().Forget();
     }
 
     public void LevelReset()
@@ -151,20 +152,32 @@ public class PlayerManager : MonoBehaviour
         data.damage.percentBonus = 0;
     }
 
-    IEnumerator SelectAbility()
+    private async UniTaskVoid SelectAbilityAsync()
     {
-        _playerController.LVPParticle.Play();
-        Managers.UI.ShowFloatingText(Trans.position, "Level UP!", Color.yellow,1.5f,60);
-        yield return new WaitForSeconds(1.5f);
-        var task2 = Managers.UI.ShowPopupUI<UI_Ability>();
-        yield return new WaitUntil(() => task2.IsCompleted);
-        if (task2.IsFaulted)
+        try
         {
-            Debug.LogError(task2.Exception);
-            yield break;
+            // 1. 레벨업 효과 재생
+            _playerController.LVPParticle.Play();
+            Managers.UI.ShowFloatingText(Trans.position, "Level UP!", Color.yellow, 1.5f, 60).Forget();
+
+            // 2. 1.5초 대기 (연출이 끝날 때까지)
+            await UniTask.Delay(TimeSpan.FromSeconds(1.5f));
+
+            // 3. 능력치 선택 팝업 로드 및 생성
+            await Managers.UI.ShowPopupUI<UI_Ability>();
+
+            // 4. 시간 정지
+            Time.timeScale = 0f;
+            
         }
-        //시간 정지
-        Time.timeScale = 0;
+        catch (OperationCanceledException)
+        {
+            
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"SelectAbility Error: {e.Message}");
+        }
     }
     
     
@@ -186,13 +199,13 @@ public class PlayerManager : MonoBehaviour
             data.currentHp = data.maxHp.TotalValue*percentHp;
             _playerHpBar.SetMaxHP(data.maxHp.TotalValue,data.currentHp);
             if(!isPercent&&amount>0)
-                Managers.UI.ShowFloatingText(Trans.position, $"+{amount}", Color.blue,1.5f,60);
+                Managers.UI.ShowFloatingText(Trans.position, $"+{amount}", Color.blue,1.5f,60).Forget();
         }
 
         if (type == PlayerStat.Attack)
         {
             if(!isPercent&&amount>0)
-                Managers.UI.ShowFloatingText(Trans.position, $"+{amount}", Color.magenta,1.5f,60);
+                Managers.UI.ShowFloatingText(Trans.position, $"+{amount}", Color.magenta,1.5f,60).Forget();
         }
     }
 
@@ -218,7 +231,7 @@ public class PlayerManager : MonoBehaviour
             var healamount = data.currentHp+amount <=data.maxHp.TotalValue? amount:data.maxHp.TotalValue- data.currentHp;
             data.currentHp = Mathf.Clamp(data.currentHp + healamount, 0, data.maxHp.TotalValue);
             TakeDamageAction?.Invoke(-healamount); // 기존 로직 유지
-            Managers.UI.ShowFloatingText(Trans.position, $"+{Mathf.RoundToInt(healamount)}", Color.green, 1f);
+            Managers.UI.ShowFloatingText(Trans.position, $"+{Mathf.RoundToInt(healamount)}", Color.green, 1f).Forget();
             
             if (_playerCombat.IsPactAbyss)
             {
@@ -280,22 +293,31 @@ public class PlayerManager : MonoBehaviour
     }
     public void FadeMoveFloat(float targetValue, float duration = 0.5f)
     {
-        StartCoroutine(CoUpdateAnimFloat(targetValue, duration));
+        UpdateAnimFloatAsync(targetValue, duration).Forget();
     }
 
-    private IEnumerator CoUpdateAnimFloat(float targetValue, float duration)
+    private async UniTask UpdateAnimFloatAsync(float targetValue, float duration)
     {
         float startValue = _playerAnim.GetFloat("MOVE");
         float elapsedTime = 0f;
 
+        // duration이 0일 경우 바로 목표값 설정 후 종료
+        if (duration <= 0)
+        {
+            _playerAnim.SetFloat("MOVE", targetValue);
+            return;
+        }
+
         while (elapsedTime < duration)
         {
+
             elapsedTime += Time.deltaTime;
-            // 0에서 1 사이의 진행률 계산
             float nextValue = Mathf.Lerp(startValue, targetValue, elapsedTime / duration);
-        
+    
             _playerAnim.SetFloat("MOVE", nextValue);
-            yield return null;
+
+            // yield return null 대신 유니티 업데이트 루프의 다음 프레임까지 대기
+            await UniTask.Yield(PlayerLoopTiming.Update);
         }
 
         // 마지막에 정확한 목표값으로 설정

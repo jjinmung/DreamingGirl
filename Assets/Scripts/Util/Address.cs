@@ -24,6 +24,10 @@ public static class Address
     
     //사운드
     public const string LobyBGM = "Assets/Sound/BGM/LobyBGM.mp3";
+    public const string BossMapBGM = "Assets/Sound/BGM/BossMapBGM.mp3";
+    public const string EventRoomBGM = "Assets/Sound/BGM/EventRoomBGM.mp3";
+    public const string OnBattleBGM = "Assets/Sound/BGM/OnBattleBGM.mp3";
+    public const string StoreMapBGM = "Assets/Sound/BGM/StoreMapBGM.mp3";
 
 };
 

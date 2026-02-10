@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,14 +21,14 @@ public class PlayerUnit : MonoBehaviour,IDamageable
     {
         ShowBloodEffect();
         var col = color==default ? Color.red : color;
-        Managers.UI.ShowFloatingText(transform.position,$"-{(int)damage}",col,1f);
+        Managers.UI.ShowFloatingText(transform.position,$"-{(int)damage}",col,1f).Forget();
             
         
         Managers.Player.TakeDamage(damage);
     }
     
 
-    private async Task ShowBloodEffect()
+    private async UniTask ShowBloodEffect()
     {
         var blood = await Managers.Resource.InstantiateAsync(Address.UI_Blood);
         var image = blood.GetComponentInChildren<Image>();

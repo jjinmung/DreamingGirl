@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic; // List 사용을 위해 추가
 using System.Linq;
 using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AI; // NavMesh 사용을 위해 필수
 using Random = UnityEngine.Random;
@@ -33,18 +34,18 @@ public class EnemySpawner : MonoBehaviour
 
     private List<GameObject> enemies = new List<GameObject>();
     public int SpawnCount;
-    public void SpawnEnemys()
+    public async UniTask SpawnEnemys()
     {
         if (Room == null)
             Room = GetComponentInParent<EnemyRoom>();
         
         enemies.Clear();
         for (int i = 0; i < SpawnCount; i++)
-            SpawnEnemy();
+            await SpawnEnemy();
     }
 
 
-    private async Task SpawnEnemy()
+    private async UniTask SpawnEnemy()
     {
         // 1. 가중치 기반 선택 (로직 분리 추천)
         SpawnData selectedEnemy = GetWeightedRandomEnemy();
@@ -58,7 +59,7 @@ public class EnemySpawner : MonoBehaviour
         string path = $"Assets/Prefabs/Enemy/{selectedEnemy.ID}.prefab";
         GameObject go = await Managers.Resource.InstantiateAsync(path, spawnPos, Quaternion.Euler(0, Random.Range(0, 360), 0));
         var enemy = go.GetComponent<EnemyBase>();
-        enemy.Init(selectedEnemy.ID);
+        await enemy.Init(selectedEnemy.ID);
         enemy.SetAdditionalData(PatrolPoints.ToList()); 
     
         go.SetLayerRecursively("Default");

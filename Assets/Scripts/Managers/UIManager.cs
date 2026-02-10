@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using Unity.Behavior;
 using UnityEngine;
@@ -40,7 +41,7 @@ public class UIManager
         }
     }
 
-	public async Task<T> MakeSubItem<T>(string addrres, Transform parent = null) where T : Component
+	public async UniTask<T> MakeSubItem<T>(string addrres, Transform parent = null) where T : Component
 	{
 		GameObject go = await Managers.Resource.InstantiateAsync(addrres);
 		if (parent != null)
@@ -51,12 +52,12 @@ public class UIManager
 		return go.GetOrAddComponent<T>();
 	}
 
-	public T ShowSceneUI<T>(string address=null) where T : UI_Scene
+	public async UniTask<T> ShowSceneUI<T>(string address=null) where T : UI_Scene
 	{
 		if (string.IsNullOrEmpty(address))
 			address = typeof(T).Name;
 
-		GameObject go = Managers.Resource.Instantiate($"Assets/Prefabs/UI/Scene/{address}.prefab");
+		GameObject go = await Managers.Resource.InstantiateAsync($"Assets/Prefabs/UI/Scene/{address}.prefab");
 		T sceneUI = go.GetOrAddComponent<T>();
         _sceneUI = sceneUI;
 
@@ -76,7 +77,7 @@ public class UIManager
 		return null;
 	}
 
-	public async Task<T> ShowPopupUI<T>(string address = null) where T : UI_Popup
+	public async UniTask<T> ShowPopupUI<T>(string address = null) where T : UI_Popup
     {
         if (string.IsNullOrEmpty(address))
 	        address = typeof(T).Name;
@@ -107,10 +108,10 @@ public class UIManager
 		return popup;
     }
 	
-	public void ShowFloatingText(Vector3 pos, string message, Color color,float duration=1.2f,float size=50f,bool isRandom=false)
+	public async UniTaskVoid ShowFloatingText(Vector3 pos, string message, Color color,float duration=1.2f,float size=50f,bool isRandom=false)
 	{
 		
-		var floatingText = Managers.Resource.Instantiate(Address.UI_FloatingText);
+		var floatingText = await Managers.Resource.InstantiateAsync(Address.UI_FloatingText);
 		floatingText.GetComponent<UI_FloatingText>().Init(pos,message, color,duration,size,isRandom);
 	}
 

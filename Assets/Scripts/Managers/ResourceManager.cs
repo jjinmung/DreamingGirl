@@ -1,12 +1,15 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.AI;
 using UnityEngine.Pool;
 using UnityEngine.ResourceManagement.AsyncOperations;
+using Object = UnityEngine.Object;
 
 public class ResourceManager : MonoBehaviour
 {
@@ -43,10 +46,19 @@ public class ResourceManager : MonoBehaviour
                 // PooledObject 컴포넌트 강제 추가
                 var po = go.GetComponent<PooledObject>() ?? go.AddComponent<PooledObject>();
                 po.address = address;
+                po.isReleased = false;
                 return go;
             },
-            actionOnGet: (go) => go.SetActive(true),
-            actionOnRelease: (go) => go.SetActive(false),
+            actionOnGet: (go) => {
+                go.SetActive(true);
+                if (go.TryGetComponent<PooledObject>(out var po))
+                    po.isReleased = false; // 꺼낼 때 false로 초기화
+            },
+            actionOnRelease: (go) => {
+                go.SetActive(false);
+                if (go.TryGetComponent<PooledObject>(out var po))
+                    po.isReleased = true; // 반납될 때 true로 설정
+            },
             actionOnDestroy: (go) => Object.Destroy(go),
             collectionCheck: true, // 중복 반납 시 예외 발생 (안전 장치)
             defaultCapacity: 10,
@@ -61,7 +73,7 @@ public class ResourceManager : MonoBehaviour
 
     #region Async Load (비동기 로드)
 
-    public async Task<T> LoadAsync<T>(string address) where T : Object
+    public async UniTask<T> LoadAsync<T>(string address) where T : Object
     {
         if (_resources.TryGetValue(address, out AsyncOperationHandle handle))
         {
@@ -80,7 +92,7 @@ public class ResourceManager : MonoBehaviour
         return null;
     }
 
-    public async Task<T[]> LoadAllAsync<T>(string label) where T : Object
+    public async UniTask<T[]> LoadAllAsync<T>(string label) where T : Object
     {
         if (_resources.TryGetValue(label, out AsyncOperationHandle handle))
         {
@@ -102,7 +114,7 @@ public class ResourceManager : MonoBehaviour
 
     #region Async Instantiate (비동기 생성)
 
-    public async Task<GameObject> InstantiateAsync(string address, Vector3 position = default, Quaternion rotation = default, Transform parent = null)
+    public async UniTask<GameObject> InstantiateAsync(string address, Vector3 position = default, Quaternion rotation = default, Transform parent = null)
     {
         GameObject prefab = await LoadAsync<GameObject>(address);
         if (prefab == null) return null;
@@ -114,7 +126,7 @@ public class ResourceManager : MonoBehaviour
         return go;
     }
 
-    public async Task<GameObject> InstantiateAsync(AssetReference assetRef, Vector3 position = default, Quaternion rotation = default, Transform parent = null)
+    public async UniTask<GameObject> InstantiateAsync(AssetReference assetRef, Vector3 position = default, Quaternion rotation = default, Transform parent = null)
     {
         if (assetRef == null || !assetRef.RuntimeKeyIsValid()) return null;
         return await InstantiateAsync(assetRef.RuntimeKey.ToString(), position, rotation, parent);
@@ -159,27 +171,6 @@ public class ResourceManager : MonoBehaviour
 
     #endregion
 
-    #region Synchronous Instantiate (동기 생성)
-
-    public GameObject Instantiate(string address, Vector3 position = default, Quaternion rotation = default, Transform parent = null)
-    {
-        GameObject prefab = Load<GameObject>(address);
-        if (prefab == null) return null;
-
-        IObjectPool<GameObject> pool = GetOrCreatePool(address, prefab);
-        GameObject go = pool.Get();
-
-        SetTransformAndAgent(go, position, rotation, parent);
-        return go;
-    }
-
-    public GameObject Instantiate(AssetReference assetRef, Vector3 position = default, Quaternion rotation = default, Transform parent = null)
-    {
-        if (assetRef == null || !assetRef.RuntimeKeyIsValid()) return null;
-        return Instantiate(assetRef.RuntimeKey.ToString(), position, rotation, parent);
-    }
-
-    #endregion
 
     #region Destroy / Release (반납)
 
@@ -193,20 +184,25 @@ public class ResourceManager : MonoBehaviour
         }
         else
         {
-            StartCoroutine(CoDestroy(go, delay));
+            DelayDestroy(go, delay).Forget();
         }
     }
 
-    private IEnumerator CoDestroy(GameObject go, float delay)
+    private async UniTaskVoid DelayDestroy(GameObject go, float delay)
     {
-        yield return new WaitForSeconds(delay);
+        await UniTask.Delay(TimeSpan.FromSeconds(delay));
         ReturnToPool(go);
     }
 
     private void ReturnToPool(GameObject go)
     {
+        if (go == null) return;
+
         if (go.TryGetComponent<PooledObject>(out var po))
         {
+            // 핵심: 이미 반납된 상태라면 중복 처리를 하지 않음
+            if (po.isReleased) return;
+
             if (_pools.TryGetValue(po.address, out var pool))
             {
                 pool.Release(go);
@@ -214,7 +210,6 @@ public class ResourceManager : MonoBehaviour
             }
         }
 
-        // 풀이 없거나 PooledObject가 아니면 그냥 파괴
         Object.Destroy(go);
     }
 

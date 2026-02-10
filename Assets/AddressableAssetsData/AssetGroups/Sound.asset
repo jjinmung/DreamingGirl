@@ -1,0 +1,163 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Sound
+  m_EditorClassIdentifier: 
+  m_GroupName: Sound
+  m_GUID: de144175bb0d74348b1930e26d46b303
+  m_SerializeEntries:
+  - m_GUID: 0de2ea81552d74ec2832ea4900796f2e
+    m_Address: Assets/Sound/Effect/UI/OpenPopup.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 14ed1ede7bf563d4491cc9f38a4d0a11
+    m_Address: Assets/Sound/BGM/LobyBGM.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 241cfecd43a247a419e5ad0672bacf18
+    m_Address: Assets/Sound/Effect/HitSound.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 30450f670f05dff41a3dc5c9d836b349
+    m_Address: Assets/Sound/Effect/enemy02/Enemt02Die.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 35c0561f70cde47cd91cb34212aaf0f4
+    m_Address: Assets/Sound/Effect/UI/SetCoin.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 374d34a4ba3181a4a9d6df1d7328e0cc
+    m_Address: Assets/Sound/Effect/Player/FireAttack.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3b0daf07242105b4a9dcf8818582ba07
+    m_Address: Assets/Sound/Effect/enemy02/enemy02ShootHit.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3e35b42571055174ebd027f14fb916f2
+    m_Address: Assets/Sound/Effect/Player/PlayerDash.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 479b02de08858134a8aad4ea161ee000
+    m_Address: Assets/Sound/Effect/mimic.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 48b034fb352a15e47beca8fd1b10f460
+    m_Address: Assets/Sound/Effect/enemy02/enemy02Shoot.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 554b75fd129337a4e805dff5912bcd5b
+    m_Address: Assets/Sound/Effect/UI/ClostPopup.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 74d5a7969a84e984889664f9b0064f30
+    m_Address: Assets/Sound/Effect/Enemy03/Enemy03BallHit.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 88f7198311307b746a062a5428a76d37
+    m_Address: Assets/Sound/Effect/Enemy03/Enemy03BallShoot.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b247df4a73f4af7419eeefe49ad76170
+    m_Address: Assets/Sound/BGM/EventRoomBGM.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b728963c85b41f04caa8df6ffa62e0ce
+    m_Address: "Assets/Sound/Effect/Player/\uBCBD\uB825\uC77C\uC12C.mp3"
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b8878a5b12494e8408cb17dd11a141ca
+    m_Address: Assets/Sound/BGM/BossMapBGM.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b89153b8c084d4356bb2a98308c8a708
+    m_Address: Assets/Sound/Effect/Food Eat 05.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bafdad0557c6ee445b1457e40dcb0f96
+    m_Address: Assets/Sound/Effect/Enemy03/Enemy03Dash.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c1509c6b9ee87bd4da5f01277601e8ee
+    m_Address: Assets/Sound/BGM/OnBattleBGM.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c585c745e979ca34a85890caf5b00ab5
+    m_Address: Assets/Sound/Effect/Enemy01/Enemy01ShootHit.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cbe6352de079b154dab8d0792de5c17d
+    m_Address: Assets/Sound/Effect/Enemy03/Enemy03Blast.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d777570ae2a1eac42bbaa900f7e82bd0
+    m_Address: Assets/Sound/BGM/StoreMapBGM.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dde2accc6df75554a8f34be9b6c510bc
+    m_Address: Assets/Sound/Effect/Player/PlayerNormalAttack.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e55bd1f8ae2ecd2498b513ac365e2c16
+    m_Address: Assets/Sound/Effect/Enemy03/Enemy03Roar.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f0eac2fd9409c024cab20ac4bb970faf
+    m_Address: Assets/Sound/Effect/Enemy03/Enemy03Beam.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f295ac6f64a7272419e2ea8a4356df97
+    m_Address: Assets/Sound/Effect/Player/IceAttack.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f9b5861830d70a44c874c8258281ffb3
+    m_Address: Assets/Sound/Effect/Enemy01/Enemy01Die.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f9de6e952d3b46447bdc35000c00dcc8
+    m_Address: Assets/Sound/Effect/Enemy01/Enemy01Shoot.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 920b87acde3acff468f42abc87154c6f, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: eb4447d4d59120f49863c30d28b39013, type: 2}
+    - {fileID: 11400000, guid: 7ff5c729cc73150448a5087d45379b66, type: 2}

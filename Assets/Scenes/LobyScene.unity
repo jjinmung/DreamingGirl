@@ -18789,7 +18789,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CanEsc: 1
-  StageCount: 10
+  StageCount: 5
   MonsterMapPercent: 0.5
   TotalGold: 0
   PlayTime: 0

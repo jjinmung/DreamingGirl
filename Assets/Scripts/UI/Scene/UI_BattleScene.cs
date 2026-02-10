@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -52,8 +53,7 @@ public class UI_BattleScene : UI_Scene
     {
         LevelBar
     }
-
-    private void Start() => Init();
+    
 
     public override void Init()
     {
@@ -63,6 +63,31 @@ public class UI_BattleScene : UI_Scene
         Bind<GameObject>(typeof(GameObjects));
         Bind<Slider>(typeof(Sliders));
         
+        //첫 진입은 로비라 전투 UI 비활성화
+        LobyUIActive();
+        
+        //스킬바 초기화
+        GetImage((int)Images.Image_DashCool).fillAmount = 0f;
+        GetImage((int)Images.Image_Skill1Cool).fillAmount = 0f;
+        GetImage((int)Images.Image_Skill2Cool).fillAmount = 0f;
+        GetImage((int)Images.Image_Skill3Cool).fillAmount = 0f;
+        GetImage((int)Images.Image_Skill4Cool).fillAmount = 0f;
+        
+        // 초기 연출
+        AllUIActive(false);
+        var fadeImg = GetImage((int)Images.FadeOut);
+        fadeImg.color = Color.black;
+        fadeImg.DOFade(0f, 2f).
+            SetEase(Ease.InQuad)
+            .SetDelay(1.5f)
+            .OnComplete(() =>
+            {
+                LobyUIActive();
+            });
+    }
+
+    public void LazyInit()
+    {
         // 이벤트 연결 (중복 방지 safe subtract)
         Managers.Stage.ExitRoom -= HandleExitRoom;
         Managers.Stage.ExitRoom += HandleExitRoom;
@@ -71,41 +96,19 @@ public class UI_BattleScene : UI_Scene
         Managers.Player.OnDataChanged -= RefreshGoldUI;
         Managers.Player.OnDataChanged += RefreshGoldUI;
         
-
-        //골드 UI동기화
-        RefreshGoldUI();
-        
-        //첫 진입은 로비라 전투 UI 비활성화
-        LobyUIActive();
-        
         Managers.Player.OnLevelUp -= AddExp;
         Managers.Player.OnLevelUp += AddExp;
         
-        //스킬바 초기화
-        GetImage((int)Images.Image_DashCool).fillAmount = 0f;
-        GetImage((int)Images.Image_Skill1Cool).fillAmount = 0f;
-        GetImage((int)Images.Image_Skill2Cool).fillAmount = 0f;
-        GetImage((int)Images.Image_Skill3Cool).fillAmount = 0f;
-        GetImage((int)Images.Image_Skill4Cool).fillAmount = 0f;
         RefreshSkillBar();
+        
         Managers.Player.Control.OnGetActiveSKill -= RefreshSkillBar;
         Managers.Player.Control.OnGetActiveSKill += RefreshSkillBar;
         
         Managers.Player.Control.OnUseActiveSKill -= UseSkill;
         Managers.Player.Control.OnUseActiveSKill += UseSkill;
         
-        
-        // 초기 연출
-        AllUIActive(false);
-        var fadeImg = GetImage((int)Images.FadeOut);
-        fadeImg.color = Color.black;
-        fadeImg.DOFade(0f, 2f).
-            SetEase(Ease.InQuad)
-            .SetDelay(1f)
-            .OnComplete(() =>
-            {
-                LobyUIActive();
-            });
+        //골드 UI동기화
+        RefreshGoldUI();
     }
     
     private void HandleExitRoom() => FadeOut(2f);
@@ -140,7 +143,7 @@ public class UI_BattleScene : UI_Scene
   
 
     #region 맵 관련 함수
-    public async Task SetMap(List<RoomNode> roomNodes,int depth)
+    public void SetMap(List<RoomNode> roomNodes,int depth)
     {
         GetText((int)Texts.StageText).text = $"{depth}";
         
@@ -155,20 +158,20 @@ public class UI_BattleScene : UI_Scene
         // 2. 개수에 따른 로직 분기 
         if (count == 1)
         {
-            await SetNodeActive(1, true, roomNodes[0].type); // Node2만 활성화
+            SetNodeActive(1, true, roomNodes[0].type).Forget(); // Node2만 활성화
         }
         else if (count == 2)
         {
-            await SetNodeActive(0, true, roomNodes[0].type); // Node1
-            await SetNodeActive(2, true, roomNodes[1].type); // Node3
+            SetNodeActive(0, true, roomNodes[0].type).Forget(); // Node1
+            SetNodeActive(2, true, roomNodes[1].type).Forget(); // Node3
         }
         else if (count == 3)
         {
-            for (int i = 0; i < 3; i++) await SetNodeActive(i, true, roomNodes[i].type);
+            for (int i = 0; i < 3; i++) SetNodeActive(i, true, roomNodes[i].type).Forget();
         }
     }
 
-    private async Task SetNodeActive(int index, bool isActive, Define.RoomType type)
+    private async UniTask SetNodeActive(int index, bool isActive, Define.RoomType type)
     {
         // Line은 GameObjects enum 순서대로 (0, 1, 2)
         // Node는 Images enum 순서대로 (FadeOut이 0이므로 Node1은 1, 2, 3)
@@ -179,7 +182,7 @@ public class UI_BattleScene : UI_Scene
         }
     }
 
-    private async Task<Sprite> GetSprite(Define.RoomType type)
+    private async UniTask<Sprite> GetSprite(Define.RoomType type)
     {
         if (_spriteCache.TryGetValue(type, out Sprite cachedSprite))
             return cachedSprite;

@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using DG.Tweening;
 using Unity.AI.Navigation;
@@ -39,9 +41,7 @@ public class StageManager : MonoBehaviour
     private int doorIndex;
     private UI_BattleScene _battleUI;
     
-    private WaitForSeconds waitForOne = new WaitForSeconds(1f);
-    private WaitForSeconds waitForTwo = new WaitForSeconds(2f);
-    private WaitForSeconds waitForHalf = new WaitForSeconds(0.5f);
+    private CancellationTokenSource _cts;
     
     public GameObject Root
     {
@@ -53,8 +53,9 @@ public class StageManager : MonoBehaviour
             return root;
         }
     }
-    public void Init()
+    public async UniTask Init()
     {
+        //킬수 초기화
         killCount = 0;
         
         // 이벤트 초기화
@@ -63,20 +64,23 @@ public class StageManager : MonoBehaviour
         EnterRoom -= EnterToNextRoom;
         EnterRoom += EnterToNextRoom;
 
+        _cts?.Cancel();
+        _cts?.Dispose();
+        _cts = new CancellationTokenSource();
         
         lobyNode = new RoomNode { 
             index = -1, 
             type = RoomType.Loby,
             address = GetAddressByType(RoomType.Loby)
         };
-        GenerateMap();
+        await GenerateMap();
         surface =GameObject.Find("NavMesh").GetComponent<NavMeshSurface>();
         _battleUI = Managers.UI.LoadScene<UI_BattleScene>();
     }
 
     
     
-    public async Task GenerateMap()
+    public async UniTask GenerateMap()
     {
         currentDepth = 0;
         stageMap.Clear();
@@ -124,7 +128,7 @@ public class StageManager : MonoBehaviour
     }
     
 
-    public async Task ChangeRoom()
+    public async UniTask ChangeRoom()
     {
         
         Managers.Resource.Destroy(currentRoom.gameObject);
@@ -181,39 +185,56 @@ public class StageManager : MonoBehaviour
 
     public void ExitToNextRoom()
     {
-        StartCoroutine(ExitToNextRoomCoroutine());
+        ExitToNextRoomAsync().Forget();
     }
 
-    IEnumerator ExitToNextRoomCoroutine()
+    private async UniTask ExitToNextRoomAsync()
     {
-        // 연출 시작
+        var token = _cts.Token; // 토큰 가져오기
+        
+        // 1. 연출 시작 및 UI 초기화
         Managers.Camera.ChanageCamera();
         Managers.Player.FadeMoveFloat(0.5f);
-        
-        if (_battleUI == null) _battleUI = Managers.UI.LoadScene<UI_BattleScene>();
+        Managers.Sound.StopFade(Sound.Bgm);
+
+        if (_battleUI == null) 
+            _battleUI = Managers.UI.LoadScene<UI_BattleScene>();
+    
         _battleUI.AllUIActive(false);
-        
+
         var player = Managers.Player.Trans;
-        player.DOMove(currentExitDoor.ExitPos.position, 1f);
-        player.DORotate(currentExitDoor.dir, 1f);
-        yield return waitForOne;
+        try
+        {
+            // 2. 문 앞으로 이동 및 회전 (두 연출을 동시에 시작하고 모두 끝날 때까지 대기)
+            await UniTask.WhenAll(
+                player.DOMove(currentExitDoor.ExitPos.position, 1f).ToUniTask(cancellationToken: token),
+                player.DORotate(currentExitDoor.dir, 1f).ToUniTask(cancellationToken: token)
+            );
 
-        // 문 밖으로 나가는 연출
-        Vector3 targetPosition = player.position + (player.forward * 4f);
-        player.DOMove(targetPosition, 1f).SetEase(Ease.Linear);
-        yield return waitForOne;
+            // 3. 문 밖으로 나가는 연출
+            Vector3 targetPosition = player.position + (player.forward * 4f);
+            // 이동이 끝날 때까지 대기
+            await player.DOMove(targetPosition, 1f).SetEase(Ease.Linear).ToUniTask(cancellationToken: token);
+
+            // 4. 다음 방 동적 교체
+            await ChangeRoom();
+            // 방 교체 후 짧은 대기 (기존 waitForOne 대체)
+            await UniTask.Delay(TimeSpan.FromSeconds(1f), cancellationToken: token);
+
+            // 5. 플레이어를 새 방의 스폰 포인트로 순간이동
+            player.position = currentRoom.SpawnPos.position;
+
+            // 6. 추가 대기 및 이벤트 호출
+            await UniTask.Delay(TimeSpan.FromSeconds(1f), cancellationToken: token);
+    
+            EnterRoom?.Invoke();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine("ExitToNextRoom error: " + e);
+            throw;
+        }
         
-        //다음 방 동적 교체 ---
-        ChangeRoom();
-        yield return waitForOne;
-        
-
-        // 플레이어를 새 방의 스폰 포인트로 순간이동
-        player.position = currentRoom.SpawnPos.position;
-        // ------------------------------
-
-        yield return waitForOne;
-        EnterRoom?.Invoke();
     }
     
     public void CheckClear()
@@ -235,33 +256,40 @@ public class StageManager : MonoBehaviour
             TotalGold += 30;
             TotalKill++;
             PlayTime = Time.time-PlayTime;
-            StartCoroutine(BossClear());
+            BossClearAsync().Forget();
         }
     }
     
-    IEnumerator BossClear()
+    private async UniTaskVoid BossClearAsync()
     {
-        Managers.Player.BossClearControl(false);
-        Time.timeScale = 0.2f;
-        yield return waitForHalf;
-        Time.timeScale = 1f;
-        
-        yield return waitForOne;
-        var task = Managers.UI.ShowPopupUI<UI_StageEnding>();
-
-        // Task가 완료될 때까지 코루틴 대기
-        yield return new WaitUntil(() => task.IsCompleted);
-
-        //만약 Task 내부에서 예외가 발생했다면 처리
-        if (task.IsFaulted)
+        var token = _cts.Token; // 토큰 가져오기
+        try
         {
-            Debug.LogError(task.Exception);
-            yield break;
+            // 1. 보스 클리어 연출 시작 (슬로우 모션)
+            Managers.Player.BossClearControl(false);
+            Time.timeScale = 0.2f;
+
+            // 슬로우 모션 중에도 유니티 시간을 따를지(DelayType.DeltaTime), 
+            // 아니면 실제 시간 초를 따를지(DelayType.Realtime) 선택 가능합니다.
+            // 여기서는 슬로우 모션 느낌을 위해 Realtime으로 0.5초 대기합니다.
+            await UniTask.Delay(TimeSpan.FromSeconds(0.5f), delayType: DelayType.Realtime, cancellationToken: token);
+        
+            Time.timeScale = 1f;
+
+            // 2. 1초 대기 (이때는 정상 시간 흐름)
+            await UniTask.Delay(TimeSpan.FromSeconds(1f), cancellationToken: token);
+
+            // 3. UI 팝업 로드 및 대기 (Task를 UniTask로 직접 await)
+            // ShowPopupUI가 Task<T>를 반환하더라도 바로 await 가능합니다.
+            UI_StageEnding ui = await Managers.UI.ShowPopupUI<UI_StageEnding>();
+
+            // 4. 결과 UI 텍스트 설정
+            ui.SetText(true, PlayTime, TotalKill, TotalGold);
         }
-
-        var ui = task.Result; 
-        ui.SetText(true,PlayTime,TotalKill,TotalGold);
-
+        catch (Exception e)
+        {
+            Debug.LogError($"BossClear Error: {e.Message}");
+        }
     }
     public void ClearRoom()
     {
@@ -275,51 +303,59 @@ public class StageManager : MonoBehaviour
 
     public void EnterToNextRoom()
     {
-        StartCoroutine(EnterToNextRoomCoroutine());
+         EnterToNextRoomAsync().Forget();
     }
-    
-    IEnumerator EnterToNextRoomCoroutine()
+
+    private async UniTaskVoid EnterToNextRoomAsync()
     {
-        // 1. 방 타입에 따른 초기 설정 (Spawn / Boss 생성 / Event)
-        var task = InitializeRoomContent();
-
-        // 2. Task가 완료될 때까지 코루틴 대기
-        yield return new WaitUntil(() => task.IsCompleted);
-
-        // 3. 만약 Task 내부에서 예외가 발생했다면 처리
-        if (task.IsFaulted)
+        var token = _cts.Token; // 토큰 가져오기
+        try
         {
-            Debug.LogError(task.Exception);
-            yield break;
-        }
+            // 1. 방 타입에 따른 초기 설정 
+            Enemy03 boss = await InitializeRoomContent();
 
-        // 4. 결과값 가져오기
-        Enemy03 boss = task.Result;
-        
-        //플레이어 이동 및 연출
-        yield return StartPlayerEntranceSequence();
-        // 5. 카메라 및 보스 등장 연출
-        if (currentRoomNode.type == RoomType.Boss)
+            // 2. 플레이어 이동 및 연출
+            await StartPlayerEntranceSequence();
+
+            // 3. 카메라 및 보스 등장 연출
+            if (currentRoomNode.type == RoomType.Boss)
+            {
+                // 이전 답변에서 수정했던 그 함수입니다.
+                await StartBossEncounterSequence(boss);
+            }
+            else
+            {
+                Managers.Camera.ChanageCamera();
+                await UniTask.Delay(TimeSpan.FromSeconds(2), cancellationToken: token); // waitForTwo 대체
+            }
+            
+            string bgmKey = currentRoomNode.type switch
+            {
+                RoomType.Monster => Address.OnBattleBGM,
+                RoomType.Boss => Address.BossMapBGM,
+                RoomType.Event => Address.EventRoomBGM,
+                _ => null
+            };
+            Managers.Sound.PlayBgm(bgmKey).Forget();
+            _battleUI.SetMap(currentRoomNode.nextNodes, currentDepth);
+            Managers.Player.EnterRoom();
+            SetupBattleUI();
+            CanEsc = true;
+            
+            
+        }
+        catch (OperationCanceledException)
         {
-            yield return StartBossEncounterSequence(boss);
+            // 취소 처리 
         }
-        else
+        catch (Exception e)
         {
-            Managers.Camera.ChanageCamera();
-            yield return waitForTwo;
+            Debug.LogError($"Room Transition Error: {e}");
         }
-
-        // 6. UI 설정 및 전투 개시
-        SetupBattleUI();
-        
-        Managers.Player.EnterRoom();
-        _battleUI.SetMap(currentRoomNode.nextNodes, currentDepth);
-
-        CanEsc = true;
     }
     
 
-    private async Task<Enemy03> InitializeRoomContent()
+    private async UniTask<Enemy03> InitializeRoomContent()
     {
         switch (currentRoomNode.type)
         {
@@ -327,7 +363,7 @@ public class StageManager : MonoBehaviour
                 int spawnCount = Random.Range(-2, 4) + currentDepth+10; 
                 spawnDatas[1].spawnWeight=currentDepth*2;
                 enemySpawner.SpawnCount = spawnCount;
-                enemySpawner.SpawnEnemys();
+                await enemySpawner.SpawnEnemys();
                 break;
 
             case RoomType.Boss:
@@ -344,34 +380,41 @@ public class StageManager : MonoBehaviour
         return null;
     }
 
-    private IEnumerator StartPlayerEntranceSequence()
+    private async UniTask StartPlayerEntranceSequence()
     {
+        var token = _cts.Token; // 토큰 가져오기
         var enterDoor = currentRoom.EnterDoor;
         enterDoor.EnterRoomOpen();
 
         var player = Managers.Player.Trans;
         player.rotation = Quaternion.identity;
-        
-        // 이동 연출
-        yield return player.DOMove(enterDoor.ExitPos.position, 2f).SetEase(Ease.Linear).WaitForCompletion();
-        
+    
+        // 이동 연출 (DOTween + UniTask)
+        // ToUniTask()를 붙여주면 해당 트윈이 끝날 때까지 await 합니다.
+        await player.DOMove(enterDoor.ExitPos.position, 2f)
+            .SetEase(Ease.Linear)
+            .ToUniTask(cancellationToken: token);
+    
         enterDoor.Close();
         Managers.Player.FadeMoveFloat(0);
-        yield return waitForHalf;
+
+        // yield return waitForHalf 대체 (0.5초 대기)
+        await UniTask.Delay(TimeSpan.FromSeconds(0.5f), cancellationToken: token);
     }
 
-    private IEnumerator StartBossEncounterSequence(Enemy03 boss)
+    private async UniTask StartBossEncounterSequence(Enemy03 boss)
     {
-        if (boss == null) yield break;
+        var token = _cts.Token; // 토큰 가져오기
+        if (boss == null) return;
 
         Managers.Camera.SetBossCam(true);
-        yield return waitForOne;
-        
+        await UniTask.Delay(TimeSpan.FromSeconds(1), cancellationToken: token); 
+    
         boss.Rage();
-        yield return waitForTwo;
-        
+        await UniTask.Delay(TimeSpan.FromSeconds(2), cancellationToken: token); 
+    
         Managers.Camera.SetBossCam(false);
-        boss.Init(3);
+        await boss.Init(3); 
     }
 
     #endregion
@@ -409,36 +452,69 @@ public class StageManager : MonoBehaviour
     }
     public void ReturnToLoby()
     {
-        StartCoroutine(ReturnToLobyCoroutine());
+        ReturnToLobyAsync().Forget();
     }
 
-    IEnumerator ReturnToLobyCoroutine()
+    private async UniTaskVoid ReturnToLobyAsync()
     {
-        _battleUI.AllUIActive(false);
-        _battleUI.FadeOut(1);
-        yield return waitForOne;
-        Managers.Resource.Destroy(currentRoom.gameObject);
-        GenerateMap();
-        Managers.Player.PlayerInit();
-        yield return waitForOne;
-        Managers.Player.BossClearControl(true);
-        _battleUI.FadeIn(1);
+        var token = _cts.Token; // 토큰 가져오기
+        try
+        {
+            // 1. 연출 시작: BGM 정지 및 UI 비활성화
+            Managers.Sound.StopFade(Sound.Bgm);
+            _battleUI.AllUIActive(false);
         
-        yield return waitForOne;
-        _battleUI.LobyUIActive();
-        Managers.Player.AddGold(TotalGold);
+            // 페이드 아웃 시작 (1초 동안 진행된다고 가정)
+            _battleUI.FadeOut(1);
+        
+            // 페이드 아웃이 진행되는 동안 1초 대기
+            await UniTask.Delay(TimeSpan.FromSeconds(1f), cancellationToken: token);
+
+            // 2. 데이터 및 맵 재구성
+            if (currentRoom != null)
+            {
+                Managers.Resource.Destroy(currentRoom.gameObject);
+            }
+        
+            GenerateMap();            // 맵 생성
+            Managers.Player.PlayerInit(); // 플레이어 초기화
+        
+            // 맵 생성 후 짧은 안정화 대기
+            await UniTask.Delay(TimeSpan.FromSeconds(1f), cancellationToken: token);
+
+            // 3. 로비 진입 연출
+            Managers.Player.BossClearControl(true);
+            _battleUI.FadeIn(1);
+            Managers.Sound.PlayBgm(Address.StoreMapBGM);
+        
+            // 페이드 인 완료 대기
+            await UniTask.Delay(TimeSpan.FromSeconds(1f), cancellationToken: token);
+
+            // 4. 로비 전용 UI 활성화 및 보상 정산
+            _battleUI.LobyUIActive();
+            Managers.Player.AddGold(TotalGold);
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"ReturnToLoby Error: {e.Message}");
+        }
     }
     
     public void AddGold(int amount)
     {
         TotalGold += amount;
-        Managers.UI.ShowFloatingText(Managers.Player.Trans.position, $"+{amount}gold", Color.yellow, 1.5f);
+        Managers.UI.ShowFloatingText(Managers.Player.Trans.position, $"+{amount}gold", Color.yellow, 1.5f).Forget();
     }
 
     public void Clear()
     {
-        // 1. 코루틴 중단 (실행 중인 이동/연출 코루틴 정지)
-        StopAllCoroutines();
+        // 1. 모든 UniTask 중단
+        if (_cts != null)
+        {
+            _cts.Cancel();
+            _cts.Dispose();
+            _cts = null;
+        }
 
         // 2. 이벤트 구독 해제 (매우 중요)
         ExitRoom = null;

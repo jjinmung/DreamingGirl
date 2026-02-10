@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
 using static Define;
@@ -15,7 +16,7 @@ public class SoundManager
     // MP3 음원     -> AudioClip
     // 관객(귀)     -> AudioListener
 
-    public async Task Init()
+    public void Init()
     {
         GameObject root = GameObject.Find("@Sound");
         if (root == null)
@@ -36,26 +37,45 @@ public class SoundManager
 
         BGMVolume = 1f;
         EffectVolume = 1f;
-        await PlayBgm(Address.LobyBGM);
+        PlayBgm(Address.LobyBGM).Forget();
     }
 
     // BGM 전용 (비동기 & 페이드)
-    public async Task PlayBgm(string address, float fadeTime = 1.0f)
+    public async UniTaskVoid PlayBgm(string address, float fadeTime = 2.0f)
     {
 	    AudioClip clip = await GetOrAddAudioClip(address, Sound.Bgm);
 	    AudioSource source = _audioSources[(int)Sound.Bgm];
 
+	    // 1. 이미 같은 음악이 재생 중이라면 무시 (중복 호출 방지)
+	    if (source.clip == clip && source.isPlaying)
+		    return;
+
+	    // 2. DOTween 트윈이 겹치지 않도록 기존 트윈 제거
+	    source.DOKill(); 
+
 	    if (source.isPlaying)
 	    {
-		    await source.DOFade(0, fadeTime).AsyncWaitForCompletion();
-		    source.Stop();
+		    // 3. 페이드 아웃 후 새로운 클립 재생 (Sequence 활용)
+		    Sequence seq = DOTween.Sequence();
+		    seq.Append(source.DOFade(0, fadeTime))
+			    .AppendCallback(() => 
+			    {
+				    source.Stop();
+				    source.clip = clip;
+				    source.Play();
+			    })
+			    .Append(source.DOFade(BGMVolume, fadeTime));
 	    }
-
-	    source.clip = clip;
-	    source.volume = 0;
-	    source.Play();
-	    source.DOFade(BGMVolume, fadeTime);
+	    else
+	    {
+		    // 즉시 재생
+		    source.clip = clip;
+		    source.volume = 0;
+		    source.Play();
+		    source.DOFade(BGMVolume, fadeTime);
+	    }
     }
+
 
 // Effect 전용 (주소 기반 비동기)
     public async Task PlayEffect(string address, float pitch = 1.0f)
@@ -95,9 +115,21 @@ public class SoundManager
 	    AudioSource audioSource = _audioSources[(int)type];
 	    audioSource.Stop();
     }
+    public void StopFade(Sound type, float fadeTime =2f)
+    {
+	    AudioSource audioSource = _audioSources[(int)type];
+	    if (audioSource.isPlaying)
+	    {
+		    audioSource.DOFade(0, fadeTime).OnComplete(() =>
+		    {
+			    audioSource.Stop();
+		    });
+
+	    }
+    }
     
 
-	async Task<AudioClip> GetOrAddAudioClip(string address, Sound type = Sound.Effect)
+	async UniTask<AudioClip> GetOrAddAudioClip(string address, Sound type = Sound.Effect)
     {
 		AudioClip audioClip = null;
 

@@ -1,11 +1,12 @@
 using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class Managers : MonoBehaviour
 {
     private static Managers _instance; // 싱글톤 인스턴스
-    public static Managers Instance { get { Init(); return _instance; } }
-    
+    public static Managers Instance => _instance;
+
     private CameraManager _camera;
     private InputManager _input;
     private PlayerManager _player;
@@ -28,7 +29,7 @@ public class Managers : MonoBehaviour
         await Init();
     }
 
-    static async Task Init()
+    static async UniTask Init()
     {
         if (_instance == null)
         {
@@ -51,11 +52,12 @@ public class Managers : MonoBehaviour
             _instance._sound = new  SoundManager();
             _instance._data = new DataManager();
             
-            _instance._ui.ShowSceneUI<UI_LobyScene>();
             _instance._camera.LobyInit();
-            await _instance._sound.Init();
-            await _instance._data.Init();
+            _instance._sound.Init();
+            _instance._data.Init().Forget();
+            await _instance._ui.ShowSceneUI<UI_LobyScene>();
             
+
         }
 
     }

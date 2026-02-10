@@ -1,4 +1,5 @@
 using System;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -19,11 +20,7 @@ public class UI_LobyScene : UI_Scene
     {
         BtnBGImange,
     }
-
-    enum GameObjects
-    {
-        Btns,
-    }
+    
 
     private void Start()
     {
@@ -35,11 +32,11 @@ public class UI_LobyScene : UI_Scene
         base.Init();
         Bind<TextMeshProUGUI>(typeof(Texts));
         Bind<Image>(typeof(Images));
-        Bind<GameObject>(typeof(GameObjects));
         
         BindingEvents();
 
         GetImage((int)Images.BtnBGImange).gameObject.SetActive(false);
+        TextsInit();
     }
 
     void BindingEvents()
@@ -68,8 +65,17 @@ public class UI_LobyScene : UI_Scene
         Managers.UI.Clear();
         Managers.Camera.LobyToBattle();
     }
-    
-    
+
+    private void TextsInit()
+    {
+        foreach (var text in Enum.GetValues(typeof(Texts)))
+        {
+            GetText((int)text).alpha = 0;
+            GetText((int)text).DOFade(1f, 5f);
+        }
+        GetImage((int)Images.BtnBGImange).color = new Color(1,1,1,0);
+        GetImage((int)Images.BtnBGImange).DOFade(1f, 5f);
+    }
 
     protected override void OnEnter(PointerEventData eventData)
     {

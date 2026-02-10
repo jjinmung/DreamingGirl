@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using Newtonsoft.Json; 
 using Data;
@@ -36,7 +37,7 @@ public class DataManager
     private float _sessionStartTime;
     
     private Vector3 StartPos = new Vector3(12f, 0f, 5f);
-    public async Task Init()
+    public async UniTaskVoid Init()
     {
         // 1. 정적 데이터 json파일 로드
         StaticDataRoot root = await LoadStaticData("StaticData");
@@ -180,7 +181,7 @@ public class DataManager
             t.Minutes, 
             t.Seconds);
     }
-    private async Task<StaticDataRoot> LoadStaticData(string path)
+    private async UniTask<StaticDataRoot> LoadStaticData(string path)
     {
         TextAsset asset = await Managers.Resource.LoadAsync<TextAsset>($"Assets/Json/{path}.json");
 

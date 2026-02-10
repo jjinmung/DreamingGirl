@@ -92,11 +92,11 @@ public abstract class EnemyBase : MonoBehaviour,IDamageable
         stat.currentHp = Mathf.Clamp(stat.currentHp - damage, 0, stat.MaxHp);
         var col = color == default ? Color.white : color;
         if(color ==default)//일반 데미지
-            Managers.UI.ShowFloatingText(transform.position,$"-{(int)damage}",col,1f);
+            Managers.UI.ShowFloatingText(transform.position,$"-{(int)damage}",col,1f).Forget();
         else if(color == Color.red)//크리티컬 데미지
-            Managers.UI.ShowFloatingText(transform.position,$"-{(int)damage}",col,1f,50f,isRandom);
+            Managers.UI.ShowFloatingText(transform.position,$"-{(int)damage}",col,1f,50f,isRandom).Forget();
         else//추가 데미지
-            Managers.UI.ShowFloatingText(transform.position,$"-{(int)damage}",col,1f,40f,isRandom);
+            Managers.UI.ShowFloatingText(transform.position,$"-{(int)damage}",col,1f,40f,isRandom).Forget();
             
         
         if (stat.currentHp <= 0)

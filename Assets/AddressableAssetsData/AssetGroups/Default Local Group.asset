@@ -50,11 +50,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 14ed1ede7bf563d4491cc9f38a4d0a11
-    m_Address: Assets/Sound/BGM/LobyBGM.mp3
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 1b7c7e48eb4bd434bb863f8c634b9695
     m_Address: Assets/Prefabs/Enemy/1.prefab
     m_ReadOnly: 0

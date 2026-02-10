@@ -38,7 +38,7 @@ public class Enemy03 : EnemyBase
 
     public override async Task Init(int id)
     {
-        base.Init(id);
+        await base.Init(id);
         var hpBar = await Managers.UI.MakeSubItem<UI_EnemyHPBar>(Address.Boss_HP_BAR);
         //위치 초기화
         RectTransform rect = hpBar.GetComponent<RectTransform>();

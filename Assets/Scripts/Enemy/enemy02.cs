@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
@@ -48,7 +49,7 @@ public class Enemy02 : EnemyBase
         _behavior.SetVariableValue("PatrolPoints", patrolPoints);
     }
 
-    public async Task SetAttackArange(bool isAcive)
+    public async UniTask SetAttackArange(bool isAcive)
     {
         if (isAcive)
         {
@@ -66,9 +67,9 @@ public class Enemy02 : EnemyBase
 
     #region 애니메이션 이벤트 함수
 
-    public void Shoot()
+    public async UniTask Shoot()
     {
-        SetAttackArange(true);
+        await SetAttackArange(true);
         var tarpos = _player.transform.position;
         projectile.Launch(tarpos);
     }
