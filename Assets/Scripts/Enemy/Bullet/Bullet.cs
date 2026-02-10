@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
@@ -14,7 +15,7 @@ namespace MasterStylizedProjectile
         public float Speed = 5;
         public AssetReference OnHitEffect;
         public AudioClip bulletClip;
-        public AudioClip onHitClip;
+        public string HitClipAddress;
 
         public bool isTargeting;
         public Transform target;
@@ -94,15 +95,13 @@ namespace MasterStylizedProjectile
             
             if (OnHitEffect != null)
             {
-                var onHitObj =  
                     Managers.Resource.InstantiateAsync(OnHitEffect, 
-                    transform.position, Quaternion.Euler(transform.eulerAngles.x, transform.eulerAngles.y, transform.eulerAngles.z));
+                    transform.position, Quaternion.Euler(transform.eulerAngles.x, transform.eulerAngles.y, transform.eulerAngles.z)).Forget();
                 
-                /*var onHit = onHitObj.gameObject.AddComponent<AudioTrigger>();
-                if (onHitClip != null)
+                if (HitClipAddress != null)
                 {
-                    onHit.onClip = onHitClip;
-                }*/
+                    Managers.Sound.PlayEffect(HitClipAddress).Forget();
+                }
                 
             }
             

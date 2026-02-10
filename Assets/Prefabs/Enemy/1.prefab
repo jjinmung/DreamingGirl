@@ -1112,6 +1112,18 @@ MonoBehaviour:
     m_SubObjectType: 
     m_SubObjectGUID: 
     m_EditorAssetChanged: 0
+  startClip:
+    m_AssetGUID: f9de6e952d3b46447bdc35000c00dcc8
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0
+  hitClip:
+    m_AssetGUID: c585c745e979ca34a85890caf5b00ab5
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0
 --- !u!1 &6380974333179427922
 GameObject:
   m_ObjectHideFlags: 0

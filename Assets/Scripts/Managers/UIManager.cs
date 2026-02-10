@@ -103,7 +103,7 @@ public class UIManager
         }
         
         go.transform.localScale = Vector3.zero;
-        go.transform.DOScale(1.0f, 0.3f).SetEase(Ease.OutBack).SetUpdate(true);
+        await go.transform.DOScale(1.0f, 0.3f).SetEase(Ease.OutBack).SetUpdate(true);
 
 		return popup;
     }

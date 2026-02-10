@@ -1,14 +1,21 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using static Define;
+using Object = UnityEngine.Object;
 
 public class SoundManager
 {
     AudioSource[] _audioSources = new AudioSource[(int)Sound.MaxCount];
     Dictionary<string, AudioClip> _audioClips = new Dictionary<string, AudioClip>();
+    private List<AudioSource> _loopSources = new List<AudioSource>();
+    Dictionary<string, UniTaskCompletionSource<AudioClip>> _loadTasks
+	    = new Dictionary<string, UniTaskCompletionSource<AudioClip>>();
     public float BGMVolume { get; set; }
 
     public float EffectVolume { get; set; }
@@ -41,7 +48,7 @@ public class SoundManager
     }
 
     // BGM 전용 (비동기 & 페이드)
-    public async UniTaskVoid PlayBgm(string address, float fadeTime = 2.0f)
+    public async UniTask PlayBgm(string address, float fadeTime = 2.0f)
     {
 	    AudioClip clip = await GetOrAddAudioClip(address, Sound.Bgm);
 	    AudioSource source = _audioSources[(int)Sound.Bgm];
@@ -57,7 +64,7 @@ public class SoundManager
 	    {
 		    // 3. 페이드 아웃 후 새로운 클립 재생 (Sequence 활용)
 		    Sequence seq = DOTween.Sequence();
-		    seq.Append(source.DOFade(0, fadeTime))
+		    await seq.Append(source.DOFade(0, fadeTime))
 			    .AppendCallback(() => 
 			    {
 				    source.Stop();
@@ -72,17 +79,78 @@ public class SoundManager
 		    source.clip = clip;
 		    source.volume = 0;
 		    source.Play();
-		    source.DOFade(BGMVolume, fadeTime);
+		    await source.DOFade(BGMVolume, fadeTime);
 	    }
     }
 
 
 // Effect 전용 (주소 기반 비동기)
-    public async Task PlayEffect(string address, float pitch = 1.0f)
+    public async UniTask PlayEffect(string address, float pitch = 1.0f)
     {
 	    AudioClip clip = await GetOrAddAudioClip(address, Sound.Effect);
 	    Play(clip, Sound.Effect, pitch);
     }
+
+    #region 반복이펙트 전용 함수
+
+    // 1. 사용 가능한(재생 중이지 않은) 루프용 소스를 찾거나 생성하는 메서드
+    private AudioSource GetOrCreateLoopSource()
+    {
+	    // 이미 생성된 소스 중 놀고 있는(isPlaying == false) 소스 찾기
+	    foreach (var source in _loopSources)
+	    {
+		    if (!source.isPlaying) return source;
+	    }
+
+	    // 없다면 새로 생성
+	    GameObject root = GameObject.Find("@Sound");
+	    GameObject go = new GameObject { name = $"LoopEffect_{_loopSources.Count}" };
+	    go.transform.parent = root.transform;
+    
+	    AudioSource newSource = go.AddComponent<AudioSource>();
+	    _loopSources.Add(newSource);
+	    return newSource;
+    }
+
+// 2. 이펙트 루프 재생 메서드
+    public async UniTask<AudioSource> PlayEffectLoop(string address, float pitch = 1.0f)
+    {
+	    AudioClip clip = await GetOrAddAudioClip(address, Sound.Effect);
+	    if (clip == null) return null;
+
+	    AudioSource source = GetOrCreateLoopSource();
+    
+	    source.clip = clip;
+	    source.pitch = pitch;
+	    source.loop = true; // 루프 설정
+	    source.volume = EffectVolume;
+	    source.Play();
+
+	    return source; // 나중에 멈추기 위해 리턴해줌
+    }
+
+	// 3. 특정 루프 사운드 정지 (페이드 아웃 포함 가능)
+	public void StopLoop(AudioSource source, float fadeTime = 0.5f)
+	{
+		if (source == null || !source.isPlaying) return;
+
+		if (fadeTime > 0)
+		{
+			source.DOFade(0, fadeTime).OnComplete(() =>
+			{
+				source.Stop();
+				source.clip = null; // 참조 해제
+			});
+		}
+		else
+		{
+			source.Stop();
+			source.clip = null;
+		}
+	}
+
+	#endregion
+ 
 
 // 공용 핵심 재생 로직 (Private으로 보호)
     private void Play(AudioClip audioClip, Sound type = Sound.Effect, float pitch = 1.0f)
@@ -106,8 +174,6 @@ public class SoundManager
 		    audioSource.PlayOneShot(audioClip, EffectVolume);
 	    }
     }
-
-	
     
     // 사운드 중지 기능 추가
     public void Stop(Define.Sound type)
@@ -129,26 +195,44 @@ public class SoundManager
     }
     
 
-	async UniTask<AudioClip> GetOrAddAudioClip(string address, Sound type = Sound.Effect)
+    async UniTask<AudioClip> GetOrAddAudioClip(string address, Sound type = Sound.Effect)
     {
-		AudioClip audioClip = null;
+	    if (type == Sound.Bgm)
+		    return await Managers.Resource.LoadAsync<AudioClip>(address);
 
-		if (type == Sound.Bgm)
-		{
-			audioClip = await Managers.Resource.LoadAsync<AudioClip>(address);
-		}
-		else
-		{
-			if (_audioClips.TryGetValue(address, out audioClip) == false)
-			{
-				audioClip =await Managers.Resource.LoadAsync<AudioClip>(address);
-				_audioClips.Add(address, audioClip);
-			}
-		}
+	    // 1. 이미 로드 완료된 클립
+	    if (_audioClips.TryGetValue(address, out var cachedClip))
+		    return cachedClip;
 
-		if (audioClip == null)
-			Debug.Log($"AudioClip Missing ! {address}");
+	    // 2. 이미 로딩 중이면 그 결과를 기다림
+	    if (_loadTasks.TryGetValue(address, out var existingTcs))
+		    return await existingTcs.Task;
 
-		return audioClip;
+	    // 3. 새 로딩 시작
+	    var tcs = new UniTaskCompletionSource<AudioClip>();
+	    _loadTasks[address] = tcs;
+
+	    try
+	    {
+		    var clip = await Managers.Resource.LoadAsync<AudioClip>(address);
+
+		    if (clip != null)
+			    _audioClips[address] = clip;
+
+		    tcs.TrySetResult(clip);
+		    return clip;
+	    }
+	    catch (Exception e)
+	    {
+		    tcs.TrySetException(e);
+		    Debug.LogError($"Failed to load clip: {address}\n{e}");
+		    return null;
+	    }
+	    finally
+	    {
+		    _loadTasks.Remove(address);
+	    }
     }
+
+	
 }

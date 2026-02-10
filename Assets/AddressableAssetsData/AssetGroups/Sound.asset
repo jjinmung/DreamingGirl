@@ -31,7 +31,7 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 30450f670f05dff41a3dc5c9d836b349
-    m_Address: Assets/Sound/Effect/enemy02/Enemt02Die.mp3
+    m_Address: Assets/Sound/Effect/Enemy02/Enemy02Die.mp3
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -46,7 +46,7 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 3b0daf07242105b4a9dcf8818582ba07
-    m_Address: Assets/Sound/Effect/enemy02/enemy02ShootHit.mp3
+    m_Address: Assets/Sound/Effect/Enemy02/Enemy02ShootHit.mp3
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -61,7 +61,7 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 48b034fb352a15e47beca8fd1b10f460
-    m_Address: Assets/Sound/Effect/enemy02/enemy02Shoot.mp3
+    m_Address: Assets/Sound/Effect/Enemy02/Enemy02Shoot.mp3
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

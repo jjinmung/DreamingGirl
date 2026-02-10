@@ -1,4 +1,5 @@
 using System;
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
@@ -55,23 +56,30 @@ public class AttackRangeDetector : MonoBehaviour
     private void OnEnable()
     {
         bgImage.gameObject.SetActive(true);
-        // 1. 초기화: 게이지를 0으로 설정
         FillArea.fillAmount = 0;
 
-        // 2. DOTween을 사용하여 2초 동안 1로 변경
-        // .SetEase(Ease.Linear)를 추가하면 끊김 없이 일정한 속도로 차오릅니다.
-        FillArea.DOFillAmount(1f, 2f)
-            .SetEase(Ease.Linear) 
-            .OnComplete(() => 
-            {
-                // 3. 애니메이션이 끝나는 순간 공격 판정 실행
-                DetectTargets();
-                Effect.SetActive(true);
-                bgImage.gameObject.SetActive(false);
-                // 4. 다시 초기화
-                FillArea.fillAmount = 0;
-                DOVirtual.DelayedCall(1f, () => Effect.SetActive(false));
-            });
+        // 시퀀스 생성
+        Sequence seq = DOTween.Sequence();
+
+        // 1. 게이지 채우기 (0초 지점부터 시작해서 2초 동안)
+        seq.Append(FillArea.DOFillAmount(1f, 2f).SetEase(Ease.Linear));
+
+        // 2. 1.5초 지점에 사운드 재생 삽입 (전체 타임라인 기준)
+        seq.InsertCallback(1.5f, () => 
+        {
+            Managers.Sound.PlayEffect(Address.Enemy03Blast).Forget();
+        });
+
+        // 3. 전체 완료 후 실행될 로직
+        seq.OnComplete(() => 
+        {
+            DetectTargets();
+            Effect.SetActive(true);
+            bgImage.gameObject.SetActive(false);
+        
+            FillArea.fillAmount = 0;
+            DOVirtual.DelayedCall(1f, () => Effect.SetActive(false));
+        });
     }
 
     public void DetectTargets()

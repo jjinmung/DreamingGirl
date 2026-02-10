@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Cysharp.Threading.Tasks;
 using Unity.Behavior;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -19,6 +20,7 @@ namespace MasterStylizedProjectile
          [SerializeField] private AssetReference startEffect;
          [SerializeField] private AssetReference BulletEffect;
          [SerializeField] private AssetReference HitEffect;
+         [SerializeField] private AssetReference hitClip;
          public float damage
          {
              get
@@ -51,11 +53,8 @@ namespace MasterStylizedProjectile
                         StartNodeTrans.position, Quaternion.identity);
                 StartPar.transform.forward = targetDir;
 
-                /*var onStart = StartPar.gameObject.AddComponent<AudioTrigger>();
-                if (CurEffect.startClip != null)
-                {
-                    onStart.onClip = CurEffect.startClip;
-                }*/
+
+                
 
             }
             if (BulletEffect != null)
@@ -67,20 +66,15 @@ namespace MasterStylizedProjectile
 
                 var bullet = bulletObj.gameObject.GetOrAddComponent<Bullet>();
                 
-                //bullet.Speed = CurEffect.Speed;
                 bullet.Speed = Speed;
                 bullet.OnHitEffect = HitEffect;
                 bullet.Damage = damage;
                 
                    
-                /*if (CurEffect.hitClip != null)
+                if (hitClip != null)
                 {
-                    bullet.onHitClip = CurEffect.hitClip;
+                    bullet.HitClipAddress = hitClip.RuntimeKey.ToString();
                 }
-                if (CurEffect.bulletClip != null)
-                {
-                    bullet.bulletClip = CurEffect.bulletClip;
-                }*/
 
 
                 var collider = bulletObj.gameObject.GetOrAddComponent<SphereCollider>();

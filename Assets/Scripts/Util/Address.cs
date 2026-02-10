@@ -22,12 +22,23 @@ public static class Address
     public const string EventMap = "Assets/Textures/UI/EventMap.png";
     public const string BossMap = "Assets/Textures/UI/BossMap.png";
     
-    //사운드
+    //bgm
     public const string LobyBGM = "Assets/Sound/BGM/LobyBGM.mp3";
     public const string BossMapBGM = "Assets/Sound/BGM/BossMapBGM.mp3";
     public const string EventRoomBGM = "Assets/Sound/BGM/EventRoomBGM.mp3";
     public const string OnBattleBGM = "Assets/Sound/BGM/OnBattleBGM.mp3";
     public const string StoreMapBGM = "Assets/Sound/BGM/StoreMapBGM.mp3";
+    
+    //이펙트 사운드
+    public const string Enemy01Die = "Assets/Sound/Effect/Enemy01/Enemy01Die.mp3";
+    public const string Enemy01Shoot = "Assets/Sound/Effect/Enemy01/Enemy01Shoot.mp3";
+    public const string Enemy02Shoot = "Assets/Sound/Effect/Enemy02/Enemy02Shoot.mp3";
+    public const string Enemy02Die = "Assets/Sound/Effect/Enemy02/Enemy02Die.mp3";
+    public const string Enemy03Roar = "Assets/Sound/Effect/Enemy03/Enemy03Roar.mp3";
+    public const string Enemy03Beam = "Assets/Sound/Effect/Enemy03/Enemy03Beam.mp3";
+    public const string Enemy03Blast = "Assets/Sound/Effect/Enemy03/Enemy03Blast.mp3";
+    public const string Enemy03Dash = "Assets/Sound/Effect/Enemy03/Enemy03Dash.mp3";
+    public const string Enemy03BallShoot = "Assets/Sound/Effect/Enemy03/Enemy03BallShoot.mp3";
 
 };
 

@@ -1520,6 +1520,14 @@ PrefabInstance:
       propertyPath: duration
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6836737242753555367, guid: 878073286913e70469ca52b1e66b6a81, type: 3}
+      propertyPath: hitClip.m_AssetGUID
+      value: 3b0daf07242105b4a9dcf8818582ba07
+      objectReference: {fileID: 0}
+    - target: {fileID: 6836737242753555367, guid: 878073286913e70469ca52b1e66b6a81, type: 3}
+      propertyPath: startClip.m_AssetGUID
+      value: 48b034fb352a15e47beca8fd1b10f460
+      objectReference: {fileID: 0}
     - target: {fileID: 7110753320791439738, guid: 878073286913e70469ca52b1e66b6a81, type: 3}
       propertyPath: m_Layer
       value: 0

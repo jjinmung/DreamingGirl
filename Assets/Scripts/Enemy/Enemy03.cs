@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using PixPlays.ElementalVFX;
 using Unity.Cinemachine;
 using UnityEngine;
@@ -12,8 +13,6 @@ public class Enemy03 : EnemyBase
 
     private float beamDuration = 5f;
     private float beamRotaion = 0.7f;
-
-    
     
     private Vector3 _dashTargetPos;
     
@@ -27,7 +26,7 @@ public class Enemy03 : EnemyBase
     private SphereCollider attackcollider;
     [SerializeField]private GameObject ProjectilePos;
     private bool isBeamAttack;
-
+    private AudioSource _loopSource;
     
     private void Awake()
     {
@@ -36,7 +35,7 @@ public class Enemy03 : EnemyBase
         attackRanges = GetComponentsInChildren<DecalProjector>(true);
     }
 
-    public override async Task Init(int id)
+    public override async UniTask Init(int id)
     {
         await base.Init(id);
         var hpBar = await Managers.UI.MakeSubItem<UI_EnemyHPBar>(Address.Boss_HP_BAR);
@@ -112,6 +111,7 @@ public class Enemy03 : EnemyBase
         DashEffect.gameObject.SetActive(false);
         OnDashComplete();
         
+        Managers.Sound.PlayEffect(Address.Enemy03Roar).Forget();
     }
 
     #region 빔공격
@@ -120,8 +120,11 @@ public class Enemy03 : EnemyBase
         SetAttackArange(true, 0,2.5f, 2f, BeamStart);
     }
 
-    void BeamStart()
+    async void BeamStart()
     {
+        //사운드 시작
+        _loopSource = await Managers.Sound.PlayEffectLoop(Address.Enemy03Beam);
+        
         isBeamAttack = true;
         _animator.SetTrigger("BEAMSTART");
         SetAttackArange(false,0);
@@ -138,6 +141,9 @@ public class Enemy03 : EnemyBase
         IsAttack = false;
         isBeamAttack = false;
         _behavior.SetVariableValue("IsAttack", IsAttack);
+        
+        //사운드 종료
+        Managers.Sound.StopLoop(_loopSource, 1.0f);
     }
     
     void ChaseTarget()
@@ -172,7 +178,7 @@ public class Enemy03 : EnemyBase
     
 
     #region 대쉬공격
-  public void DashAttack()
+  public async void DashAttack()
     {
         _navMeshAgent.isStopped = true;
         _animator.SetFloat("moveSpeed", 0);
@@ -181,16 +187,17 @@ public class Enemy03 : EnemyBase
         
         DashEffect.gameObject.SetActive(true);
         DashEffect.Play();
+         //사운드 시작
+        _loopSource = await Managers.Sound.PlayEffectLoop(Address.Enemy03Dash);
         SetAttackArange(true, 0,5f,2f,Dash);
       
     }
 
 
 
-    private void Dash()
+    private async void Dash()
     {
         _navMeshAgent.isStopped = false;
- 
         _navMeshAgent.speed = 15f;
         _animator.SetFloat("MoveAnim", 2);
         FadeMoveFloat(2f);
@@ -236,6 +243,9 @@ public class Enemy03 : EnemyBase
         SetAttackArange(false,0);
         IsAttack = false;
         _behavior.SetVariableValue("IsAttack", IsAttack);
+        
+        //사운드 종료
+        Managers.Sound.StopLoop(_loopSource, 1.0f);
     }
     
     public void FadeMoveFloat(float targetValue, float duration = 0.5f)
@@ -328,6 +338,8 @@ public class Enemy03 : EnemyBase
     void ShooBall()
     {
         _animator.SetTrigger("BALLSTART");
+        Managers.Sound.PlayEffect(Address.Enemy03BallShoot).Forget();
+        
     }
 
     #endregion
@@ -337,6 +349,7 @@ public class Enemy03 : EnemyBase
     {
         cam.GenerateImpulse();
         _animator.SetTrigger("RAGE");
+        Managers.Sound.PlayEffect(Address.Enemy03Roar).Forget();
     }
     
     public void SetAttackArange(bool isAcive, int index,float width=0f, float duration=0,Action action=null)
@@ -418,4 +431,6 @@ public class Enemy03 : EnemyBase
         
         action.Invoke();
     }
+    
+    
 }

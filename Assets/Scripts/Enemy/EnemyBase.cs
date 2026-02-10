@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using Unity.Behavior;
 using UnityEngine;
@@ -51,7 +52,7 @@ public abstract class EnemyBase : MonoBehaviour,IDamageable
     [SerializeField]private Material _deathMat;
 
     
-    public virtual async Task Init(int id)
+    public virtual UniTask Init(int id)
     {
         // 데이터 로드
         stat = new EnemyStat(Managers.Data.MonsterDict[id]);
@@ -73,6 +74,8 @@ public abstract class EnemyBase : MonoBehaviour,IDamageable
         //체력바 비활성화
         if(EnemyHpBar!=null)
             EnemyHpBar.gameObject.SetActive(false);
+        
+        return default;
     }
 
     private void ResetEvents()

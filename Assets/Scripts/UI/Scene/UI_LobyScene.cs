@@ -71,10 +71,10 @@ public class UI_LobyScene : UI_Scene
         foreach (var text in Enum.GetValues(typeof(Texts)))
         {
             GetText((int)text).alpha = 0;
-            GetText((int)text).DOFade(1f, 5f);
+            GetText((int)text).DOFade(1f, 3f);
         }
         GetImage((int)Images.BtnBGImange).color = new Color(1,1,1,0);
-        GetImage((int)Images.BtnBGImange).DOFade(1f, 5f);
+        GetImage((int)Images.BtnBGImange).DOFade(1f, 3f);
     }
 
     protected override void OnEnter(PointerEventData eventData)

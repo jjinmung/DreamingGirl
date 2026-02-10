@@ -455,7 +455,7 @@ public class StageManager : MonoBehaviour
         ReturnToLobyAsync().Forget();
     }
 
-    private async UniTaskVoid ReturnToLobyAsync()
+    private async UniTask ReturnToLobyAsync()
     {
         var token = _cts.Token; // 토큰 가져오기
         try
@@ -476,7 +476,7 @@ public class StageManager : MonoBehaviour
                 Managers.Resource.Destroy(currentRoom.gameObject);
             }
         
-            GenerateMap();            // 맵 생성
+            await GenerateMap();            // 맵 생성
             Managers.Player.PlayerInit(); // 플레이어 초기화
         
             // 맵 생성 후 짧은 안정화 대기
@@ -485,7 +485,7 @@ public class StageManager : MonoBehaviour
             // 3. 로비 진입 연출
             Managers.Player.BossClearControl(true);
             _battleUI.FadeIn(1);
-            Managers.Sound.PlayBgm(Address.StoreMapBGM);
+            Managers.Sound.PlayBgm(Address.StoreMapBGM).Forget();
         
             // 페이드 인 완료 대기
             await UniTask.Delay(TimeSpan.FromSeconds(1f), cancellationToken: token);

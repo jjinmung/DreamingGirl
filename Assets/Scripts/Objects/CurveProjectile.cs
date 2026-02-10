@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 public class CurveProjectile : MonoBehaviour
 {
@@ -14,17 +16,20 @@ public class CurveProjectile : MonoBehaviour
     public float duration = 3f;// 총 이동 시간
     [SerializeField] float _ProjectileFlyDelay;//발사 지연시간
     [SerializeField] float _ProjectileDeactivateDelay;//총알 활성화시간
-
-
+    
+    [SerializeField] private AssetReference hitClip;
+    private bool IsHit = false;
     public void Launch(Vector3 _target)
     {
+        IsHit = false;
         StartCoroutine(Coroutine_Projectile(_target));
     }
     
     
     IEnumerator Coroutine_Projectile(Vector3 _target)
-        {
-            _CastEffect.gameObject.SetActive(true);
+    {
+        
+         _CastEffect.gameObject.SetActive(true);
             _CastEffect.transform.position = _source.position;
             _CastEffect.transform.forward = (_target - _source.position);
             _CastEffect.Play();
@@ -39,7 +44,12 @@ public class CurveProjectile : MonoBehaviour
             {
                 elapsed += Time.deltaTime;
                 float t = elapsed / duration; // 0에서 1까지 진행률
-
+                if (IsHit == false&&t>0.7f)
+                {
+                    IsHit = true;
+                    var address = hitClip.RuntimeKey.ToString();
+                    Managers.Sound.PlayEffect(address).Forget();
+                }
                 // 1. 수평 이동 (X, Z)
                 Vector3 currentPos = Vector3.Lerp(_source.position, _target, t);
 
@@ -67,18 +77,20 @@ public class CurveProjectile : MonoBehaviour
             _HitEffect.transform.position = _target;
             _HitEffect.gameObject.SetActive(true);
             _HitEffect.Play();
-
+            
             yield return new WaitForSeconds(_ProjectileDeactivateDelay);
-            _ProjectileEffect.gameObject.SetActive(false);
-        }
-
-        public void Stop()
+            _ProjectileEffect.gameObject.SetActive(false);    
+            
+           
+    }
+    public void Stop()
+    {
+        if (gameObject != null)
         {
-            if (gameObject != null)
-            {
-                _HitEffect.Stop();
-                _ProjectileEffect.Stop();
-                _CastEffect.Stop();
-            }
+            _HitEffect.Stop();
+            _ProjectileEffect.Stop();
+            _CastEffect.Stop();
         }
+    }
+       
 }

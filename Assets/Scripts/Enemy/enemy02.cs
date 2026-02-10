@@ -39,7 +39,7 @@ public class Enemy02 : EnemyBase
 
     protected override void DieHandler()
     {
-        
+        Managers.Sound.PlayEffect(Address.Enemy02Die).Forget();
     }
     #endregion
     
@@ -81,14 +81,17 @@ public class Enemy02 : EnemyBase
     {
         _navMeshAgent.isStopped = false;
     }
+    
+    public void ShootSound()
+    {
+        Managers.Sound.PlayEffect(Address.Enemy02Shoot).Forget();
+    }
+    #endregion
     //죽을 때 남은 이펙트 제거
     private void OnDisable()
     {
         projectile.Stop();
     }
-
-    #endregion
-   
 
     
 }

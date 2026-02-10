@@ -1,6 +1,7 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
@@ -16,7 +17,7 @@ public class Enemy01 : EnemyBase
         _animator.SetTrigger("ATTACK");
     }
 
-
+    
 
     #region 이벤트 등록 함수
     protected override void TakeDamageHandler(float damage)
@@ -37,6 +38,7 @@ public class Enemy01 : EnemyBase
     protected override void DieHandler()
     {
         SetAttackArange(false);
+        Managers.Sound.PlayEffect(Address.Enemy01Die).Forget();
     }
     #endregion
     
@@ -118,6 +120,10 @@ public class Enemy01 : EnemyBase
         _navMeshAgent.isStopped = false;
     }
 
+    public void ShootSound()
+    {
+        Managers.Sound.PlayEffect(Address.Enemy01Shoot).Forget();
+    }
     #endregion
    
 

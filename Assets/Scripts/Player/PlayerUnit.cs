@@ -19,7 +19,7 @@ public class PlayerUnit : MonoBehaviour,IDamageable
 
     public void TakeDamage(float damage,Color color= default, bool isRandom =false)
     {
-        ShowBloodEffect();
+        ShowBloodEffect().Forget();
         var col = color==default ? Color.red : color;
         Managers.UI.ShowFloatingText(transform.position,$"-{(int)damage}",col,1f).Forget();
             
@@ -37,7 +37,7 @@ public class PlayerUnit : MonoBehaviour,IDamageable
         float startAlpha = image.color.a;
 
         // 1. 투명도를 0으로 만드는 트윈 생성
-        image.DOFade(0, duration)
+        await image.DOFade(0, duration)
             .From(startAlpha) // 시작 알파값 설정
             .SetEase(Ease.Linear) // 선형적으로 변화 (기존 Lerp와 동일)
             .OnComplete(() => 
