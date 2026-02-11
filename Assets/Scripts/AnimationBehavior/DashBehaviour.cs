@@ -25,6 +25,7 @@ public class DashBehaviour : StateMachineBehaviour
         {
             player.OnAnimationFinished();
             player.CurrentState = PlayerController.PlayerState.Idle;
+            animator.SetFloat("MOVE",0f);
         }
         
     }

@@ -120,10 +120,9 @@ public class Enemy03 : EnemyBase
         SetAttackArange(true, 0,2.5f, 2f, BeamStart);
     }
 
-    async void BeamStart()
+    void BeamStart()
     {
-        //사운드 시작
-        _loopSource = await Managers.Sound.PlayEffectLoop(Address.Enemy03Beam);
+        
         
         isBeamAttack = true;
         _animator.SetTrigger("BEAMSTART");
@@ -131,9 +130,12 @@ public class Enemy03 : EnemyBase
         Invoke(nameof(BeamEnd), beamDuration);
     }
     //애니메이션 이벤트함수
-    public void DelayBeamAttack()
+    public async void DelayBeamAttack()
     {
         beam.Play(beamDuration,stat.Damage*0.2f);
+        
+        //사운드 시작
+        _loopSource = await Managers.Sound.PlayEffectLoop(Address.Enemy03Beam);
     }
     void BeamEnd()
     {
@@ -143,7 +145,7 @@ public class Enemy03 : EnemyBase
         _behavior.SetVariableValue("IsAttack", IsAttack);
         
         //사운드 종료
-        Managers.Sound.StopLoop(_loopSource, 1.0f);
+        Managers.Sound.StopLoop(_loopSource);
     }
     
     void ChaseTarget()
@@ -195,7 +197,7 @@ public class Enemy03 : EnemyBase
 
 
 
-    private async void Dash()
+    private void Dash()
     {
         _navMeshAgent.isStopped = false;
         _navMeshAgent.speed = 15f;
@@ -231,6 +233,9 @@ public class Enemy03 : EnemyBase
     }
     private void OnDashComplete()
     {
+        //사운드 종료
+        Managers.Sound.StopLoop(_loopSource, 0);
+        
         _navMeshAgent.isStopped = true;
         _navMeshAgent.speed = stat.Speed; // 원래 속도로 복구
         _animator.SetBool("DASH", false);
@@ -244,8 +249,7 @@ public class Enemy03 : EnemyBase
         IsAttack = false;
         _behavior.SetVariableValue("IsAttack", IsAttack);
         
-        //사운드 종료
-        Managers.Sound.StopLoop(_loopSource, 1.0f);
+        
     }
     
     public void FadeMoveFloat(float targetValue, float duration = 0.5f)
@@ -326,7 +330,8 @@ public class Enemy03 : EnemyBase
             attackRanges[i].transform.rotation = finalRotation * Quaternion.Euler(90, 0, 0);
 
             // 2f, 2f는 각각 폭과 지속시간
-            SetAttackArange(true, i, 2f, 2f, ShooBall);
+            Invoke(nameof(ShootSound),1.5f);
+            SetAttackArange(true, i, 2f, 2f, ShootBall);
             yield return new WaitForSeconds(0.2f);
         }
 
@@ -335,13 +340,15 @@ public class Enemy03 : EnemyBase
         
     }
 
-    void ShooBall()
+    void ShootBall()
     {
         _animator.SetTrigger("BALLSTART");
-        Managers.Sound.PlayEffect(Address.Enemy03BallShoot).Forget();
-        
     }
 
+    void ShootSound()
+    {
+        Managers.Sound.PlayEffect(Address.Enemy03BallShoot).Forget();
+    }
     #endregion
    
 
@@ -349,7 +356,6 @@ public class Enemy03 : EnemyBase
     {
         cam.GenerateImpulse();
         _animator.SetTrigger("RAGE");
-        Managers.Sound.PlayEffect(Address.Enemy03Roar).Forget();
     }
     
     public void SetAttackArange(bool isAcive, int index,float width=0f, float duration=0,Action action=null)

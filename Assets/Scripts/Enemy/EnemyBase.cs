@@ -92,6 +92,7 @@ public abstract class EnemyBase : MonoBehaviour,IDamageable
     public void TakeDamage(float damage, Color color= default,bool isRandom =false)
     {
         if (isDead) return;
+        Managers.Sound.PlayEffect(Address.Hit).Forget();
         stat.currentHp = Mathf.Clamp(stat.currentHp - damage, 0, stat.MaxHp);
         var col = color == default ? Color.white : color;
         if(color ==default)//일반 데미지

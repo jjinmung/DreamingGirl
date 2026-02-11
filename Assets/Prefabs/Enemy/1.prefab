@@ -1112,14 +1112,8 @@ MonoBehaviour:
     m_SubObjectType: 
     m_SubObjectGUID: 
     m_EditorAssetChanged: 0
-  startClip:
-    m_AssetGUID: f9de6e952d3b46447bdc35000c00dcc8
-    m_SubObjectName: 
-    m_SubObjectType: 
-    m_SubObjectGUID: 
-    m_EditorAssetChanged: 0
   hitClip:
-    m_AssetGUID: c585c745e979ca34a85890caf5b00ab5
+    m_AssetGUID: b2dc4427e42d1964a848047978a7ef97
     m_SubObjectName: 
     m_SubObjectType: 
     m_SubObjectGUID: 

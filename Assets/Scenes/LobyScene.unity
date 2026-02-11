@@ -18790,7 +18790,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanEsc: 1
   StageCount: 2
-  MonsterMapPercent: 0.5
+  MonsterMapPercent: 0.082
   TotalGold: 0
   PlayTime: 0
   TotalKill: 0

@@ -22,7 +22,7 @@ public class PlayerController : MonoBehaviour
     public DynamicParticleRotator DivineOrbs;
     
     [HideInInspector]public MotionTrail motionTrail;
-    [HideInInspector]public AbilityID[] ActiveSkills;
+    public AbilityID[] ActiveSkills;
 
     private UI_Ability uiAbility;
     private bool AttackDelay = true;
@@ -152,10 +152,11 @@ public class PlayerController : MonoBehaviour
         OnGetActiveSKill.Invoke();
 
     }
-    private void HandleDashInput()
+    private async void HandleDashInput()
     {
         float dashCoolDown = Managers.Player.Data.dashCooldown.TotalValue;
         if (!_movement.CanMove||Time.time<_lastSkillTime[0]+dashCoolDown) return;
+        await Managers.Sound.PlayEffect(Address.PlayerDash);
         _lastSkillTime[0] = Time.time;
         OnUseActiveSKill?.Invoke(0,dashCoolDown);
         _movement.ExecuteDash(CalculateCameraDirection(), () => {
@@ -218,6 +219,13 @@ public class PlayerController : MonoBehaviour
     public void OnMotionTrail()
     {
         motionTrail.gameObject.SetActive(true);
+        _animator.speed = 0;
+        Invoke(nameof(StartFlashAttack),0.5f);
+    }
+
+    private void StartFlashAttack()
+    {
+        _animator.speed = 1;
     }
     public void OffMotionTrail()
     {

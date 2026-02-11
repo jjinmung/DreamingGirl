@@ -15,8 +15,8 @@ public class ChestGold :ChestBase
     {
         yield return new WaitForSeconds(1.5f);
         goldMaterial.DOFade(0,0.5f);
-        var amoun = Random.Range(40, 60);
-        Managers.Stage.AddGold(amoun);
+        var amount = Random.Range(40, 60);
+        Managers.Stage.AddGold(amount);
         yield return new WaitForSeconds(0.5f);
         Managers.Stage.ClearRoom();
     }

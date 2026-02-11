@@ -1522,7 +1522,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6836737242753555367, guid: 878073286913e70469ca52b1e66b6a81, type: 3}
       propertyPath: hitClip.m_AssetGUID
-      value: 3b0daf07242105b4a9dcf8818582ba07
+      value: 46c9a3f978bedca4b8ad561e37301eca
       objectReference: {fileID: 0}
     - target: {fileID: 6836737242753555367, guid: 878073286913e70469ca52b1e66b6a81, type: 3}
       propertyPath: startClip.m_AssetGUID

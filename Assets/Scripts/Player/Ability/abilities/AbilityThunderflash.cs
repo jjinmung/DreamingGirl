@@ -34,7 +34,7 @@ public class AbilityThunderflash : ActiveAbilityEffect
         player.ThunderTrail[1].emitting = true;
         // 2. 아주 짧은 시간(예: 0.05초) 동안 목적지로 부드럽게 이동
         float elapsed = 0f;
-        float duration = 0.05f; // 이 시간이 짧을수록 순간이동에 가깝습니다.
+        float duration = 0.1f; // 이 시간이 짧을수록 순간이동에 가깝습니다.
 
         while (elapsed < duration)
         {

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -17,6 +18,8 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] private ParticleSystem[] swordTrails;
     [SerializeField] private Transform[] attackEffectPos;
 
+    private AudioSource audioSource;
+    
     private Queue<(string type, float time)> inputBuffer = new Queue<(string type, float time)>();
     private float bufferTimeout = 0.5f;
     private Animator _animator;
@@ -87,7 +90,8 @@ public class PlayerCombat : MonoBehaviour
     public void ResetCombo() => ComboIndex = 0;
     public void ClearBuffer() => inputBuffer.Clear();
 
-    // 애니메이션 이벤트에서 호출
+    #region 애니메이션 이벤트에서 호출
+
     public void PlayAttackEffect(int index)
     {
         if (IsIceAttack || IsFireAttack)
@@ -118,6 +122,39 @@ public class PlayerCombat : MonoBehaviour
         }
         
     }
+    public void PlayAttackSound()
+    {
+        Managers.Sound.PlayEffect(Address.PlayerNormalAttack).Forget();
+        if (IsIceAttack || IsFireAttack)
+        {
+            if (IsIceAttack)
+            {
+                Managers.Sound.PlayEffect(Address.IceAttack).Forget();
+            }
+            
+            if (IsFireAttack)
+            {
+                Managers.Sound.PlayEffect(Address.FireAttack).Forget();
+            }
+        }
+        else
+        {
+            
+        }
+        
+    }
+
+    public async void ThunderFlashSoundOn()
+    {
+        audioSource = await Managers.Sound.PlayEffectLoop(Address.Flash);
+    }
+    public void ThunderFlashSoundOff()
+    {
+        Managers.Sound.StopLoop(audioSource);
+    }
+
+    #endregion
+    
     
     private void LookAtMouse()
     {

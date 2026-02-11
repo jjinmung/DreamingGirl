@@ -42,7 +42,7 @@ public class StageManager : MonoBehaviour
     private UI_BattleScene _battleUI;
     
     private CancellationTokenSource _cts;
-    
+    private AudioSource audioSource;
     public GameObject Root
     {
         get
@@ -183,7 +183,7 @@ public class StageManager : MonoBehaviour
         ExitRoom?.Invoke();
     }
 
-    public void ExitToNextRoom()
+    private void ExitToNextRoom()
     {
         ExitToNextRoomAsync().Forget();
     }
@@ -191,11 +191,11 @@ public class StageManager : MonoBehaviour
     private async UniTask ExitToNextRoomAsync()
     {
         var token = _cts.Token; // 토큰 가져오기
-        
+        audioSource = await Managers.Sound.PlayEffectLoop(Address.PlayerWalk);
         // 1. 연출 시작 및 UI 초기화
         Managers.Camera.ChanageCamera();
         Managers.Player.FadeMoveFloat(0.5f);
-        Managers.Sound.StopFade(Sound.Bgm);
+        
 
         if (_battleUI == null) 
             _battleUI = Managers.UI.LoadScene<UI_BattleScene>();
@@ -210,12 +210,14 @@ public class StageManager : MonoBehaviour
                 player.DOMove(currentExitDoor.ExitPos.position, 1f).ToUniTask(cancellationToken: token),
                 player.DORotate(currentExitDoor.dir, 1f).ToUniTask(cancellationToken: token)
             );
+            //bgm 종료
+            Managers.Sound.StopFade(Sound.Bgm);
 
             // 3. 문 밖으로 나가는 연출
             Vector3 targetPosition = player.position + (player.forward * 4f);
             // 이동이 끝날 때까지 대기
             await player.DOMove(targetPosition, 1f).SetEase(Ease.Linear).ToUniTask(cancellationToken: token);
-
+            Managers.Sound.StopLoop(audioSource);
             // 4. 다음 방 동적 교체
             await ChangeRoom();
             // 방 교체 후 짧은 대기 (기존 waitForOne 대체)
@@ -226,7 +228,7 @@ public class StageManager : MonoBehaviour
 
             // 6. 추가 대기 및 이벤트 호출
             await UniTask.Delay(TimeSpan.FromSeconds(1f), cancellationToken: token);
-    
+            
             EnterRoom?.Invoke();
         }
         catch (Exception e)
@@ -311,16 +313,17 @@ public class StageManager : MonoBehaviour
         var token = _cts.Token; // 토큰 가져오기
         try
         {
+            audioSource = await Managers.Sound.PlayEffectLoop(Address.PlayerWalk);
             // 1. 방 타입에 따른 초기 설정 
             Enemy03 boss = await InitializeRoomContent();
 
             // 2. 플레이어 이동 및 연출
+            Managers.Sound.StopLoop(audioSource,2);
             await StartPlayerEntranceSequence();
-
+            
             // 3. 카메라 및 보스 등장 연출
             if (currentRoomNode.type == RoomType.Boss)
             {
-                // 이전 답변에서 수정했던 그 함수입니다.
                 await StartBossEncounterSequence(boss);
             }
             else
@@ -336,7 +339,8 @@ public class StageManager : MonoBehaviour
                 RoomType.Event => Address.EventRoomBGM,
                 _ => null
             };
-            Managers.Sound.PlayBgm(bgmKey).Forget();
+            if(currentRoomNode.type!=RoomType.Boss)
+                Managers.Sound.PlayBgm(bgmKey).Forget();
             _battleUI.SetMap(currentRoomNode.nextNodes, currentDepth);
             Managers.Player.EnterRoom();
             SetupBattleUI();
@@ -406,11 +410,17 @@ public class StageManager : MonoBehaviour
     {
         var token = _cts.Token; // 토큰 가져오기
         if (boss == null) return;
-
+        Managers.Sound.PlayBgm(Address.BossMapBGM).Forget();
         Managers.Camera.SetBossCam(true);
-        await UniTask.Delay(TimeSpan.FromSeconds(1), cancellationToken: token); 
-    
+        
+        await UniTask.Delay(TimeSpan.FromSeconds(0.5), cancellationToken: token); 
+        
+        Managers.Sound.PlayEffect(Address.Enemy03Roar).Forget();
+        
+        await UniTask.Delay(TimeSpan.FromSeconds(0.5), cancellationToken: token); 
+        
         boss.Rage();
+        
         await UniTask.Delay(TimeSpan.FromSeconds(2), cancellationToken: token); 
     
         Managers.Camera.SetBossCam(false);
@@ -502,6 +512,7 @@ public class StageManager : MonoBehaviour
     
     public void AddGold(int amount)
     {
+        Managers.Sound.PlayEffect(Address.Gold).Forget();
         TotalGold += amount;
         Managers.UI.ShowFloatingText(Managers.Player.Trans.position, $"+{amount}gold", Color.yellow, 1.5f).Forget();
     }

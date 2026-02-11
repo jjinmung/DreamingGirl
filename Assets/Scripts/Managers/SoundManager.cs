@@ -16,6 +16,8 @@ public class SoundManager
     private List<AudioSource> _loopSources = new List<AudioSource>();
     Dictionary<string, UniTaskCompletionSource<AudioClip>> _loadTasks
 	    = new Dictionary<string, UniTaskCompletionSource<AudioClip>>();
+    private Dictionary<string, float> _lastPlayTimes = new Dictionary<string, float>();
+    
     public float BGMVolume { get; set; }
 
     public float EffectVolume { get; set; }
@@ -31,7 +33,7 @@ public class SoundManager
             root = new GameObject { name = "@Sound" };
             Object.DontDestroyOnLoad(root);
 
-            string[] soundNames = System.Enum.GetNames(typeof(Sound));
+            string[] soundNames = Enum.GetNames(typeof(Sound));
             for (int i = 0; i < soundNames.Length - 1; i++)
             {
                 GameObject go = new GameObject { name = soundNames[i] };
@@ -43,7 +45,7 @@ public class SoundManager
         }
 
         BGMVolume = 1f;
-        EffectVolume = 1f;
+        EffectVolume = 0.5f;
         PlayBgm(Address.LobyBGM).Forget();
     }
 
@@ -84,12 +86,24 @@ public class SoundManager
     }
 
 
-// Effect 전용 (주소 기반 비동기)
-    public async UniTask PlayEffect(string address, float pitch = 1.0f)
-    {
-	    AudioClip clip = await GetOrAddAudioClip(address, Sound.Effect);
-	    Play(clip, Sound.Effect, pitch);
-    }
+	// Effect 전용 (주소 기반 비동기)
+	public async UniTask PlayEffect(string address, float pitch = 1.0f)
+	{
+		// 2. 0.03초 사이의 중복 호출은 무시 
+		if (_lastPlayTimes.TryGetValue(address, out float lastTime))
+		{
+			if (Time.time - lastTime < 0.03f) return;
+		}
+    
+		_lastPlayTimes[address] = Time.time;
+
+		AudioClip clip = await GetOrAddAudioClip(address, Sound.Effect);
+    
+		// 3. 미세한 피치 변형 추가 (타격감이 훨씬 풍성해짐)
+		float variedPitch = pitch * UnityEngine.Random.Range(0.95f, 1.05f);
+    
+		Play(clip, Sound.Effect, variedPitch);
+	}
 
     #region 반복이펙트 전용 함수
 
@@ -113,7 +127,7 @@ public class SoundManager
     }
 
 // 2. 이펙트 루프 재생 메서드
-    public async UniTask<AudioSource> PlayEffectLoop(string address, float pitch = 1.0f)
+	public async UniTask<AudioSource> PlayEffectLoop(string address, float pitch = 1.0f)
     {
 	    AudioClip clip = await GetOrAddAudioClip(address, Sound.Effect);
 	    if (clip == null) return null;

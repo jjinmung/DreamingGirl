@@ -1,4 +1,5 @@
 using System.Collections;
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
 
@@ -15,6 +16,7 @@ public class ChestFood :ChestBase
     IEnumerator GetHeal()
     {
         yield return new WaitForSeconds(1.5f);
+        Managers.Sound.PlayEffect(Address.FoodEat).Forget();
         foodMaterial.DOFade(0,0.5f);
         Managers.Player.Heal(100);
         yield return new WaitForSeconds(0.5f);

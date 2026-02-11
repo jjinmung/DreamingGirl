@@ -85,6 +85,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 45b464791a643384e9520fe4e6053982
+    m_Address: Assets/Sound/Effect/Player/PlayerDash (mp3cut.net) (1).wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 4ef26d6dda85a664b9331eb661951304
     m_Address: Assets/Prefabs/Map/MonsterMap/1DoorMonsterRoom_2.prefab
     m_ReadOnly: 0
@@ -173,6 +178,21 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: beb99d1ccb44833489d778aa855e64fa
     m_Address: Assets/Prefabs/Map/MonsterMap/2DoorMonsterRoom_2.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bf0bb0301e673224fb60b20e1a54d0c4
+    m_Address: Assets/Sound/Effect/UI/SetCoin.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c056957e08ba3e64b817cc578f5f7e17
+    m_Address: Assets/Sound/Effect/Enemy03/Enemy03BallShoot.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d7a260bf4af4a4843a72f22b42a28b82
+    m_Address: Assets/Sound/Effect/Player/PlayerDash.wav
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

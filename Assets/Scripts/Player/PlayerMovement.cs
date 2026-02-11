@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -33,8 +34,8 @@ public class PlayerMovement : MonoBehaviour
 
     public void ExecuteDash(Vector3 direction, System.Action onDashStart)
     {
+       
         onDashStart?.Invoke();
-
         Vector3 dashDir = direction.sqrMagnitude > 0.01f ? direction : transform.forward;
         transform.forward = dashDir;
         _rb.linearVelocity = dashDir * dashForce;

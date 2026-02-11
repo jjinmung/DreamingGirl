@@ -15,6 +15,11 @@ MonoBehaviour:
   m_GroupName: Sound
   m_GUID: de144175bb0d74348b1930e26d46b303
   m_SerializeEntries:
+  - m_GUID: 0b419bb027d83bd4dbd1198628a4e9e2
+    m_Address: Assets/Sound/Effect/Player/FireAttack.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 0de2ea81552d74ec2832ea4900796f2e
     m_Address: Assets/Sound/Effect/UI/OpenPopup.wav
     m_ReadOnly: 0
@@ -25,43 +30,23 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 241cfecd43a247a419e5ad0672bacf18
-    m_Address: Assets/Sound/Effect/HitSound.mp3
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 30450f670f05dff41a3dc5c9d836b349
     m_Address: Assets/Sound/Effect/Enemy02/Enemy02Die.mp3
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 35c0561f70cde47cd91cb34212aaf0f4
-    m_Address: Assets/Sound/Effect/UI/SetCoin.wav
+  - m_GUID: 433af660ff39e97459e0a42e1efbd4ae
+    m_Address: Assets/Sound/Effect/Enemy03/Enemy03BallHit.wav
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 374d34a4ba3181a4a9d6df1d7328e0cc
-    m_Address: Assets/Sound/Effect/Player/FireAttack.mp3
+  - m_GUID: 46c9a3f978bedca4b8ad561e37301eca
+    m_Address: Assets/Sound/Effect/Enemy02/Enemy02ShootHit.wav
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 3b0daf07242105b4a9dcf8818582ba07
-    m_Address: Assets/Sound/Effect/Enemy02/Enemy02ShootHit.mp3
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 3e35b42571055174ebd027f14fb916f2
-    m_Address: Assets/Sound/Effect/Player/PlayerDash.mp3
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 479b02de08858134a8aad4ea161ee000
-    m_Address: Assets/Sound/Effect/mimic.mp3
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 48b034fb352a15e47beca8fd1b10f460
-    m_Address: Assets/Sound/Effect/Enemy02/Enemy02Shoot.mp3
+  - m_GUID: 48a9c01cbcbe0c541a05ac74f1a003e6
+    m_Address: Assets/Sound/Effect/Player/Flash.wav
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -70,13 +55,28 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 74d5a7969a84e984889664f9b0064f30
-    m_Address: Assets/Sound/Effect/Enemy03/Enemy03BallHit.mp3
+  - m_GUID: 81248e830ac8ae44f8e25618f9cd87c2
+    m_Address: Assets/Sound/Effect/Player/PlayerNormalAttack.mp3
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 88f7198311307b746a062a5428a76d37
-    m_Address: Assets/Sound/Effect/Enemy03/Enemy03BallShoot.mp3
+  - m_GUID: 8219edfe1c690ac448b5a60c873e22ed
+    m_Address: Assets/Sound/Effect/Player/PlayerWalk.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a2f315b9e9df596459a353a25a688da9
+    m_Address: Assets/Sound/Effect/FoodEat.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a70c5c9b79bc15d4ca97e80d788e1a94
+    m_Address: Assets/Sound/Effect/Mimic.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a926cfdeccd3183469fa09c5bb78498d
+    m_Address: Assets/Sound/Effect/Enemy02/Enemy02Shoot.wav
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -85,18 +85,13 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: b728963c85b41f04caa8df6ffa62e0ce
-    m_Address: "Assets/Sound/Effect/Player/\uBCBD\uB825\uC77C\uC12C.mp3"
+  - m_GUID: b2dc4427e42d1964a848047978a7ef97
+    m_Address: Assets/Sound/Effect/Enemy01/Enemy01ShootHit.wav
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b8878a5b12494e8408cb17dd11a141ca
     m_Address: Assets/Sound/BGM/BossMapBGM.mp3
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: b89153b8c084d4356bb2a98308c8a708
-    m_Address: Assets/Sound/Effect/Food Eat 05.wav
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -110,13 +105,13 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: c585c745e979ca34a85890caf5b00ab5
-    m_Address: Assets/Sound/Effect/Enemy01/Enemy01ShootHit.mp3
+  - m_GUID: cbe6352de079b154dab8d0792de5c17d
+    m_Address: Assets/Sound/Effect/Enemy03/Enemy03Blast.mp3
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: cbe6352de079b154dab8d0792de5c17d
-    m_Address: Assets/Sound/Effect/Enemy03/Enemy03Blast.mp3
+  - m_GUID: d5f5a571e3de8b946bbed2eb6df0d95a
+    m_Address: Assets/Sound/Effect/Enemy01/Enemy01Shoot.wav
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -125,8 +120,13 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: dde2accc6df75554a8f34be9b6c510bc
-    m_Address: Assets/Sound/Effect/Player/PlayerNormalAttack.mp3
+  - m_GUID: dd230c6b80e9c9749be72772820cb603
+    m_Address: Assets/Sound/Effect/Player/IceAttack.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dfd9b1681e0827a4790ecb370f76e607
+    m_Address: Assets/Sound/Effect/Player/LevelUp.mp3
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -140,18 +140,13 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: f295ac6f64a7272419e2ea8a4356df97
-    m_Address: Assets/Sound/Effect/Player/IceAttack.mp3
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: f9b5861830d70a44c874c8258281ffb3
     m_Address: Assets/Sound/Effect/Enemy01/Enemy01Die.mp3
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: f9de6e952d3b46447bdc35000c00dcc8
-    m_Address: Assets/Sound/Effect/Enemy01/Enemy01Shoot.mp3
+  - m_GUID: fc8ada77ae4c038458251c68c15a9dc1
+    m_Address: Assets/Sound/Effect/Hit.wav
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

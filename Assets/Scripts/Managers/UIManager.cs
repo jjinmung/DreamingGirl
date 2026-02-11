@@ -81,7 +81,7 @@ public class UIManager
     {
         if (string.IsNullOrEmpty(address))
 	        address = typeof(T).Name;
-
+        Managers.Sound.PlayEffect(Address.OpenPopup).Forget();
         GameObject go = await Managers.Resource.InstantiateAsync($"Assets/Prefabs/UI/Popup/{address}.prefab");
         T popup = go.GetOrAddComponent<T>();
         _popupStack.Push(popup);
@@ -103,7 +103,7 @@ public class UIManager
         }
         
         go.transform.localScale = Vector3.zero;
-        await go.transform.DOScale(1.0f, 0.3f).SetEase(Ease.OutBack).SetUpdate(true);
+        go.transform.DOScale(1.0f, 0.3f).SetEase(Ease.OutBack).SetUpdate(true);
 
 		return popup;
     }
@@ -133,7 +133,7 @@ public class UIManager
     {
 	    if (_popupStack.Count == 0)
 		    return;
-	    
+	    Managers.Sound.PlayEffect(Address.ClostPopup).Forget();
 	    UI_Popup popup = _popupStack.Pop();
 	    _order--;
 	    

@@ -103,6 +103,7 @@ public class PlayerManager : MonoBehaviour
 
     public void AddGold(int amount)
     {
+        Managers.Sound.PlayEffect(Address.Gold).Forget();
         data.gold += amount;
         OnDataChanged?.Invoke();
         //데이터 세이브
@@ -134,6 +135,8 @@ public class PlayerManager : MonoBehaviour
 
     public void LevelUp()
     {
+        Managers.Sound.PlayEffect(Address.LevelUp).Forget();
+        
         AddPermanentStat(PlayerStat.MaxHP, 0.1f, true);
         AddPermanentStat(PlayerStat.Attack, 0.1f, true);
         
