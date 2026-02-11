@@ -20,6 +20,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0616e247d55473d4cb306687c6282e49
+    m_Address: Assets/Prefabs/UI/Popup/UI_Setting.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 084e72d6c450366488c55708e35b5078
     m_Address: Assets/Textures/UI/EventMap.png
     m_ReadOnly: 0

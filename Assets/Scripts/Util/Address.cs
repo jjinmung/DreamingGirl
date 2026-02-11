@@ -51,7 +51,7 @@ public static class Address
     public const string FoodEat = "Assets/Sound/Effect/FoodEat.wav";
     public const string Mimic = "Assets/Sound/Effect/Mimic.mp3";
 
-    public const string ClostPopup = "Assets/Sound/Effect/UI/ClostPopup.mp3";
+    public const string ClosePopup = "Assets/Sound/Effect/UI/ClostPopup.wav";
     public const string OpenPopup = "Assets/Sound/Effect/UI/OpenPopup.wav";
     public const string Gold = "Assets/Sound/Effect/UI/SetCoin.wav";
 

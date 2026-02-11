@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -36,8 +37,10 @@ public class UI_Pause : UI_Popup
     enum Images
     {
         Continue,
+        Option,
         Exit, 
     }
+
 
     enum Texts
     {
@@ -84,6 +87,7 @@ public class UI_Pause : UI_Popup
         Bind<GameObject>(typeof(GameObjects));
         Bind<Image>(typeof(Images));
         Bind<TextMeshProUGUI>(typeof(Texts));
+
         myScrollRect = GetComponentInChildren<ScrollRect>();
 
         BindEvents();
@@ -107,6 +111,14 @@ public class UI_Pause : UI_Popup
         });
         GetImage((int)Images.Continue).gameObject.BindEvent(OnEnter, UIEvent.Enter);
         GetImage((int)Images.Continue).gameObject.BindEvent(OnExit, UIEvent.Exit);
+
+        
+        GetImage((int)Images.Option).gameObject.BindEvent(_ =>
+        {
+            Managers.UI.ShowPopupUI<UI_Setting>().Forget();
+        });
+        GetImage((int)Images.Option).gameObject.BindEvent(OnEnter, UIEvent.Enter);
+        GetImage((int)Images.Option).gameObject.BindEvent(OnExit, UIEvent.Exit);
         
         GetImage((int)Images.Exit).gameObject.BindEvent(_ =>
         {

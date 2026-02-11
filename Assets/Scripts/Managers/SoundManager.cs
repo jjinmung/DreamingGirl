@@ -12,15 +12,31 @@ using Object = UnityEngine.Object;
 public class SoundManager
 {
     AudioSource[] _audioSources = new AudioSource[(int)Sound.MaxCount];
-    Dictionary<string, AudioClip> _audioClips = new Dictionary<string, AudioClip>();
-    private List<AudioSource> _loopSources = new List<AudioSource>();
-    Dictionary<string, UniTaskCompletionSource<AudioClip>> _loadTasks
-	    = new Dictionary<string, UniTaskCompletionSource<AudioClip>>();
-    private Dictionary<string, float> _lastPlayTimes = new Dictionary<string, float>();
-    
-    public float BGMVolume { get; set; }
+    Dictionary<string, AudioClip> _audioClips = new();
+    private List<AudioSource> _loopSources = new ();
+    Dictionary<string, UniTaskCompletionSource<AudioClip>> _loadTasks = new();
+    private Dictionary<string, float> _lastPlayTimes = new();
+    private float _bgmVolume;
+    public float BGMVolume
+    {
+	    get => _bgmVolume;
+	    set
+	    {
+		    _bgmVolume = Math.Clamp(value, 0f, 1f);
+		    _audioSources[(int)Sound.Bgm].volume = _bgmVolume;
+	    }
+    }
 
-    public float EffectVolume { get; set; }
+    private float _effectVolume;
+    public float EffectVolume
+    {
+	    get => _effectVolume;
+	    set
+	    {
+		    _effectVolume = Math.Clamp(value, 0f, 1f);
+		    _audioSources[(int)Sound.Effect].volume = _effectVolume;
+	    }
+    }
     // MP3 Player   -> AudioSource
     // MP3 음원     -> AudioClip
     // 관객(귀)     -> AudioListener
@@ -44,8 +60,8 @@ public class SoundManager
             _audioSources[(int)Sound.Bgm].loop = true;
         }
 
-        BGMVolume = 1f;
-        EffectVolume = 0.5f;
+        _bgmVolume = 1f;
+        _effectVolume = 0.5f;
         PlayBgm(Address.LobyBGM).Forget();
     }
 
@@ -73,7 +89,7 @@ public class SoundManager
 				    source.clip = clip;
 				    source.Play();
 			    })
-			    .Append(source.DOFade(BGMVolume, fadeTime));
+			    .Append(source.DOFade(_bgmVolume, fadeTime));
 	    }
 	    else
 	    {
@@ -81,7 +97,7 @@ public class SoundManager
 		    source.clip = clip;
 		    source.volume = 0;
 		    source.Play();
-		    await source.DOFade(BGMVolume, fadeTime);
+		    await source.DOFade(_bgmVolume, fadeTime);
 	    }
     }
 
@@ -104,6 +120,24 @@ public class SoundManager
     
 		Play(clip, Sound.Effect, variedPitch);
 	}
+	public void PlayEffectSync(string address, float pitch = 1.0f)
+	{
+		// 2. 0.03초 사이의 중복 호출은 무시 
+		if (_lastPlayTimes.TryGetValue(address, out float lastTime))
+		{
+			if (Time.time - lastTime < 0.03f) return;
+		}
+    
+		_lastPlayTimes[address] = Time.time;
+
+		AudioClip clip = Managers.Resource.Load<AudioClip>(address);
+    
+		// 3. 미세한 피치 변형 추가 (타격감이 훨씬 풍성해짐)
+		float variedPitch = pitch * UnityEngine.Random.Range(0.95f, 1.05f);
+    
+		Play(clip, Sound.Effect, variedPitch);
+	}
+	
 
     #region 반복이펙트 전용 함수
 
@@ -137,7 +171,7 @@ public class SoundManager
 	    source.clip = clip;
 	    source.pitch = pitch;
 	    source.loop = true; // 루프 설정
-	    source.volume = EffectVolume;
+	    source.volume = _effectVolume;
 	    source.Play();
 
 	    return source; // 나중에 멈추기 위해 리턴해줌
@@ -176,7 +210,7 @@ public class SoundManager
 		    AudioSource audioSource = _audioSources[(int)Sound.Bgm];
 		    audioSource.pitch = pitch;
 		    audioSource.clip = audioClip;
-		    audioSource.volume = BGMVolume;
+		    audioSource.volume = _bgmVolume;
 		    audioSource.Play();
 	    }
 	    else
@@ -185,7 +219,7 @@ public class SoundManager
 		    AudioSource audioSource = _audioSources[(int)Sound.Effect];
 		    audioSource.pitch = pitch;
 		    // PlayOneShot은 여러 소리가 겹쳐서 나게 해줍니다.
-		    audioSource.PlayOneShot(audioClip, EffectVolume);
+		    audioSource.PlayOneShot(audioClip, _effectVolume);
 	    }
     }
     

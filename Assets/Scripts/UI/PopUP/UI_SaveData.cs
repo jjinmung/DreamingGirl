@@ -19,7 +19,7 @@ public class UI_SaveData : UI_Popup
         Slot2CloseBtn,
         Slot3CloseBtn,
         Slot4CloseBtn,
-        CloseBtn,
+            CloseBtn,
         Slot1,
         Slot2,
         Slot3,

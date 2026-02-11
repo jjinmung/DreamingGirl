@@ -55,6 +55,11 @@ public class UI_LobyScene : UI_Scene
         {
             await Managers.UI.ShowPopupUI<UI_SaveData>();
         });
+        
+        GetText((int)Texts.OptionText).gameObject.BindEvent(async (data) =>
+        {
+            await Managers.UI.ShowPopupUI<UI_Setting>();
+        });
        
         
     }

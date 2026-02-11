@@ -1,12 +1,5 @@
 fileFormatVersion: 2
 guid: 0de2ea81552d74ec2832ea4900796f2e
-AssetOrigin:
-  serializedVersion: 1
-  productId: 272919
-  packageName: Fantasy User Interface Sounds - Lite Edition
-  packageVersion: 2.0
-  assetPath: Assets/Fantasy UI SFX - Lite Edition/Interface 5-3.wav
-  uploadId: 706705
 AudioImporter:
   externalObjects: {}
   serializedVersion: 8

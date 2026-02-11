@@ -35,6 +35,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 37c309f54691af440b6cbf9f4c9fced6
+    m_Address: Assets/Sound/Effect/UI/ClostPopup.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 433af660ff39e97459e0a42e1efbd4ae
     m_Address: Assets/Sound/Effect/Enemy03/Enemy03BallHit.wav
     m_ReadOnly: 0
@@ -47,11 +52,6 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 48a9c01cbcbe0c541a05ac74f1a003e6
     m_Address: Assets/Sound/Effect/Player/Flash.wav
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 554b75fd129337a4e805dff5912bcd5b
-    m_Address: Assets/Sound/Effect/UI/ClostPopup.mp3
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

@@ -133,7 +133,7 @@ public class UIManager
     {
 	    if (_popupStack.Count == 0)
 		    return;
-	    Managers.Sound.PlayEffect(Address.ClostPopup).Forget();
+	    Managers.Sound.PlayEffect(Address.ClosePopup).Forget();
 	    UI_Popup popup = _popupStack.Pop();
 	    _order--;
 	    
