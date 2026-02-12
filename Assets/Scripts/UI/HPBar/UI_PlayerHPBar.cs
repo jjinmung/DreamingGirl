@@ -77,8 +77,12 @@ public class UI_PlayerHPBar : UI_Base
         GetText((int)Texts.HPText).text = $"{Mathf.RoundToInt(_currentHp)}";
 
         // 1. 기존 애니메이션 취소 및 새 소스 생성
-        _animCts?.Cancel();
-        _animCts?.Dispose();
+        if (_animCts != null)
+        {
+            _animCts.Cancel();
+            _animCts.Dispose();
+            _animCts = null; 
+        }
         _animCts = new CancellationTokenSource();
 
         // 2. 비동기 잔상 애니메이션 실행

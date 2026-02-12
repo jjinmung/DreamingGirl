@@ -13,6 +13,9 @@ public class UIManager
     Stack<UI_Popup> _popupStack = new Stack<UI_Popup>();
     UI_Scene _sceneUI = null;
     public UI_Scene SceneUI => _sceneUI;
+    
+    public int ResolutionIndex;
+    public bool ScreenMode;
     public GameObject Root
     {
         get
@@ -97,13 +100,8 @@ public class UIManager
 
 	        // 2. 위치 좌표를 0,0으로 (중앙 정렬)
 	        rect.anchoredPosition = Vector2.zero;
-        
-	        // 3. Scale이나 Z값도 필요하다면 초기화
-	        rect.localScale = Vector3.zero; // 이후 DOTween으로 1.0f까지 커짐
+	        go.transform.localScale = Vector3.zero;
         }
-        
-        go.transform.localScale = Vector3.zero;
-        go.transform.DOScale(1.0f, 0.3f).SetEase(Ease.OutBack).SetUpdate(true);
 
 		return popup;
     }
@@ -143,6 +141,11 @@ public class UIManager
 		    popup = null;
 
 	    });
+    }
+
+    public bool IsPopup()
+    {
+	    return _popupStack.Count > 0;
     }
 
     public void CloseAllPopupUI()

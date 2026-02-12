@@ -60,6 +60,11 @@ public class UI_LobyScene : UI_Scene
         {
             await Managers.UI.ShowPopupUI<UI_Setting>();
         });
+        
+        GetText((int)Texts.ExitText).gameObject.BindEvent((data) =>
+        {
+            Application.Quit();
+        });
        
         
     }

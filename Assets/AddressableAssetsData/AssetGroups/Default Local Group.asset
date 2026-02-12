@@ -191,11 +191,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: c056957e08ba3e64b817cc578f5f7e17
-    m_Address: Assets/Sound/Effect/Enemy03/Enemy03BallShoot.wav
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d7a260bf4af4a4843a72f22b42a28b82
     m_Address: Assets/Sound/Effect/Player/PlayerDash.wav
     m_ReadOnly: 0

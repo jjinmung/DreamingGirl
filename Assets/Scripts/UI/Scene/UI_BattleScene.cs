@@ -271,7 +271,7 @@ public class UI_BattleScene : UI_Scene
         GetImage((int)Images.Image_Skill4).gameObject.SetActive(false);
     }
 
-    private void RefreshSkillBar()
+    private async void RefreshSkillBar()
     {
         SkillBarInit();
         var skills = Managers.Player.Control.ActiveSkills;
@@ -280,7 +280,7 @@ public class UI_BattleScene : UI_Scene
             if (skills[i]!=Define.AbilityID.None)
             {
                 GetImage(i+4).gameObject.SetActive(true);
-                GetImage(i + 4).sprite = Managers.Data.AbilityDict[skills[i]].data.icon;
+                GetImage(i + 4).sprite = await Managers.Resource.LoadIconAsync(Managers.Data.AbilityDict[skills[i]].data.iconRef);
             }
         }
     }

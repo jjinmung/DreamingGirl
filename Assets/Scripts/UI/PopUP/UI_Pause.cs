@@ -63,18 +63,25 @@ public class UI_Pause : UI_Popup
         Init();
     }
 
-    private void OnEnable()
+    protected override void OnEnable()
     {
+        Time.timeScale = 0;
         SetAbility();
         SetStat();
-
         StartCoroutine(InitScrollAfterPopup());
+        base.OnEnable();
     }
+
+    private void OnDisable()
+    {
+        Time.timeScale = 1;
+    }
+
     IEnumerator InitScrollAfterPopup()
     {
         // 애니메이션이 어느 정도 진행될 때까지 기다리거나 
         // 혹은 완전히 끝날 때까지 WaitForSeconds 사용
-        yield return new WaitForSeconds(0.3f); 
+        yield return new WaitForSeconds(0.5f); 
 
         Canvas.ForceUpdateCanvases();
         myScrollRect.verticalNormalizedPosition = 1f;

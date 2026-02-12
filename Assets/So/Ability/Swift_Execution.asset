@@ -20,6 +20,13 @@ MonoBehaviour:
   - "\uC774\uB3D9\uC18D\uB3C4\uC640 \uACF5\uACA9\uC18D\uB3C4\uAC00 30% \uC99D\uAC00\uD569\uB2C8\uB2E4.\n"
   - "\uC774\uB3D9\uC18D\uB3C4\uC640 \uACF5\uACA9\uC18D\uB3C4\uAC00 40% \uC99D\uAC00\uD569\uB2C8\uB2E4.\n"
   - "\uC774\uB3D9\uC18D\uB3C4\uC640 \uACF5\uACA9\uC18D\uB3C4\uAC00 50% \uC99D\uAC00\uD569\uB2C8\uB2E4.\n"
-  icon: {fileID: 21300000, guid: 617b497cbcef58d4bab684752cb27a49, type: 3}
+  iconRef:
+    m_AssetGUID: 617b497cbcef58d4bab684752cb27a49
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0
   maxStack: 5
   Damage: 0
+  Cooldown: 0
+  AnimationName: 

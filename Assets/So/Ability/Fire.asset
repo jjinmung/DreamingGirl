@@ -23,7 +23,12 @@ MonoBehaviour:
   - "\uD654\uC0C1\uD53C\uD574\uB97C 20% \uC99D\uAC00\uC2DC\uD0B5\uB2C8\uB2E4."
   - "\uD654\uC0C1\uD53C\uD574\uB97C 30% \uC99D\uAC00\uC2DC\uD0B5\uB2C8\uB2E4."
   - "\uD654\uC0C1\uD53C\uD574\uB97C 50% \uC99D\uAC00\uC2DC\uD0B5\uB2C8\uB2E4."
-  icon: {fileID: 21300000, guid: 756cb8b44a1926148a16da2b2de93ac2, type: 3}
+  iconRef:
+    m_AssetGUID: 756cb8b44a1926148a16da2b2de93ac2
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0
   maxStack: 5
   Damage: 0
   Cooldown: 0

@@ -120,22 +120,20 @@ public class Enemy03 : EnemyBase
         SetAttackArange(true, 0,2.5f, 2f, BeamStart);
     }
 
-    void BeamStart()
+    async void BeamStart()
     {
-        
-        
+
         isBeamAttack = true;
         _animator.SetTrigger("BEAMSTART");
         SetAttackArange(false,0);
         Invoke(nameof(BeamEnd), beamDuration);
-    }
-    //애니메이션 이벤트함수
-    public async void DelayBeamAttack()
-    {
-        beam.Play(beamDuration,stat.Damage*0.2f);
-        
         //사운드 시작
         _loopSource = await Managers.Sound.PlayEffectLoop(Address.Enemy03Beam);
+    }
+    //애니메이션 이벤트함수
+    public void DelayBeamAttack()
+    {
+        beam.Play(beamDuration,stat.Damage*0.2f);
     }
     void BeamEnd()
     {
@@ -330,7 +328,7 @@ public class Enemy03 : EnemyBase
             attackRanges[i].transform.rotation = finalRotation * Quaternion.Euler(90, 0, 0);
 
             // 2f, 2f는 각각 폭과 지속시간
-            Invoke(nameof(ShootSound),1.5f);
+            Invoke(nameof(ShootSound),1.8f);
             SetAttackArange(true, i, 2f, 2f, ShootBall);
             yield return new WaitForSeconds(0.2f);
         }

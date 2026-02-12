@@ -155,7 +155,7 @@ public class PlayerManager : MonoBehaviour
         data.damage.percentBonus = 0;
     }
 
-    private async UniTaskVoid SelectAbilityAsync()
+    private async UniTask SelectAbilityAsync()
     {
         try
         {
@@ -163,7 +163,7 @@ public class PlayerManager : MonoBehaviour
             _playerController.LVPParticle.Play();
             Managers.UI.ShowFloatingText(Trans.position, "Level UP!", Color.yellow, 1.5f, 60).Forget();
 
-            // 2. 1.5초 대기 (연출이 끝날 때까지)
+            // 2. 1.5초 대기 
             await UniTask.Delay(TimeSpan.FromSeconds(1.5f));
 
             // 3. 능력치 선택 팝업 로드 및 생성

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 using static Define;
@@ -26,15 +27,16 @@ public class UI_Ability :UI_Popup
         Init();
     }
 
-    private void OnEnable()
+    protected override async void OnEnable()
     {
         SetCard();
         foreach (var card in Enum.GetValues(typeof(GameObjects)))
         {
             int index = (int)card;
-            uiCards[index].SetCard(abilityIDs[index]);
+            await uiCards[index].SetCard(abilityIDs[index]);
            
         }
+        base.OnEnable();
     }
 
     public override void Init()

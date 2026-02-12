@@ -270,19 +270,15 @@ public class StageManager : MonoBehaviour
             // 1. 보스 클리어 연출 시작 (슬로우 모션)
             Managers.Player.BossClearControl(false);
             Time.timeScale = 0.2f;
-
-            // 슬로우 모션 중에도 유니티 시간을 따를지(DelayType.DeltaTime), 
-            // 아니면 실제 시간 초를 따를지(DelayType.Realtime) 선택 가능합니다.
-            // 여기서는 슬로우 모션 느낌을 위해 Realtime으로 0.5초 대기합니다.
-            await UniTask.Delay(TimeSpan.FromSeconds(0.5f), delayType: DelayType.Realtime, cancellationToken: token);
+            
+            await UniTask.Delay(TimeSpan.FromSeconds(2f), delayType: DelayType.Realtime, cancellationToken: token);
         
             Time.timeScale = 1f;
 
             // 2. 1초 대기 (이때는 정상 시간 흐름)
             await UniTask.Delay(TimeSpan.FromSeconds(1f), cancellationToken: token);
 
-            // 3. UI 팝업 로드 및 대기 (Task를 UniTask로 직접 await)
-            // ShowPopupUI가 Task<T>를 반환하더라도 바로 await 가능합니다.
+            // 3. UI 팝업 로드 및 대기 
             UI_StageEnding ui = await Managers.UI.ShowPopupUI<UI_StageEnding>();
 
             // 4. 결과 UI 텍스트 설정

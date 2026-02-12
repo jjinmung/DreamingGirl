@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -43,12 +44,13 @@ public class UI_Card : UI_Base
         Bind<GameObject>(typeof(GameObjects));
 	}
     
-    public void SetCard(AbilityID ID)
+    public async UniTask SetCard(AbilityID ID)
     {
         AbilityInstance abilityInstance=Managers.Data.AbilityDict[ID];
         if (abilityInstance != null)
         {
-            GetImage((int)Images.Card_Icon).sprite = abilityInstance.data.icon;
+            GetImage((int)Images.Card_Icon).sprite =
+                await Managers.Resource.LoadIconAsync(abilityInstance.data.iconRef);
             if(GetText((int)Texts.DescriptionText)!=null)
                 GetText((int)Texts.DescriptionText).text = abilityInstance.data.description[abilityInstance.stack];
             if (GetText((int)Texts.NameText) != null)

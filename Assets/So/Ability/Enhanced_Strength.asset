@@ -20,7 +20,12 @@ MonoBehaviour:
   - "\uACF5\uACA9\uB825\uC774 15 \uC99D\uAC00\uD569\uB2C8\uB2E4."
   - "\uACF5\uACA9\uB825\uC774 20 \uC99D\uAC00\uD569\uB2C8\uB2E4."
   - "\uACF5\uACA9\uB825\uC774 25 \uC99D\uAC00\uD569\uB2C8\uB2E4."
-  icon: {fileID: 21300000, guid: 7799073f5c8232942af47fb848ecaac4, type: 3}
+  iconRef:
+    m_AssetGUID: 7799073f5c8232942af47fb848ecaac4
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0
   maxStack: 5
   Damage: 0
   Cooldown: 0

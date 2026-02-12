@@ -35,9 +35,9 @@ public static class Address
     public const string Enemy02Shoot = "Assets/Sound/Effect/Enemy02/Enemy02Shoot.wav";
     public const string Enemy02Die = "Assets/Sound/Effect/Enemy02/Enemy02Die.mp3";
     public const string Enemy03Roar = "Assets/Sound/Effect/Enemy03/Enemy03Roar.mp3";
-    public const string Enemy03Beam = "Assets/Sound/Effect/Enemy03/Enemy03Beam.mp3";
+    public const string Enemy03Beam = "Assets/Sound/Effect/Enemy03/Enemy03Beam.wav";
     public const string Enemy03Blast = "Assets/Sound/Effect/Enemy03/Enemy03Blast.mp3";
-    public const string Enemy03Dash = "Assets/Sound/Effect/Enemy03/Enemy03Dash.mp3";
+    public const string Enemy03Dash = "Assets/Sound/Effect/Enemy03/Enemy03Dash.wav";
     public const string Enemy03BallShoot = "Assets/Sound/Effect/Enemy03/Enemy03BallShoot.wav";
     public const string Hit = "Assets/Sound/Effect/Hit.wav";
     

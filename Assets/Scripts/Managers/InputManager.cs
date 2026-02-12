@@ -16,8 +16,7 @@ public class InputManager : MonoBehaviour
     public event Action OnSkill3;
     public event Action OnSkill4;
     public bool IsAttackPressed { get; private set; }
-
-    private bool IsEscActive = false;
+    
     private void Awake()
     {
         _playerAction = new PlayerAction();
@@ -47,18 +46,15 @@ public class InputManager : MonoBehaviour
             var scene = SceneManager.GetActiveScene();
             if (scene.name.Equals("BattleScene")&&Managers.Stage.CanEsc)
             {
-                if (!IsEscActive)
+                if (Managers.UI.IsPopup())
                 {
-                    await Managers.UI.ShowPopupUI<UI_Pause>();
-                    Time.timeScale = 0f;
+                    Managers.UI.ClosePopupUI();
                 }
                 else
                 {
-                    Managers.UI.ClosePopupUI();
-                    Time.timeScale = 1f;
+                    await Managers.UI.ShowPopupUI<UI_Pause>();
+                    
                 }
-
-                IsEscActive = !IsEscActive;
 
             }
            

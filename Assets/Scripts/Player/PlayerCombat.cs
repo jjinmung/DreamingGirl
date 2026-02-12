@@ -72,13 +72,15 @@ public class PlayerCombat : MonoBehaviour
             ComboIndex++;
     }
     
-    private void PerformSkill(string animName)
+    private async void PerformSkill(string animName)
     {
         LookAtMouse();
         CanAttack = false;
+        if (animName.Equals("Thunderflash"))
+        {
+            audioSource = await Managers.Sound.PlayEffectLoop(Address.Flash);
+        }
         _animator.SetTrigger(animName);
-
-       
         ResetCombo();
     }
     //애니메이션 이벤트 함수
@@ -144,9 +146,9 @@ public class PlayerCombat : MonoBehaviour
         
     }
 
-    public async void ThunderFlashSoundOn()
+    public void FlurrySlashSoundOn()
     {
-        audioSource = await Managers.Sound.PlayEffectLoop(Address.Flash);
+        Managers.Sound.PlayEffect(Address.PlayerNormalAttack).Forget();
     }
     public void ThunderFlashSoundOff()
     {

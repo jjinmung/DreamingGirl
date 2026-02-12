@@ -15,6 +15,18 @@ MonoBehaviour:
   m_GroupName: Ability
   m_GUID: 83f1d62bff6281a48aa8ce528e55e337
   m_SerializeEntries:
+  - m_GUID: 15b87ba4f55ff6c40a752a321d612f38
+    m_Address: "Assets/Textures/Abilities/\uB300\uC26C.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Ability
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1a2af6f4b0e4c5e41ac6e8ea9d95aa49
+    m_Address: "Assets/Textures/Abilities/\uC721\uCCB4\uAC15\uD654.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Ability
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 1fc7f6651be54bf4794628dcc1ece4af
     m_Address: Assets/So/Ability/Thunderflash.asset
     m_ReadOnly: 0
@@ -27,14 +39,56 @@ MonoBehaviour:
     m_SerializedLabels:
     - Ability
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 44336d5cae0240145b3278cb9c5d17ea
+    m_Address: "Assets/Textures/Abilities/\uC2EC\uC5F0\uC758_\uACC4\uC57D.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Ability
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4c8167678432dde45b1bdfd6f34993a4
+    m_Address: "Assets/Textures/Abilities/\uC5F0\uC1C4\uBCF8\uB2A5.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Ability
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4ea2bef35cc28cb4892e307267da9285
+    m_Address: "Assets/Textures/Abilities/\uC2E0\uC758_\uAC00\uD638.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Ability
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5002e96fed725114cb86ddf0a5597914
+    m_Address: "Assets/Textures/Abilities/\uBCBD\uB825\uC77C\uC12C.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Ability
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 617b497cbcef58d4bab684752cb27a49
+    m_Address: "Assets/Textures/Abilities/\uC18D\uC804\uC18D\uACB0.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Ability
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 6a3d413b98b37dd44bbe140792f1edc5
     m_Address: Assets/So/Ability/Enhanced_Vitality.asset
     m_ReadOnly: 0
     m_SerializedLabels:
     - Ability
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 756cb8b44a1926148a16da2b2de93ac2
+    m_Address: "Assets/Textures/Abilities/\uBD88\uC758 \uB099\uC778.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Ability
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 75d80a5d1d690114d8ad9228a8e4b925
     m_Address: Assets/So/Ability/Frost.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Ability
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7799073f5c8232942af47fb848ecaac4
+    m_Address: "Assets/Textures/Abilities/\uADFC\uB825\uAC15\uD654.png"
     m_ReadOnly: 0
     m_SerializedLabels:
     - Ability
@@ -59,6 +113,18 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b9a77a6dc7193384c84e85793c509693
     m_Address: Assets/So/Ability/Fire.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Ability
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d4fc5300ed0ebe44d946867f314dad29
+    m_Address: "Assets/Textures/Abilities/\uC5F0\uC18D \uBCA0\uAE30.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Ability
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: da231730c7901f14bb3bfdd84245a2c3
+    m_Address: "Assets/Textures/Abilities/\uBE59\uACB0\uC758 \uC190\uAE38.png"
     m_ReadOnly: 0
     m_SerializedLabels:
     - Ability

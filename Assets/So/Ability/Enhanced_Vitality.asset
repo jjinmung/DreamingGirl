@@ -20,6 +20,13 @@ MonoBehaviour:
   - "\uCD5C\uB300 \uCD5C\uB300\uB825\uC774 300 \uC99D\uAC00\uD569\uB2C8\uB2E4.\n"
   - "\uCD5C\uB300 \uCD5C\uB300\uB825\uC774 400 \uC99D\uAC00\uD569\uB2C8\uB2E4.\n"
   - "\uCD5C\uB300 \uCD5C\uB300\uB825\uC774 500 \uC99D\uAC00\uD569\uB2C8\uB2E4.\n"
-  icon: {fileID: 21300000, guid: 1a2af6f4b0e4c5e41ac6e8ea9d95aa49, type: 3}
+  iconRef:
+    m_AssetGUID: 1a2af6f4b0e4c5e41ac6e8ea9d95aa49
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0
   maxStack: 5
   Damage: 0
+  Cooldown: 0
+  AnimationName: 

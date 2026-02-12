@@ -91,7 +91,16 @@ public class ResourceManager : MonoBehaviour
         Debug.LogError($"[ResourceManager] Failed to load async: {address}");
         return null;
     }
+    public async UniTask<Sprite> LoadIconAsync(AssetReferenceSprite referenceSprite)
+    {
+        if (referenceSprite.OperationHandle.IsValid())
+        {
+            return referenceSprite.OperationHandle.Result as Sprite;
+        }
 
+        return await referenceSprite.LoadAssetAsync<Sprite>();
+    }
+ 
     public async UniTask<T[]> LoadAllAsync<T>(string label) where T : Object
     {
         if (_resources.TryGetValue(label, out AsyncOperationHandle handle))
