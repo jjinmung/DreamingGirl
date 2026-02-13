@@ -23,6 +23,7 @@ public partial class AttackAction : Action
     protected override Status OnUpdate()
     {
         return Status.Success;
+        
     }
 
     protected override void OnEnd()

@@ -18795,10 +18795,10 @@ MonoBehaviour:
   PlayTime: 0
   TotalKill: 0
   spawnDatas:
+  - ID: 5
+    spawnWeight: 10
   - ID: 1
-    spawnWeight: 10
-  - ID: 2
-    spawnWeight: 10
+    spawnWeight: 0
 --- !u!1 &4870667364567753239
 GameObject:
   m_ObjectHideFlags: 0

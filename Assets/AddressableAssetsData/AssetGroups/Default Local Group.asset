@@ -125,6 +125,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7b72bb16093d6924fad9bdbd5683bd0c
+    m_Address: Assets/Prefabs/Enemy/4.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 85ef06146a33b6e48bc4d6c815a08bb3
     m_Address: Assets/Prefabs/UI/Item/CircleAttackRange.prefab
     m_ReadOnly: 0
@@ -168,6 +173,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b6a0703867fc74447a31e58de1d2cc2f
     m_Address: Assets/Prefabs/UI/Popup/UI_PassiveSkill.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b901b5f820d12c246bf0b73c9368c464
+    m_Address: Assets/Prefabs/Enemy/5.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

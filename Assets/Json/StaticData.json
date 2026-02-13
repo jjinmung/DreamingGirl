@@ -3,7 +3,7 @@
     {
       "ID": "1",
       "Name": "sharkman",
-      "MaxHp": "100",
+      "MaxHp": "1000",
       "Damage": "50",
       "Speed": "1",
       "AttackDelay": "5",
@@ -12,7 +12,7 @@
     {
       "ID": "2",
       "Name": "piggyman",
-      "MaxHp": "120",
+      "MaxHp": "300",
       "Damage": "45",
       "Speed": "0.7",
       "AttackDelay": "5",
@@ -21,18 +21,36 @@
     {
       "ID": "3",
       "Name": "waterBoss",
-      "MaxHp": "1000",
+      "MaxHp": "5000",
       "Damage": "50",
       "Speed": "1",
       "AttackDelay": "4",
       "Exp": "0"
+    },
+    {
+      "ID": "4",
+      "Name": "waterChild",
+      "MaxHp": "1000",
+      "Damage": "50",
+      "Speed": "1",
+      "AttackDelay": "4",
+      "Exp": "25"
+    },
+    {
+      "ID": "5",
+      "Name": "monkeyMan",
+      "MaxHp": "1000",
+      "Damage": "20",
+      "Speed": "1",
+      "AttackDelay": "4",
+      "Exp": "25"
     }
   ],
   "PlayerBasicStat": [
     {
       "ID": "1",
-      "MaxHp": "300",
-      "Damage": "30",
+      "MaxHp": "3000",
+      "Damage": "300",
       "Speed": "5",
       "DashCooldown": "5",
       "CritChance": "10",

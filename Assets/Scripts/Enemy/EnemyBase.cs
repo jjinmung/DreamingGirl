@@ -89,7 +89,7 @@ public abstract class EnemyBase : MonoBehaviour,IDamageable
 
     public abstract void Attack();
 
-    public void TakeDamage(float damage, Color color= default,bool isRandom =false)
+    public virtual void TakeDamage(float damage, Color color= default,bool isRandom =false)
     {
         if (isDead) return;
         Managers.Sound.PlayEffect(Address.Hit).Forget();

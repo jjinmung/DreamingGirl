@@ -1,0 +1,73 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!319 &31900000
+AvatarMask:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: upper
+  m_Mask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+  m_Elements:
+  - m_Path: 
+    m_Weight: 1
+  - m_Path: Large_monkey:Large_monkey:Monkeydong_L
+    m_Weight: 0
+  - m_Path: Large_monkey:Large_monkey:Root
+    m_Weight: 0
+  - m_Path: Large_monkey:Large_monkey:Root/Large_monkey:Large_monkey:Root_M
+    m_Weight: 0
+  - m_Path: Large_monkey:Large_monkey:Root/Large_monkey:Large_monkey:Root_M/Large_monkey:Large_monkey:Hip_L
+    m_Weight: 0
+  - m_Path: Large_monkey:Large_monkey:Root/Large_monkey:Large_monkey:Root_M/Large_monkey:Large_monkey:Hip_L/Large_monkey:Large_monkey:Knee_L
+    m_Weight: 0
+  - m_Path: Large_monkey:Large_monkey:Root/Large_monkey:Large_monkey:Root_M/Large_monkey:Large_monkey:Hip_L/Large_monkey:Large_monkey:Knee_L/Large_monkey:Large_monkey:Ankle_L
+    m_Weight: 0
+  - m_Path: Large_monkey:Large_monkey:Root/Large_monkey:Large_monkey:Root_M/Large_monkey:Large_monkey:Hip_L/Large_monkey:Large_monkey:Knee_L/Large_monkey:Large_monkey:Ankle_L/Large_monkey:Large_monkey:Toes_L
+    m_Weight: 0
+  - m_Path: Large_monkey:Large_monkey:Root/Large_monkey:Large_monkey:Root_M/Large_monkey:Large_monkey:Hip_L/Large_monkey:Large_monkey:Knee_L/Large_monkey:Large_monkey:Ankle_L/Large_monkey:Large_monkey:Toes_L/Large_monkey:Large_monkey:ToesEnd_L
+    m_Weight: 0
+  - m_Path: Large_monkey:Large_monkey:Root/Large_monkey:Large_monkey:Root_M/Large_monkey:Large_monkey:Hip_R
+    m_Weight: 0
+  - m_Path: Large_monkey:Large_monkey:Root/Large_monkey:Large_monkey:Root_M/Large_monkey:Large_monkey:Hip_R/Large_monkey:Large_monkey:Knee_R
+    m_Weight: 0
+  - m_Path: Large_monkey:Large_monkey:Root/Large_monkey:Large_monkey:Root_M/Large_monkey:Large_monkey:Hip_R/Large_monkey:Large_monkey:Knee_R/Large_monkey:Large_monkey:Ankle_R
+    m_Weight: 0
+  - m_Path: Large_monkey:Large_monkey:Root/Large_monkey:Large_monkey:Root_M/Large_monkey:Large_monkey:Hip_R/Large_monkey:Large_monkey:Knee_R/Large_monkey:Large_monkey:Ankle_R/Large_monkey:Large_monkey:Toes_R
+    m_Weight: 0
+  - m_Path: Large_monkey:Large_monkey:Root/Large_monkey:Large_monkey:Root_M/Large_monkey:Large_monkey:Hip_R/Large_monkey:Large_monkey:Knee_R/Large_monkey:Large_monkey:Ankle_R/Large_monkey:Large_monkey:Toes_R/Large_monkey:Large_monkey:ToesEnd_R
+    m_Weight: 0
+  - m_Path: Large_monkey:Large_monkey:Root/Large_monkey:Large_monkey:Root_M/Large_monkey:Large_monkey:Spine1_M
+    m_Weight: 0
+  - m_Path: Large_monkey:Large_monkey:Root/Large_monkey:Large_monkey:Root_M/Large_monkey:Large_monkey:Spine1_M/Large_monkey:Large_monkey:Chest_M
+    m_Weight: 0
+  - m_Path: Large_monkey:Large_monkey:Root/Large_monkey:Large_monkey:Root_M/Large_monkey:Large_monkey:Spine1_M/Large_monkey:Large_monkey:Chest_M/Large_monkey:Large_monkey:Neck_M
+    m_Weight: 0
+  - m_Path: Large_monkey:Large_monkey:Root/Large_monkey:Large_monkey:Root_M/Large_monkey:Large_monkey:Spine1_M/Large_monkey:Large_monkey:Chest_M/Large_monkey:Large_monkey:Neck_M/Large_monkey:Large_monkey:Head_M
+    m_Weight: 0
+  - m_Path: Large_monkey:Large_monkey:Root/Large_monkey:Large_monkey:Root_M/Large_monkey:Large_monkey:Spine1_M/Large_monkey:Large_monkey:Chest_M/Large_monkey:Large_monkey:Neck_M/Large_monkey:Large_monkey:Head_M/Large_monkey:Large_monkey:HeadEnd_M
+    m_Weight: 0
+  - m_Path: Large_monkey:Large_monkey:Root/Large_monkey:Large_monkey:Root_M/Large_monkey:Large_monkey:Spine1_M/Large_monkey:Large_monkey:Chest_M/Large_monkey:Large_monkey:Scapula_L
+    m_Weight: 1
+  - m_Path: Large_monkey:Large_monkey:Root/Large_monkey:Large_monkey:Root_M/Large_monkey:Large_monkey:Spine1_M/Large_monkey:Large_monkey:Chest_M/Large_monkey:Large_monkey:Scapula_L/Large_monkey:Large_monkey:Shoulder_L
+    m_Weight: 1
+  - m_Path: Large_monkey:Large_monkey:Root/Large_monkey:Large_monkey:Root_M/Large_monkey:Large_monkey:Spine1_M/Large_monkey:Large_monkey:Chest_M/Large_monkey:Large_monkey:Scapula_L/Large_monkey:Large_monkey:Shoulder_L/Large_monkey:Large_monkey:Elbow_L
+    m_Weight: 1
+  - m_Path: Large_monkey:Large_monkey:Root/Large_monkey:Large_monkey:Root_M/Large_monkey:Large_monkey:Spine1_M/Large_monkey:Large_monkey:Chest_M/Large_monkey:Large_monkey:Scapula_L/Large_monkey:Large_monkey:Shoulder_L/Large_monkey:Large_monkey:Elbow_L/Large_monkey:Large_monkey:Wrist_L
+    m_Weight: 1
+  - m_Path: Large_monkey:Large_monkey:Root/Large_monkey:Large_monkey:Root_M/Large_monkey:Large_monkey:Spine1_M/Large_monkey:Large_monkey:Chest_M/Large_monkey:Large_monkey:Scapula_L/Large_monkey:Large_monkey:Shoulder_L/Large_monkey:Large_monkey:Elbow_L/Large_monkey:Large_monkey:Wrist_L/Large_monkey:Large_monkey:MiddleFinger1_L
+    m_Weight: 1
+  - m_Path: Large_monkey:Large_monkey:Root/Large_monkey:Large_monkey:Root_M/Large_monkey:Large_monkey:Spine1_M/Large_monkey:Large_monkey:Chest_M/Large_monkey:Large_monkey:Scapula_L/Large_monkey:Large_monkey:Shoulder_L/Large_monkey:Large_monkey:Elbow_L/Large_monkey:Large_monkey:Wrist_L/Large_monkey:Large_monkey:MiddleFinger1_L/Large_monkey:Large_monkey:MiddleFinger4_L
+    m_Weight: 1
+  - m_Path: Large_monkey:Large_monkey:Root/Large_monkey:Large_monkey:Root_M/Large_monkey:Large_monkey:Spine1_M/Large_monkey:Large_monkey:Chest_M/Large_monkey:Large_monkey:Scapula_R
+    m_Weight: 1
+  - m_Path: Large_monkey:Large_monkey:Root/Large_monkey:Large_monkey:Root_M/Large_monkey:Large_monkey:Spine1_M/Large_monkey:Large_monkey:Chest_M/Large_monkey:Large_monkey:Scapula_R/Large_monkey:Large_monkey:Shoulder_R
+    m_Weight: 1
+  - m_Path: Large_monkey:Large_monkey:Root/Large_monkey:Large_monkey:Root_M/Large_monkey:Large_monkey:Spine1_M/Large_monkey:Large_monkey:Chest_M/Large_monkey:Large_monkey:Scapula_R/Large_monkey:Large_monkey:Shoulder_R/Large_monkey:Large_monkey:Elbow_R
+    m_Weight: 1
+  - m_Path: Large_monkey:Large_monkey:Root/Large_monkey:Large_monkey:Root_M/Large_monkey:Large_monkey:Spine1_M/Large_monkey:Large_monkey:Chest_M/Large_monkey:Large_monkey:Scapula_R/Large_monkey:Large_monkey:Shoulder_R/Large_monkey:Large_monkey:Elbow_R/Large_monkey:Large_monkey:Wrist_R
+    m_Weight: 1
+  - m_Path: Large_monkey:Large_monkey:Root/Large_monkey:Large_monkey:Root_M/Large_monkey:Large_monkey:Spine1_M/Large_monkey:Large_monkey:Chest_M/Large_monkey:Large_monkey:Scapula_R/Large_monkey:Large_monkey:Shoulder_R/Large_monkey:Large_monkey:Elbow_R/Large_monkey:Large_monkey:Wrist_R/Large_monkey:Large_monkey:MiddleFinger1_R
+    m_Weight: 1
+  - m_Path: Large_monkey:Large_monkey:Root/Large_monkey:Large_monkey:Root_M/Large_monkey:Large_monkey:Spine1_M/Large_monkey:Large_monkey:Chest_M/Large_monkey:Large_monkey:Scapula_R/Large_monkey:Large_monkey:Shoulder_R/Large_monkey:Large_monkey:Elbow_R/Large_monkey:Large_monkey:Wrist_R/Large_monkey:Large_monkey:MiddleFinger1_R/Large_monkey:Large_monkey:MiddleFinger4_R
+    m_Weight: 1

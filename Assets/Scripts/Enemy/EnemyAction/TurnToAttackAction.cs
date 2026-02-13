@@ -65,7 +65,6 @@ public partial class TurnToAttackAction : Action
         var enemy = Agent.Value.GetComponent<EnemyBase>();
         if (enemy is Enemy01 enemy01)
         {
-            enemy01.SetAttackArange(true);
             enemy01.IsAttack = true;
         }
 
