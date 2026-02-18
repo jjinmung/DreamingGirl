@@ -39,7 +39,7 @@ public class Enemy02 : EnemyBase
 
     protected override void DieHandler()
     {
-        Managers.Sound.PlayEffect(Address.Enemy02Die).Forget();
+        Managers.Sound.PlayEffect(Managers.Resource.Data.Enemy02Die).Forget();
     }
     #endregion
     
@@ -54,7 +54,8 @@ public class Enemy02 : EnemyBase
         if (isAcive)
         {
             var tarpos = _player.transform.position;
-            var go = await Managers.Resource.InstantiateAsync(Address.CircleAttackRange, tarpos+(Vector3.up*0.1f),Quaternion.Euler(90,0,0));
+            var data = Managers.Resource.Data;
+            var go = await Managers.Resource.InstantiateAsync(data.CircleAttackRange, tarpos+(Vector3.up*0.1f),Quaternion.Euler(90,0,0));
             attackRange= go.GetComponent<CircleAttackRange>();
             attackRange.Init(projectile.duration,stat.Damage);
         }
@@ -84,7 +85,7 @@ public class Enemy02 : EnemyBase
     
     public void ShootSound()
     {
-        Managers.Sound.PlayEffect(Address.Enemy02Shoot).Forget();
+        Managers.Sound.PlayEffect(Managers.Resource.Data.Enemy02Shoot).Forget();
     }
     #endregion
     //죽을 때 남은 이펙트 제거

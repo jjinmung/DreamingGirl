@@ -49,7 +49,7 @@ public class UI_Setting : UI_Popup
         Bind<TMP_Dropdown>(typeof(Dropdowns));
         GetImage((int)Images.CloseBtn).gameObject.BindEvent((data) =>
         {
-            Managers.UI.ClosePopupUI(this);
+            ClosePopupUI();
         });
         GetImage((int)Images.CloseBtn).gameObject.BindEvent(OnEnter,Define.UIEvent.Enter);
         GetImage((int)Images.CloseBtn).gameObject.BindEvent(OnExit,Define.UIEvent.Exit);

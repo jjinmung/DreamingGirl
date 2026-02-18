@@ -32,7 +32,7 @@ public class Enemy04 : EnemyBase
     
     protected override void DieHandler()
     {
-        Managers.Sound.PlayEffect(Address.Enemy01Die).Forget();
+        Managers.Sound.PlayEffect(Managers.Resource.Data.Enemy04Die).Forget();
     }
     #endregion
     
@@ -50,7 +50,7 @@ public class Enemy04 : EnemyBase
 
     public void ShootSound()
     {
-        Managers.Sound.PlayEffect(Address.Enemy03BallShoot).Forget();
+        Managers.Sound.PlayEffect(Managers.Resource.Data.Enemy03BallShoot).Forget();
     }
     #endregion
    

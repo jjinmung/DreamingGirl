@@ -71,6 +71,7 @@ public class UI_PassiveSkill : UI_Popup
     private void OnEnable()
     {
         Managers.Player.Control.InputActive(false);
+        base.OnEnable();
     }
 
     public override void Init()
@@ -168,7 +169,7 @@ public class UI_PassiveSkill : UI_Popup
     {
         HideInfo();
         Managers.Player.Control.InputActive(true);
-        Managers.UI.ClosePopupUI(this);
+        ClosePopupUI();
     }
 
     private void BuyPassive(PointerEventData data)

@@ -16,7 +16,7 @@ public class ChestFood :ChestBase
     IEnumerator GetHeal()
     {
         yield return new WaitForSeconds(1.5f);
-        Managers.Sound.PlayEffect(Address.FoodEat).Forget();
+        Managers.Sound.PlayEffect(Managers.Resource.Data.FoodEat).Forget();
         foodMaterial.DOFade(0,0.5f);
         Managers.Player.Heal(100);
         yield return new WaitForSeconds(0.5f);

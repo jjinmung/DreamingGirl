@@ -16,6 +16,7 @@ namespace Data
         public float Speed;
         public float AttackDelay;
         public int Exp;
+        public int Gold;
     }
     [Serializable]
     public class PlayerBasicStat

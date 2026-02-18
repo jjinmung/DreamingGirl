@@ -16,7 +16,7 @@ public class ChestMimic:ChestBase
     {
         yield return new WaitForSeconds(1.5f);
         ChsetLid.DOLocalRotate(Close, 0.25f).SetEase(Ease.InOutQuad);
-        Managers.Sound.PlayEffect(Address.Mimic).Forget();
+        Managers.Sound.PlayEffect(Managers.Resource.Data.Mimic).Forget();
         yield return new WaitForSeconds(0.25f);
         Managers.Player.Unit.TakeDamage(25f);
         ChsetLid.DOLocalRotate(Open, 0.25f).SetEase(Ease.InOutQuad);

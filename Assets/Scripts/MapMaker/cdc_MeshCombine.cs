@@ -68,43 +68,4 @@ public class cdc_MeshCombine : MonoBehaviour
 
      
     }
-
-    #region EditorOnly
-    #if UNITY_EDITOR
-    [CustomEditor(typeof(cdc_MeshCombine))]
-    public class cdc_MeshCombine_Instance : Editor
-    {
-        public cdc_MeshCombine myFild;
-
-        private void OnEnable()
-        {
-            if (AssetDatabase.Contains(target))
-            {
-                myFild = null;
-            }
-            else
-            {
-                myFild = (cdc_MeshCombine)target;
-            }
-        }
-
-        public override void OnInspectorGUI()
-        {
-            base.OnInspectorGUI();
-            cdc_MeshCombine script = target as cdc_MeshCombine;
-
-            serializedObject.ApplyModifiedProperties();
-
-            EditorGUILayout.HelpBox("자신을 포함한 MeshFilter를 합쳐줍니다.\nCenter Position에 트랜스폼 연결 시 해당 트랜스 폼 중심으로 정점들이 재 배치 됩니다.", MessageType.Info);
-            EditorGUILayout.Space();
-
-            if (GUILayout.Button("자식 메쉬 하나로 합치기"))
-            {
-                script.CombineMeshesChildrens();
-            }
-            EditorGUILayout.Space();
-        }
-     }
-    #endif
-    #endregion
 }

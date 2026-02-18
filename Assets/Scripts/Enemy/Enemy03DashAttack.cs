@@ -17,7 +17,7 @@ public class Enemy03DashAttack : MonoBehaviour
 
             // 1. 대미지 입히기
             other.GetComponent<IDamageable>()?.TakeDamage(enemy.stat.Damage * power);
-
+            if(!Managers.Player.Control.CanStun) return;
             // 2. 날려버리기 로직
             if (playerRb == null) playerRb = other.GetComponent<Rigidbody>();
             

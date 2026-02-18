@@ -5,6 +5,7 @@ using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using Unity.Behavior;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 public class UIManager
 {
@@ -44,9 +45,9 @@ public class UIManager
         }
     }
 
-	public async UniTask<T> MakeSubItem<T>(string addrres, Transform parent = null) where T : Component
+	public async UniTask<T> MakeSubItem<T>(AssetReference assetReference, Transform parent = null) where T : Component
 	{
-		GameObject go = await Managers.Resource.InstantiateAsync(addrres);
+		GameObject go = await Managers.Resource.InstantiateAsync(assetReference);
 		if (parent != null)
 			go.transform.SetParent(parent);
 		else
@@ -84,7 +85,7 @@ public class UIManager
     {
         if (string.IsNullOrEmpty(address))
 	        address = typeof(T).Name;
-        Managers.Sound.PlayEffect(Address.OpenPopup).Forget();
+        Managers.Sound.PlayEffect(Managers.Resource.Data.OpenPopup).Forget();
         GameObject go = await Managers.Resource.InstantiateAsync($"Assets/Prefabs/UI/Popup/{address}.prefab");
         T popup = go.GetOrAddComponent<T>();
         _popupStack.Push(popup);
@@ -108,8 +109,8 @@ public class UIManager
 	
 	public async UniTaskVoid ShowFloatingText(Vector3 pos, string message, Color color,float duration=1.2f,float size=50f,bool isRandom=false)
 	{
-		
-		var floatingText = await Managers.Resource.InstantiateAsync(Address.UI_FloatingText);
+		var data = Managers.Resource.Data;
+		var floatingText = await Managers.Resource.InstantiateAsync(data.UI_FloatingText);
 		floatingText.GetComponent<UI_FloatingText>().Init(pos,message, color,duration,size,isRandom);
 	}
 
@@ -131,7 +132,7 @@ public class UIManager
     {
 	    if (_popupStack.Count == 0)
 		    return;
-	    Managers.Sound.PlayEffect(Address.ClosePopup).Forget();
+	    Managers.Sound.PlayEffect(Managers.Resource.Data.ClosePopup).Forget();
 	    UI_Popup popup = _popupStack.Pop();
 	    _order--;
 	    
@@ -139,8 +140,10 @@ public class UIManager
 	    {
 		    Managers.Resource.Destroy(popup.gameObject);
 		    popup = null;
-
+		    if (_popupStack.Count == 0)
+			    Managers.Player.Control.InputActive(true);
 	    });
+	    
     }
 
     public bool IsPopup()

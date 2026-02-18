@@ -23,6 +23,9 @@ public class PlayerInteraction : MonoBehaviour
             _currentInteractable.OnInteract();
             if(!_currentInteractable.IsInteractable)
                 InteractUI.SetActive(false);
+            
+            Managers.Player.Control.CurrentState =  PlayerController.PlayerState.Idle;
+            Managers.Player.Anim.SetFloat("MOVE", 0);
         }
     }
 

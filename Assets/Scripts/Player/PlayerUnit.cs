@@ -30,7 +30,8 @@ public class PlayerUnit : MonoBehaviour,IDamageable
 
     private async UniTask ShowBloodEffect()
     {
-        var blood = await Managers.Resource.InstantiateAsync(Address.UI_Blood);
+        var data = Managers.Resource.Data;
+        var blood = await Managers.Resource.InstantiateAsync(data.UI_Blood);
         var image = blood.GetComponentInChildren<Image>();
     
         float duration = 0.5f;

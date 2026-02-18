@@ -2,21 +2,23 @@
   "monsters": [
     {
       "ID": "1",
-      "Name": "sharkman",
-      "MaxHp": "1000",
+      "Name": "sharkMan",
+      "MaxHp": "200",
       "Damage": "50",
       "Speed": "1",
       "AttackDelay": "5",
-      "Exp": "20"
+      "Exp": "30",
+      "Gold": "10"
     },
     {
       "ID": "2",
-      "Name": "piggyman",
-      "MaxHp": "300",
+      "Name": "piggyMan",
+      "MaxHp": "120",
       "Damage": "45",
-      "Speed": "0.7",
+      "Speed": "1",
       "AttackDelay": "5",
-      "Exp": "25"
+      "Exp": "35",
+      "Gold": "15"
     },
     {
       "ID": "3",
@@ -24,17 +26,19 @@
       "MaxHp": "5000",
       "Damage": "50",
       "Speed": "1",
-      "AttackDelay": "4",
-      "Exp": "0"
+      "AttackDelay": "7",
+      "Exp": "30",
+      "Gold": "50"
     },
     {
       "ID": "4",
       "Name": "waterChild",
-      "MaxHp": "1000",
+      "MaxHp": "500",
       "Damage": "50",
       "Speed": "1",
       "AttackDelay": "4",
-      "Exp": "25"
+      "Exp": "25",
+      "Gold": "20"
     },
     {
       "ID": "5",
@@ -43,18 +47,112 @@
       "Damage": "20",
       "Speed": "1",
       "AttackDelay": "4",
-      "Exp": "25"
+      "Exp": "25",
+      "Gold": "20"
+    }
+  ],
+  "SpawnCount": [
+    {
+      "Depth": "1",
+      "Enemy01Count": "7",
+      "Enemy02Count": "0",
+      "Enemy03Count": "0",
+      "Enemy04Count": "0",
+      "Enemy05Count": "0",
+      "TotalCount": "7"
+    },
+    {
+      "Depth": "2",
+      "Enemy01Count": "5",
+      "Enemy02Count": "3",
+      "Enemy03Count": "0",
+      "Enemy04Count": "0",
+      "Enemy05Count": "0",
+      "TotalCount": "7"
+    },
+    {
+      "Depth": "3",
+      "Enemy01Count": "2",
+      "Enemy02Count": "5",
+      "Enemy03Count": "0",
+      "Enemy04Count": "0",
+      "Enemy05Count": "0",
+      "TotalCount": "7"
+    },
+    {
+      "Depth": "4",
+      "Enemy01Count": "3",
+      "Enemy02Count": "7",
+      "Enemy03Count": "0",
+      "Enemy04Count": "0",
+      "Enemy05Count": "0",
+      "TotalCount": "10"
+    },
+    {
+      "Depth": "5",
+      "Enemy01Count": "0",
+      "Enemy02Count": "0",
+      "Enemy03Count": "0",
+      "Enemy04Count": "0",
+      "Enemy05Count": "0",
+      "TotalCount": "0"
+    },
+    {
+      "Depth": "6",
+      "Enemy01Count": "0",
+      "Enemy02Count": "0",
+      "Enemy03Count": "0",
+      "Enemy04Count": "10",
+      "Enemy05Count": "0",
+      "TotalCount": "10"
+    },
+    {
+      "Depth": "7",
+      "Enemy01Count": "0",
+      "Enemy02Count": "0",
+      "Enemy03Count": "0",
+      "Enemy04Count": "7",
+      "Enemy05Count": "3",
+      "TotalCount": "12"
+    },
+    {
+      "Depth": "8",
+      "Enemy01Count": "5",
+      "Enemy02Count": "5",
+      "Enemy03Count": "0",
+      "Enemy04Count": "3",
+      "Enemy05Count": "2",
+      "TotalCount": "15"
+    },
+    {
+      "Depth": "9",
+      "Enemy01Count": "2",
+      "Enemy02Count": "2",
+      "Enemy03Count": "0",
+      "Enemy04Count": "7",
+      "Enemy05Count": "4",
+      "TotalCount": "15"
+    },
+    {
+      "Depth": "10",
+      "Enemy01Count": "0",
+      "Enemy02Count": "0",
+      "Enemy03Count": "1",
+      "Enemy04Count": "0",
+      "Enemy05Count": "0",
+      "TotalCount": "1"
     }
   ],
   "PlayerBasicStat": [
     {
       "ID": "1",
       "MaxHp": "3000",
-      "Damage": "300",
+      "Damage": "3000",
       "Speed": "5",
       "DashCooldown": "5",
       "CritChance": "10",
-      "AttackSpeed": "1"
+      "AttackSpeed": "1",
+      "Exp": "30"
     }
   ]
 }

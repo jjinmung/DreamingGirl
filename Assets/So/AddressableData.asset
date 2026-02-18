@@ -1,0 +1,254 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0056473c21f06324a81b8508914bd60a, type: 3}
+  m_Name: AddressableData
+  m_EditorClassIdentifier: Assembly-CSharp::AddressableData
+  Player:
+    m_AssetGUID: 7cc12c50c22900a4e9300c490ccbc351
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0
+  Boss:
+    m_AssetGUID: 107012ce0b67af043afb80b8ebb70db8
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0
+  Coin:
+    m_AssetGUID: aa3d280d9a3ecac48b660c81a3a18c2c
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0
+  Boss_HP_BAR:
+    m_AssetGUID: 6928e84ae278ef444b6e22fd29b42bf8
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0
+  UI_Blood:
+    m_AssetGUID: 33a9bc65857a364428a9dbd43a0131fa
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0
+  UI_FloatingText:
+    m_AssetGUID: 9bd31c8403504234f903a1f980d9a45a
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0
+  CircleAttackRange:
+    m_AssetGUID: 85ef06146a33b6e48bc4d6c815a08bb3
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0
+  EnemyMap:
+    m_AssetGUID: 6e76c4feccec0cd4c9e4b3f394e4e585
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0
+  EventMap:
+    m_AssetGUID: 084e72d6c450366488c55708e35b5078
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0
+  BossMap:
+    m_AssetGUID: 0ebb5488216ce0f40a777b5bdcbae289
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0
+  LobyBGM:
+    m_AssetGUID: 14ed1ede7bf563d4491cc9f38a4d0a11
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0
+  BossMapBGM:
+    m_AssetGUID: b8878a5b12494e8408cb17dd11a141ca
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0
+  EventRoomBGM:
+    m_AssetGUID: b247df4a73f4af7419eeefe49ad76170
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0
+  OnBattleBGM:
+    m_AssetGUID: c1509c6b9ee87bd4da5f01277601e8ee
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0
+  StoreMapBGM:
+    m_AssetGUID: d777570ae2a1eac42bbaa900f7e82bd0
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0
+  Enemy01Die:
+    m_AssetGUID: f9b5861830d70a44c874c8258281ffb3
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0
+  Enemy01Shoot:
+    m_AssetGUID: d5f5a571e3de8b946bbed2eb6df0d95a
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0
+  Enemy02Shoot:
+    m_AssetGUID: a926cfdeccd3183469fa09c5bb78498d
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0
+  Enemy02Die:
+    m_AssetGUID: 30450f670f05dff41a3dc5c9d836b349
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0
+  Enemy03Roar:
+    m_AssetGUID: e55bd1f8ae2ecd2498b513ac365e2c16
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0
+  Enemy03Beam:
+    m_AssetGUID: 15874eac0033230488f74457c0606039
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0
+  Enemy03Blast:
+    m_AssetGUID: cbe6352de079b154dab8d0792de5c17d
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0
+  Enemy03Dash:
+    m_AssetGUID: e653324b3a1fd7442a3f1af88043f747
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0
+  Enemy03BallShoot:
+    m_AssetGUID: c056957e08ba3e64b817cc578f5f7e17
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0
+  Enemy04Die:
+    m_AssetGUID: 7417d34127b532240859c076a9f41b7a
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0
+  Enemy05Die:
+    m_AssetGUID: 94ca9da8a50c23542aed41dc81f3fcb7
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0
+  Hit:
+    m_AssetGUID: fc8ada77ae4c038458251c68c15a9dc1
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0
+  PlayerNormalAttack:
+    m_AssetGUID: 81248e830ac8ae44f8e25618f9cd87c2
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0
+  FireAttack:
+    m_AssetGUID: 0b419bb027d83bd4dbd1198628a4e9e2
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0
+  IceAttack:
+    m_AssetGUID: dd230c6b80e9c9749be72772820cb603
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0
+  LevelUp:
+    m_AssetGUID: dfd9b1681e0827a4790ecb370f76e607
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0
+  PlayerDash:
+    m_AssetGUID: d7a260bf4af4a4843a72f22b42a28b82
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0
+  PlayerWalk:
+    m_AssetGUID: 8219edfe1c690ac448b5a60c873e22ed
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0
+  Flash:
+    m_AssetGUID: 48a9c01cbcbe0c541a05ac74f1a003e6
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0
+  FoodEat:
+    m_AssetGUID: a2f315b9e9df596459a353a25a688da9
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0
+  Mimic:
+    m_AssetGUID: a70c5c9b79bc15d4ca97e80d788e1a94
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0
+  Stun:
+    m_AssetGUID: 784bfba4d9d5c9e4b923773784981be7
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0
+  ClosePopup:
+    m_AssetGUID: 37c309f54691af440b6cbf9f4c9fced6
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0
+  OpenPopup:
+    m_AssetGUID: 0de2ea81552d74ec2832ea4900796f2e
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0
+  Gold:
+    m_AssetGUID: bf0bb0301e673224fb60b20e1a54d0c4
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0

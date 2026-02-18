@@ -40,7 +40,8 @@ public class PlayerManager : MonoBehaviour
     public async UniTask<GameObject> CreatePlayer()
     {
         data = new PlayerData(Managers.Data.PlayerBasicStat[1],Managers.Data.SaveData.player);
-        var playerPrefab = await Managers.Resource.InstantiateAsync(Address.Player);
+        var player = Managers.Resource.Data.Player;
+        var playerPrefab = await Managers.Resource.InstantiateAsync(player);
         
 
         // 생성 시점에 모든 컴포넌트를 한 번만 캐싱
@@ -103,12 +104,18 @@ public class PlayerManager : MonoBehaviour
 
     public void AddGold(int amount)
     {
-        Managers.Sound.PlayEffect(Address.Gold).Forget();
+        Managers.Sound.PlayEffect(Managers.Resource.Data.Gold).Forget();
         data.gold += amount;
         OnDataChanged?.Invoke();
         //데이터 세이브
         Managers.Data.SaveData.player.gold += amount;
         Managers.Data.SaveGame();
+        
+        if(amount>0)
+            Managers.UI.ShowFloatingText(Managers.Player.Trans.position, $"+{amount}gold", Color.yellow, 1.5f).Forget();
+        else
+            Managers.UI.ShowFloatingText(Managers.Player.Trans.position, $"-{amount}gold", Color.brown, 1.5f).Forget();
+        
     }
     
 
@@ -135,7 +142,7 @@ public class PlayerManager : MonoBehaviour
 
     public void LevelUp()
     {
-        Managers.Sound.PlayEffect(Address.LevelUp).Forget();
+        Managers.Sound.PlayEffect(Managers.Resource.Data.LevelUp).Forget();
         
         AddPermanentStat(PlayerStat.MaxHP, 0.1f, true);
         AddPermanentStat(PlayerStat.Attack, 0.1f, true);

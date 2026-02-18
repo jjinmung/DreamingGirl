@@ -114,7 +114,7 @@ public class UI_Pause : UI_Popup
         GetImage((int)Images.Continue).gameObject.BindEvent(_ =>
         {
             Time.timeScale = 1f;
-            Managers.UI.ClosePopupUI(this);
+            ClosePopupUI();
         });
         GetImage((int)Images.Continue).gameObject.BindEvent(OnEnter, UIEvent.Enter);
         GetImage((int)Images.Continue).gameObject.BindEvent(OnExit, UIEvent.Exit);
@@ -132,7 +132,7 @@ public class UI_Pause : UI_Popup
             Managers.Data.SaveGame();
             Managers.Camera.BattleToLoby();
             Time.timeScale = 1f;
-            Managers.UI.ClosePopupUI(this);
+            ClosePopupUI();
         });
         GetImage((int)Images.Exit).gameObject.BindEvent(OnEnter, UIEvent.Enter);
         GetImage((int)Images.Exit).gameObject.BindEvent(OnExit, UIEvent.Exit);

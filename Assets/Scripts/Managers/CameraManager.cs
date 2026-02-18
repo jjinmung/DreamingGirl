@@ -87,7 +87,7 @@ public class CameraManager : MonoBehaviour
             battleUI.LazyInit();
             
             //bgm세팅
-            Managers.Sound.PlayBgm(Address.StoreMapBGM).Forget();
+            Managers.Sound.PlayBgm(Managers.Resource.Data.StoreMapBGM).Forget();
             SceneManager.sceneLoaded -= OnBattleSceneLoaded;
         }
     }
@@ -249,7 +249,7 @@ public class CameraManager : MonoBehaviour
         {
             LobyInit();
             Managers.Data.ClearAbility();
-            Managers.Sound.PlayBgm(Address.LobyBGM).Forget();
+            Managers.Sound.PlayBgm(Managers.Resource.Data.LobyBGM).Forget();
             await Managers.UI.ShowSceneUI<UI_LobyScene>();
         }
     }

@@ -40,11 +40,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 37c309f54691af440b6cbf9f4c9fced6
-    m_Address: Assets/Sound/Effect/UI/ClostPopup.wav
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 433af660ff39e97459e0a42e1efbd4ae
     m_Address: Assets/Sound/Effect/Enemy03/Enemy03BallHit.wav
     m_ReadOnly: 0
@@ -60,6 +55,16 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7417d34127b532240859c076a9f41b7a
+    m_Address: Assets/Sound/Effect/Enemy04/Enemy04Death.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 784bfba4d9d5c9e4b923773784981be7
+    m_Address: Assets/Sound/Effect/Player/Stun.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 81248e830ac8ae44f8e25618f9cd87c2
     m_Address: Assets/Sound/Effect/Player/PlayerNormalAttack.mp3
     m_ReadOnly: 0
@@ -67,6 +72,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 8219edfe1c690ac448b5a60c873e22ed
     m_Address: Assets/Sound/Effect/Player/PlayerWalk.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 94ca9da8a50c23542aed41dc81f3fcb7
+    m_Address: Assets/Sound/Effect/Enemy05/Enemy05Death.wav
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -122,6 +132,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d777570ae2a1eac42bbaa900f7e82bd0
     m_Address: Assets/Sound/BGM/StoreMapBGM.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d7a260bf4af4a4843a72f22b42a28b82
+    m_Address: Assets/Sound/Effect/Player/PlayerDash.wav
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

@@ -4,6 +4,7 @@ using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngine.UI;
 
 public class UI_BattleScene : UI_Scene
@@ -186,18 +187,16 @@ public class UI_BattleScene : UI_Scene
     {
         if (_spriteCache.TryGetValue(type, out Sprite cachedSprite))
             return cachedSprite;
-
-        string address = type switch
+        var data = Managers.Resource.Data;
+        AssetReference assetReference = type switch
         {
-            Define.RoomType.Monster => Address.EnemyMap,
-            Define.RoomType.Event => Address.EventMap,
-            Define.RoomType.Boss => Address.BossMap,
+            Define.RoomType.Monster => data.EnemyMap,
+            Define.RoomType.Event => data.EventMap,
+            Define.RoomType.Boss => data.BossMap,
             _ => null
         };
-
-        if (string.IsNullOrEmpty(address)) return null;
-
-        Sprite sprite = await Managers.Resource.LoadAsync<Sprite>(address);
+        
+        Sprite sprite = await Managers.Resource.LoadAsync<Sprite>(assetReference);
         _spriteCache[type] = sprite;
         return sprite;
     }
@@ -327,6 +326,7 @@ public class UI_BattleScene : UI_Scene
     public void BattleUIActive()
     {
         AllUIActive(false);
+        GetObject((int)GameObjects.Info).SetActive(true);
         Get<Slider>((int)Sliders.LevelBar).gameObject.SetActive(true);
         GetObject((int)GameObjects.Map).SetActive(true);
         GetObject((int)GameObjects.SkillBar).SetActive(true);

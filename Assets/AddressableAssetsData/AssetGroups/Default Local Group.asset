@@ -35,6 +35,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0ad91ed969ca82b42aff8503077e68a1
+    m_Address: Assets/So/AddressableData.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 0db301afb471cef4bbd2a8f35354c244
     m_Address: Assets/Prefabs/Bullet/Water/WaterballProjectile.prefab
     m_ReadOnly: 0
@@ -75,6 +80,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 37c309f54691af440b6cbf9f4c9fced6
+    m_Address: Assets/Sound/Effect/UI/ClosePopup.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 3de6a85170e8baa4ab0d9135dfecf235
     m_Address: Assets/Prefabs/UI/Popup/UI_StageEnding.prefab
     m_ReadOnly: 0
@@ -87,11 +97,6 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 4567a0dbdf34dac4e982d0f778229127
     m_Address: Assets/Prefabs/Bullet/Water/WaterballHit.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 45b464791a643384e9520fe4e6053982
-    m_Address: Assets/Sound/Effect/Player/PlayerDash (mp3cut.net) (1).wav
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -166,6 +171,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: aa3d280d9a3ecac48b660c81a3a18c2c
+    m_Address: Assets/Prefabs/Objects/coin.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b3d1606db4f542f4686b86bb38505743
     m_Address: Assets/Prefabs/Map/MonsterMap/1DoorMonsterRoom_1.prefab
     m_ReadOnly: 0
@@ -198,11 +208,6 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: bf0bb0301e673224fb60b20e1a54d0c4
     m_Address: Assets/Sound/Effect/UI/SetCoin.wav
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: d7a260bf4af4a4843a72f22b42a28b82
-    m_Address: Assets/Sound/Effect/Player/PlayerDash.wav
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

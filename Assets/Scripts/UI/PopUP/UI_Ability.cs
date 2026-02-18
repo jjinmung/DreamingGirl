@@ -63,7 +63,7 @@ public class UI_Ability :UI_Popup
             go.BindEvent(_ =>
             {
                 Managers.Data.AbilityDict[abilityIDs[index]].AddStack();
-                Managers.UI.ClosePopupUI(this);
+                ClosePopupUI();
                 //시간 재개
                 Time.timeScale = 1;
             });

@@ -38,7 +38,8 @@ public class Enemy03 : EnemyBase
     public override async UniTask Init(int id)
     {
         await base.Init(id);
-        var hpBar = await Managers.UI.MakeSubItem<UI_EnemyHPBar>(Address.Boss_HP_BAR);
+        var data = Managers.Resource.Data;
+        var hpBar = await Managers.UI.MakeSubItem<UI_EnemyHPBar>(data.Boss_HP_BAR);
         //위치 초기화
         RectTransform rect = hpBar.GetComponent<RectTransform>();
         if (rect != null)
@@ -111,7 +112,7 @@ public class Enemy03 : EnemyBase
         DashEffect.gameObject.SetActive(false);
         OnDashComplete();
         
-        Managers.Sound.PlayEffect(Address.Enemy03Roar).Forget();
+        Managers.Sound.PlayEffect(Managers.Resource.Data.Enemy03Roar).Forget();
     }
 
     #region 빔공격
@@ -128,7 +129,7 @@ public class Enemy03 : EnemyBase
         SetAttackArange(false,0);
         Invoke(nameof(BeamEnd), beamDuration);
         //사운드 시작
-        _loopSource = await Managers.Sound.PlayEffectLoop(Address.Enemy03Beam);
+        _loopSource = await Managers.Sound.PlayEffectLoop(Managers.Resource.Data.Enemy03Beam);
     }
     //애니메이션 이벤트함수
     public void DelayBeamAttack()
@@ -188,7 +189,7 @@ public class Enemy03 : EnemyBase
         DashEffect.gameObject.SetActive(true);
         DashEffect.Play();
          //사운드 시작
-        _loopSource = await Managers.Sound.PlayEffectLoop(Address.Enemy03Dash);
+        _loopSource = await Managers.Sound.PlayEffectLoop(Managers.Resource.Data.Enemy03Dash);
         SetAttackArange(true, 0,5f,2f,Dash);
       
     }
@@ -345,7 +346,7 @@ public class Enemy03 : EnemyBase
 
     void ShootSound()
     {
-        Managers.Sound.PlayEffect(Address.Enemy03BallShoot).Forget();
+        Managers.Sound.PlayEffect(Managers.Resource.Data.Enemy03BallShoot).Forget();
     }
     #endregion
    

@@ -63,7 +63,7 @@ public class UI_SaveData : UI_Popup
 
         GetImage((int)Images.CloseBtn).gameObject.BindEvent((data) =>
         {
-            Managers.UI.ClosePopupUI(this);
+            ClosePopupUI();
         });
     }
 

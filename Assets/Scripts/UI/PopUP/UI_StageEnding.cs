@@ -42,7 +42,7 @@ public class UI_StageEnding : UI_Popup
     {
         Managers.Data.ClearAbility();
         Managers.Stage.ReturnToLoby();
-        Managers.UI.ClosePopupUI(this);
+        ClosePopupUI();
     }
 
     public void SetText(bool isWin ,float playTime, int killCount, int gold)

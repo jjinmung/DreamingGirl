@@ -1,4 +1,6 @@
 using System;
+using Cysharp.Threading.Tasks;
+using NUnit.Framework.Constraints;
 using UnityEngine;
 using static Define;
 
@@ -27,6 +29,9 @@ public class PlayerController : MonoBehaviour
     private UI_Ability uiAbility;
     private bool AttackDelay = true;
     private bool _isAttackPressed;
+    private bool _canSturn=true;
+
+    public bool CanStun => _canSturn;
     //UI맵핑을 위한 이벤트
     public event Action OnGetActiveSKill;
     public  event Action<int, float> OnUseActiveSKill;
@@ -156,7 +161,7 @@ public class PlayerController : MonoBehaviour
     {
         float dashCoolDown = Managers.Player.Data.dashCooldown.TotalValue;
         if (!_movement.CanMove||Time.time<_lastSkillTime[0]+dashCoolDown) return;
-        await Managers.Sound.PlayEffect(Address.PlayerDash);
+        await Managers.Sound.PlayEffect(Managers.Resource.Data.PlayerDash);
         _lastSkillTime[0] = Time.time;
         OnUseActiveSKill?.Invoke(0,dashCoolDown);
         _movement.ExecuteDash(CalculateCameraDirection(), () => {
@@ -198,8 +203,8 @@ public class PlayerController : MonoBehaviour
         }
         _combat.ResetCombo();
     }
-    
-    //애니메이션 이벤트 함수
+
+    #region 애니메이션 이벤트 함수
     public void CheckCombo()
     {
         if (CurrentState == PlayerState.Attack)
@@ -231,8 +236,32 @@ public class PlayerController : MonoBehaviour
     {
         motionTrail.EffectOff();
     }
+
+    public void StunSfx()
+    {
+        Managers.Sound.PlayEffect(Managers.Resource.Data.Stun).Forget();
+    }
+
+    public void CanStunActive()
+    {
+        _canSturn = true;
+    }
+    public void CanStunInActive()
+    {
+        _canSturn = false;
+    }
+    #endregion
+    
     
     public void StopDashPhysics() => _movement.StopVelocity();
+
+    public void HitActive(bool active)
+    {
+        if (active)
+            tag = "Player";
+        else
+            tag ="Untagged";
+    }
 
     public void InputActive(bool isActive)
     {
@@ -259,5 +288,7 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
+    
+    
     
 }

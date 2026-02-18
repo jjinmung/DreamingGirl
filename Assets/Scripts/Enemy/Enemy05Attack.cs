@@ -9,7 +9,6 @@ public class Enemy05Attack : MonoBehaviour
     private Rigidbody playerRb;
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log(other.gameObject.tag);
         if (other.CompareTag("Player"))
         {
             if (enemy == null)
@@ -17,7 +16,8 @@ public class Enemy05Attack : MonoBehaviour
 
             // 1. 대미지 입히기
             other.GetComponent<IDamageable>()?.TakeDamage(enemy.stat.Damage);
-
+            
+            if(!Managers.Player.Control.CanStun) return;
             // 2. 날려버리기 로직
             if (playerRb == null) playerRb = other.GetComponent<Rigidbody>();
             

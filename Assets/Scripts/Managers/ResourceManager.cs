@@ -20,6 +20,7 @@ public class ResourceManager : MonoBehaviour
     // 주소(Key)별로 IObjectPool을 관리합니다.
     private Dictionary<string, IObjectPool<GameObject>> _pools = new Dictionary<string, IObjectPool<GameObject>>();
 
+    public AddressableData Data;
     public GameObject PoolRoot
     {
         get
@@ -117,6 +118,26 @@ public class ResourceManager : MonoBehaviour
             return loadHandle.Result.ToArray();
 
         return null;
+    }
+    
+    public async UniTask<T> LoadAsync<T>(AssetReference assetRef) where T : Object
+    {
+        if (assetRef == null || !assetRef.RuntimeKeyIsValid()) return null;
+
+        // RuntimeKey 자체를 키로 사용하여 딕셔너리에 저장/조회
+        string key = assetRef.RuntimeKey.ToString(); 
+
+        if (_resources.TryGetValue(key, out AsyncOperationHandle handle))
+        {
+            await handle.Task;
+            return handle.Result as T;
+        }
+        
+        var loadHandle = assetRef.LoadAssetAsync<T>(); 
+        _resources.Add(key, loadHandle);
+    
+        await loadHandle.Task;
+        return loadHandle.Result;
     }
 
     #endregion

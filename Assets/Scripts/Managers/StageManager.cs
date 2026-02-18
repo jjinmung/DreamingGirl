@@ -7,6 +7,7 @@ using Cysharp.Threading.Tasks;
 using UnityEngine;
 using DG.Tweening;
 using Unity.AI.Navigation;
+using UnityEngine.AddressableAssets;
 using static Define;
 using Random = UnityEngine.Random;
 
@@ -21,6 +22,7 @@ public class StageManager : MonoBehaviour
     [Range(0, 1f)]
     public float MonsterMapPercent = 0.5f;
 
+    private int stageGold;
     public int TotalGold;
     public float PlayTime;
     public int TotalKill;
@@ -30,6 +32,7 @@ public class StageManager : MonoBehaviour
         new SpawnData(2,10f),
     };
     private List<List<RoomNode>> stageMap = new();
+    private List<Coin> coins = new();
     private RoomNode currentRoomNode;
     private RoomNode lobyNode;
     private int currentDepth;
@@ -144,6 +147,7 @@ public class StageManager : MonoBehaviour
             var enemyroom = currentRoom as EnemyRoom;
             if(enemyroom!=null)
                 enemySpawner = enemyroom.Spawner;
+            stageGold = 0;
         }
         else if (currentRoomNode.type == RoomType.Boss)
         {
@@ -191,7 +195,7 @@ public class StageManager : MonoBehaviour
     private async UniTask ExitToNextRoomAsync()
     {
         var token = _cts.Token; // 토큰 가져오기
-        audioSource = await Managers.Sound.PlayEffectLoop(Address.PlayerWalk);
+        audioSource = await Managers.Sound.PlayEffectLoop(Managers.Resource.Data.PlayerWalk);
         // 1. 연출 시작 및 UI 초기화
         Managers.Camera.ChanageCamera();
         Managers.Player.FadeMoveFloat(0.5f);
@@ -238,31 +242,45 @@ public class StageManager : MonoBehaviour
         }
         
     }
-    
-    public void CheckClear()
+
+    public void CheckClear(int gold, Coin coin = null)
     {
-        
         if (currentRoomNode.type == RoomType.Monster)
         {
-            TotalGold+= currentDepth*2;
+            TotalGold += gold;
+            stageGold += gold;
             TotalKill++;
             killCount++;
+            if(coin != null)
+                coins.Add(coin);
             if (enemySpawner != null && killCount >= enemySpawner.SpawnCount)
             {
                 ClearRoom();
+                foreach (var temp in coins)
+                {
+                    temp.Clear();
+                }
+                coins.Clear();
+                Invoke(nameof(DelayGetCoin),0.5f);
+                
                 killCount = 0;
             }
         }
         else if (currentRoomNode.type == RoomType.Boss)
         {
-            TotalGold += 30;
+            
             TotalKill++;
             PlayTime = Time.time-PlayTime;
-            BossClearAsync().Forget();
+            BossClearAsync(gold).Forget();
         }
     }
-    
-    private async UniTaskVoid BossClearAsync()
+
+    void DelayGetCoin()
+    {
+        Managers.Player.AddGold(stageGold);
+        stageGold = 0;
+    }
+    private async UniTaskVoid BossClearAsync(int gold)
     {
         var token = _cts.Token; // 토큰 가져오기
         try
@@ -272,12 +290,12 @@ public class StageManager : MonoBehaviour
             Time.timeScale = 0.2f;
             
             await UniTask.Delay(TimeSpan.FromSeconds(2f), delayType: DelayType.Realtime, cancellationToken: token);
-        
-            Time.timeScale = 1f;
-
             // 2. 1초 대기 (이때는 정상 시간 흐름)
+            Time.timeScale = 1f;
+            Managers.Player.AddGold(gold);
+            
             await UniTask.Delay(TimeSpan.FromSeconds(1f), cancellationToken: token);
-
+        
             // 3. UI 팝업 로드 및 대기 
             UI_StageEnding ui = await Managers.UI.ShowPopupUI<UI_StageEnding>();
 
@@ -309,7 +327,7 @@ public class StageManager : MonoBehaviour
         var token = _cts.Token; // 토큰 가져오기
         try
         {
-            audioSource = await Managers.Sound.PlayEffectLoop(Address.PlayerWalk);
+            audioSource = await Managers.Sound.PlayEffectLoop(Managers.Resource.Data.PlayerWalk);
             // 1. 방 타입에 따른 초기 설정 
             Enemy03 boss = await InitializeRoomContent();
 
@@ -327,16 +345,17 @@ public class StageManager : MonoBehaviour
                 Managers.Camera.ChanageCamera();
                 await UniTask.Delay(TimeSpan.FromSeconds(2), cancellationToken: token); // waitForTwo 대체
             }
-            
-            string bgmKey = currentRoomNode.type switch
+
+            var data = Managers.Resource.Data;
+            AssetReference assetReference = currentRoomNode.type switch
             {
-                RoomType.Monster => Address.OnBattleBGM,
-                RoomType.Boss => Address.BossMapBGM,
-                RoomType.Event => Address.EventRoomBGM,
+                RoomType.Monster => data.OnBattleBGM,
+                RoomType.Boss => data.BossMapBGM,
+                RoomType.Event => data.EventRoomBGM,
                 _ => null
             };
             if(currentRoomNode.type!=RoomType.Boss)
-                Managers.Sound.PlayBgm(bgmKey).Forget();
+                Managers.Sound.PlayBgm(assetReference).Forget();
             _battleUI.SetMap(currentRoomNode.nextNodes, currentDepth);
             Managers.Player.EnterRoom();
             SetupBattleUI();
@@ -367,7 +386,8 @@ public class StageManager : MonoBehaviour
                 break;
 
             case RoomType.Boss:
-                var bossObj = await Managers.Resource.InstantiateAsync(Address.Boss, currentRoom.BossPos.position,Quaternion.Euler(0,180,0));
+                var data = Managers.Resource.Data;
+                var bossObj = await Managers.Resource.InstantiateAsync(data.Boss, currentRoom.BossPos.position,Quaternion.Euler(0,180,0));
                 var boss = bossObj.GetComponent<Enemy03>();
                 boss.gameObject.SetLayerRecursively("Default");
                 return boss;
@@ -406,12 +426,12 @@ public class StageManager : MonoBehaviour
     {
         var token = _cts.Token; // 토큰 가져오기
         if (boss == null) return;
-        Managers.Sound.PlayBgm(Address.BossMapBGM).Forget();
+        Managers.Sound.PlayBgm(Managers.Resource.Data.BossMapBGM).Forget();
         Managers.Camera.SetBossCam(true);
         
         await UniTask.Delay(TimeSpan.FromSeconds(0.5), cancellationToken: token); 
         
-        Managers.Sound.PlayEffect(Address.Enemy03Roar).Forget();
+        Managers.Sound.PlayEffect(Managers.Resource.Data.Enemy03Roar).Forget();
         
         await UniTask.Delay(TimeSpan.FromSeconds(0.5), cancellationToken: token); 
         
@@ -491,14 +511,13 @@ public class StageManager : MonoBehaviour
             // 3. 로비 진입 연출
             Managers.Player.BossClearControl(true);
             _battleUI.FadeIn(1);
-            Managers.Sound.PlayBgm(Address.StoreMapBGM).Forget();
+            Managers.Sound.PlayBgm(Managers.Resource.Data.StoreMapBGM).Forget();
         
             // 페이드 인 완료 대기
             await UniTask.Delay(TimeSpan.FromSeconds(1f), cancellationToken: token);
 
-            // 4. 로비 전용 UI 활성화 및 보상 정산
+            // 4. 로비 전용 UI 활성화
             _battleUI.LobyUIActive();
-            Managers.Player.AddGold(TotalGold);
         }
         catch (Exception e)
         {
@@ -508,9 +527,8 @@ public class StageManager : MonoBehaviour
     
     public void AddGold(int amount)
     {
-        Managers.Sound.PlayEffect(Address.Gold).Forget();
         TotalGold += amount;
-        Managers.UI.ShowFloatingText(Managers.Player.Trans.position, $"+{amount}gold", Color.yellow, 1.5f).Forget();
+        Managers.Player.AddGold(amount);
     }
 
     public void Clear()

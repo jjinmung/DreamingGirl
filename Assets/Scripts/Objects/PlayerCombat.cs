@@ -78,7 +78,7 @@ public class PlayerCombat : MonoBehaviour
         CanAttack = false;
         if (animName.Equals("Thunderflash"))
         {
-            audioSource = await Managers.Sound.PlayEffectLoop(Address.Flash);
+            audioSource = await Managers.Sound.PlayEffectLoop(Managers.Resource.Data.Flash);
         }
         _animator.SetTrigger(animName);
         ResetCombo();
@@ -126,17 +126,17 @@ public class PlayerCombat : MonoBehaviour
     }
     public void PlayAttackSound()
     {
-        Managers.Sound.PlayEffect(Address.PlayerNormalAttack).Forget();
+        Managers.Sound.PlayEffect(Managers.Resource.Data.PlayerNormalAttack).Forget();
         if (IsIceAttack || IsFireAttack)
         {
             if (IsIceAttack)
             {
-                Managers.Sound.PlayEffect(Address.IceAttack).Forget();
+                Managers.Sound.PlayEffect(Managers.Resource.Data.IceAttack).Forget();
             }
             
             if (IsFireAttack)
             {
-                Managers.Sound.PlayEffect(Address.FireAttack).Forget();
+                Managers.Sound.PlayEffect(Managers.Resource.Data.FireAttack).Forget();
             }
         }
         else
@@ -148,7 +148,7 @@ public class PlayerCombat : MonoBehaviour
 
     public void FlurrySlashSoundOn()
     {
-        Managers.Sound.PlayEffect(Address.PlayerNormalAttack).Forget();
+        Managers.Sound.PlayEffect(Managers.Resource.Data.PlayerNormalAttack).Forget();
     }
     public void ThunderFlashSoundOff()
     {

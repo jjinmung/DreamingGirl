@@ -12,15 +12,17 @@ public class EnemyStat
     public float AttackDelay;
     public float currentHp;
     public int Exp;
+    public int Gold;
     public  EnemyStat(MonsterStat stat)
     {
         ID = stat.ID;
         Name = stat.Name;
-        this.MaxHp = stat.MaxHp;
-        this.currentHp = MaxHp;
-        this.Damage = stat.Damage;
-        this.Speed = stat.Speed;
-        this.AttackDelay = stat.AttackDelay;
-        this.Exp = stat.Exp;
+        MaxHp = stat.MaxHp;
+        currentHp = MaxHp;
+        Damage = stat.Damage;
+        Speed = stat.Speed;
+        AttackDelay = stat.AttackDelay;
+        Exp = stat.Exp;
+        Gold = stat.Gold;
     }
 }

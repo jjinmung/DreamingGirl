@@ -67,7 +67,7 @@ public class AttackRangeDetector : MonoBehaviour
         // 2. 1.5초 지점에 사운드 재생 삽입 (전체 타임라인 기준)
         seq.InsertCallback(1.5f, () => 
         {
-            Managers.Sound.PlayEffect(Address.Enemy03Blast).Forget();
+            Managers.Sound.PlayEffect(Managers.Resource.Data.Enemy03Blast).Forget();
         });
 
         // 3. 전체 완료 후 실행될 로직

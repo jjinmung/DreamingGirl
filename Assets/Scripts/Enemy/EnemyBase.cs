@@ -92,7 +92,7 @@ public abstract class EnemyBase : MonoBehaviour,IDamageable
     public virtual void TakeDamage(float damage, Color color= default,bool isRandom =false)
     {
         if (isDead) return;
-        Managers.Sound.PlayEffect(Address.Hit).Forget();
+        Managers.Sound.PlayEffect(Managers.Resource.Data.Hit).Forget();
         stat.currentHp = Mathf.Clamp(stat.currentHp - damage, 0, stat.MaxHp);
         var col = color == default ? Color.white : color;
         if(color ==default)//일반 데미지
@@ -170,7 +170,7 @@ public abstract class EnemyBase : MonoBehaviour,IDamageable
 
     protected abstract void TakeDamageHandler(float damage);
 
-    protected void Die()
+    protected async void Die()
     {
         //변수제어
         isDead = true;
@@ -180,16 +180,21 @@ public abstract class EnemyBase : MonoBehaviour,IDamageable
             StopCoroutine(_burnCoroutine);
         if(_freezeCoroutine!=null)
             StopCoroutine(_freezeCoroutine);
+        
         //이펙트 종료
         HitParticle.Stop();
         fireParticle.Stop();
         IceParticle.Stop();
         
+        //코인 생성
+        var go = await Managers.Resource.InstantiateAsync(Managers.Resource.Data.Coin,transform.position);
+        var coin = go.GetComponent<Coin>();
         //스테이지 관리
-        Managers.Stage.CheckClear();
+        Managers.Stage.CheckClear(stat.Gold,coin);
         
         //이벤트 호출
         dieAcation.Invoke();
+        
         
         gameObject.layer = LayerMask.NameToLayer("DeadBody");
         _animator.SetTrigger("DEATH");
