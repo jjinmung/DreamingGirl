@@ -202,6 +202,14 @@ public abstract class EnemyBase : MonoBehaviour,IDamageable
         
         Managers.Player.AddExp(stat.Exp);
         StartCoroutine(DelayDie());
+        
+        //연쇄능력
+        if (Managers.Player.Combat.IsChain)
+        {
+            Managers.Player.Combat.IsChainActive = true;
+            Managers.Player.Control.ChainParticle.Play();
+        }
+            
     }
 
     protected abstract void DieHandler();

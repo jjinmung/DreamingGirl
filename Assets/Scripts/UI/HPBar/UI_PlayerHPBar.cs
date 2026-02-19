@@ -123,11 +123,7 @@ public class UI_PlayerHPBar : UI_Base
         _animCts?.Dispose();
         _animCts = null;
 
-        // 이벤트 해제
-        Managers.Player.TakeDamageAction -= TakeDamage;
-        Managers.Player.DieAcation -= Destroy;
-
-        Managers.Resource.Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 
     private void OnDestroy()

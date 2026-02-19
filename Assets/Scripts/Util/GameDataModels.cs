@@ -18,6 +18,19 @@ namespace Data
         public int Exp;
         public int Gold;
     }
+    
+    [Serializable]
+    public class SpawnCount
+    {
+        public int Depth;
+        public int Enemy01Count;
+        public int Enemy02Count;
+        public int Enemy03Count;
+        public int Enemy04Count;
+        public int Enemy05Count;
+        public int TotalCount;
+    }
+
     [Serializable]
     public class PlayerBasicStat
     {
@@ -34,7 +47,8 @@ namespace Data
     public class StaticDataRoot
     {
         public List<MonsterStat> monsters;
-        public List<PlayerBasicStat> PlayerBasicStat;
+        public List<SpawnCount> spawnCount;
+        public List<PlayerBasicStat> playerBasicStat;
     }
     
 

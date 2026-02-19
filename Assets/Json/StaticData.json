@@ -3,55 +3,55 @@
     {
       "ID": "1",
       "Name": "sharkMan",
-      "MaxHp": "200",
-      "Damage": "50",
+      "MaxHp": "50",
+      "Damage": "30",
       "Speed": "1",
-      "AttackDelay": "5",
-      "Exp": "30",
+      "AttackDelay": "4",
+      "Exp": "15",
       "Gold": "10"
     },
     {
       "ID": "2",
       "Name": "piggyMan",
-      "MaxHp": "120",
-      "Damage": "45",
+      "MaxHp": "100",
+      "Damage": "40",
       "Speed": "1",
       "AttackDelay": "5",
-      "Exp": "35",
+      "Exp": "20",
       "Gold": "15"
     },
     {
       "ID": "3",
       "Name": "waterBoss",
-      "MaxHp": "5000",
-      "Damage": "50",
+      "MaxHp": "1500",
+      "Damage": "90",
       "Speed": "1",
-      "AttackDelay": "7",
-      "Exp": "30",
+      "AttackDelay": "6",
+      "Exp": "0",
       "Gold": "50"
     },
     {
       "ID": "4",
       "Name": "waterChild",
-      "MaxHp": "500",
-      "Damage": "50",
+      "MaxHp": "150",
+      "Damage": "60",
       "Speed": "1",
-      "AttackDelay": "4",
+      "AttackDelay": "6",
       "Exp": "25",
       "Gold": "20"
     },
     {
       "ID": "5",
       "Name": "monkeyMan",
-      "MaxHp": "1000",
-      "Damage": "20",
+      "MaxHp": "300",
+      "Damage": "30",
       "Speed": "1",
-      "AttackDelay": "4",
-      "Exp": "25",
-      "Gold": "20"
+      "AttackDelay": "7",
+      "Exp": "30",
+      "Gold": "25"
     }
   ],
-  "SpawnCount": [
+  "spawnCount": [
     {
       "Depth": "1",
       "Enemy01Count": "7",
@@ -68,7 +68,7 @@
       "Enemy03Count": "0",
       "Enemy04Count": "0",
       "Enemy05Count": "0",
-      "TotalCount": "7"
+      "TotalCount": "8"
     },
     {
       "Depth": "3",
@@ -91,11 +91,11 @@
     {
       "Depth": "5",
       "Enemy01Count": "0",
-      "Enemy02Count": "0",
+      "Enemy02Count": "10",
       "Enemy03Count": "0",
       "Enemy04Count": "0",
       "Enemy05Count": "0",
-      "TotalCount": "0"
+      "TotalCount": "10"
     },
     {
       "Depth": "6",
@@ -109,7 +109,7 @@
     {
       "Depth": "7",
       "Enemy01Count": "0",
-      "Enemy02Count": "0",
+      "Enemy02Count": "2",
       "Enemy03Count": "0",
       "Enemy04Count": "7",
       "Enemy05Count": "3",
@@ -143,16 +143,15 @@
       "TotalCount": "1"
     }
   ],
-  "PlayerBasicStat": [
+  "playerBasicStat": [
     {
       "ID": "1",
-      "MaxHp": "3000",
-      "Damage": "3000",
+      "MaxHp": "400",
+      "Damage": "30",
       "Speed": "5",
       "DashCooldown": "5",
       "CritChance": "10",
-      "AttackSpeed": "1",
-      "Exp": "30"
+      "AttackSpeed": "1"
     }
   ]
 }

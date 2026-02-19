@@ -157,13 +157,13 @@ MonoBehaviour:
     m_SubObjectGUID: 
     m_EditorAssetChanged: 0
   Enemy04Die:
-    m_AssetGUID: 7417d34127b532240859c076a9f41b7a
+    m_AssetGUID: 85b32c8db0d09d449ae7971484d563b1
     m_SubObjectName: 
     m_SubObjectType: 
     m_SubObjectGUID: 
     m_EditorAssetChanged: 0
   Enemy05Die:
-    m_AssetGUID: 94ca9da8a50c23542aed41dc81f3fcb7
+    m_AssetGUID: f4335291823641d488e17dfc61bf2a22
     m_SubObjectName: 
     m_SubObjectType: 
     m_SubObjectGUID: 

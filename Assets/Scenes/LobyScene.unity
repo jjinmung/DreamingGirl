@@ -18848,16 +18848,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CanEsc: 1
-  StageCount: 3
-  MonsterMapPercent: 0.082
+  MonsterMapPercent: 0.8
   TotalGold: 0
   PlayTime: 0
   TotalKill: 0
-  spawnDatas:
-  - ID: 4
-    spawnWeight: 10
-  - ID: 1
-    spawnWeight: 0
 --- !u!1 &4870667364567753239
 GameObject:
   m_ObjectHideFlags: 0

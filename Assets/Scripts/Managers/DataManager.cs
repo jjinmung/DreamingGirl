@@ -13,6 +13,7 @@ using static Define;
 public class DataManager
 {
     public Dictionary<int, MonsterStat> MonsterDict { get; private set; }
+    public Dictionary<int,SpawnCount> SpawnDic { get; private set; }
     public Dictionary<int, PlayerBasicStat> PlayerBasicStat { get; private set; }
     
     public Dictionary<PassiveSkillID, PassiveData> PassiveDict { get; private set; }
@@ -46,10 +47,14 @@ public class DataManager
         // 몬스터 딕셔너리 채우기
         MonsterDict = new Dictionary<int, MonsterStat>();
         foreach (var m in root.monsters) MonsterDict.Add(m.ID, m);
+        
+        // 스폰 딕셔너리 채우기
+        SpawnDic = new Dictionary<int, SpawnCount>();
+        foreach (var s in root.spawnCount) SpawnDic.Add(s.Depth, s);
 
         // 플레이어 기본 스탯 딕셔너리 채우기
         PlayerBasicStat = new Dictionary<int, PlayerBasicStat>();
-        foreach (var p in root.PlayerBasicStat) PlayerBasicStat.Add(p.ID, p);
+        foreach (var p in root.playerBasicStat) PlayerBasicStat.Add(p.ID, p);
         
         //패시브 스킬 딕셔너리 채우기
         PassiveDict = new Dictionary<PassiveSkillID, PassiveData>();

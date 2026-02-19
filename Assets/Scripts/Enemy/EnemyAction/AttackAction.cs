@@ -15,7 +15,7 @@ public partial class AttackAction : Action
     {
         enemy = Agent.Value.GetComponent<EnemyBase>();
         
-        if(enemy!=null)
+        if(enemy!=null&&!Managers.Player.IsDeath)
             enemy.Attack();
         return Status.Running;
     }

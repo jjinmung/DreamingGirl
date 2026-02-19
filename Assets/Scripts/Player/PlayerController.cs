@@ -20,12 +20,13 @@ public class PlayerController : MonoBehaviour
     public ParticleSystem HealParticle;
     public ParticleSystem StatUpParticle;
     public ParticleSystem PactAbyssParticle;
+    public ParticleSystem ChainParticle;
     public TrailRenderer[] ThunderTrail;
     public DynamicParticleRotator DivineOrbs;
-    
     [HideInInspector]public MotionTrail motionTrail;
+    
     public AbilityID[] ActiveSkills;
-
+    
     private UI_Ability uiAbility;
     private bool AttackDelay = true;
     private bool _isAttackPressed;
@@ -250,17 +251,27 @@ public class PlayerController : MonoBehaviour
     {
         _canSturn = false;
     }
+
+    public void DieUI()
+    {
+        Managers.UI.ShowPopupUI<UI_Death>().Forget();
+    }
     #endregion
     
     
     public void StopDashPhysics() => _movement.StopVelocity();
 
-    public void HitActive(bool active)
+    public void AllEffectsFinished()
     {
-        if (active)
-            tag = "Player";
-        else
-            tag ="Untagged";
+        LVPParticle.Stop();
+        HealParticle.Stop();
+        StatUpParticle.Stop();
+        PactAbyssParticle.Stop();
+        ChainParticle.Stop();
+        motionTrail.gameObject.SetActive(false);
+        DivineOrbs.SetOrbs(0);
+        ThunderTrail[0].emitting = false;
+        ThunderTrail[1].emitting = false;
     }
 
     public void InputActive(bool isActive)

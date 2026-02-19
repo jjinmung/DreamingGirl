@@ -68,7 +68,7 @@ public class UI_PassiveSkill : UI_Popup
         Init();
     }
 
-    private void OnEnable()
+    private new void OnEnable()
     {
         Managers.Player.Control.InputActive(false);
         base.OnEnable();

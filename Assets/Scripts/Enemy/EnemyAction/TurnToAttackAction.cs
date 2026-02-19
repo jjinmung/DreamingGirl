@@ -23,6 +23,8 @@ public partial class TurnToAttackAction : Action
         if (Target.Value == null || Agent.Value == null)
             return Status.Failure;
 
+        if(Managers.Player.IsDeath) return Status.Success;
+        
         // 1. 타겟으로 향하는 방향 벡터 계산
         Vector3 direction = Target.Value.transform.position - Agent.Value.transform.position;
         direction.y = 0; // 높이 차이 무시

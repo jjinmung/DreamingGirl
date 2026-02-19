@@ -7,22 +7,9 @@ using UnityEngine;
 using UnityEngine.AI; // NavMesh 사용을 위해 필수
 using Random = UnityEngine.Random;
 
-[System.Serializable]
-public class SpawnData
-{
-    public int ID; 
-    public float spawnWeight;
-
-    public SpawnData(int id, float weight)
-    {
-        ID = id;
-        spawnWeight = weight;
-    }
-}
 
 public class EnemySpawner : MonoBehaviour
 {
-    public EnemyRoom Room;
     public GameObject[] PatrolPoints;
 
     
@@ -33,33 +20,23 @@ public class EnemySpawner : MonoBehaviour
     public bool Draw = true;
 
     private List<GameObject> enemies = new List<GameObject>();
-    public int SpawnCount;
-    public async UniTask SpawnEnemys()
+
+    public void EnemyClear()
     {
-        if (Room == null)
-            Room = GetComponentInParent<EnemyRoom>();
-        
         enemies.Clear();
-        for (int i = 0; i < SpawnCount; i++)
-            await SpawnEnemy();
     }
-
-
-    private async UniTask SpawnEnemy()
+    public async UniTask SpawnEnemy(int ID)
     {
-        // 1. 가중치 기반 선택 (로직 분리 추천)
-        SpawnData selectedEnemy = GetWeightedRandomEnemy();
-        if (selectedEnemy == null) return;
 
         // 2. 위치 검색
         Vector3 spawnPos = GetValidSpawnPosition();
         if (spawnPos == Vector3.zero) return;
 
         // 3. 생성 및 초기화
-        string path = $"Assets/Prefabs/Enemy/{selectedEnemy.ID}.prefab";
+        string path = $"Assets/Prefabs/Enemy/{ID}.prefab";
         GameObject go = await Managers.Resource.InstantiateAsync(path, spawnPos, Quaternion.Euler(0, Random.Range(0, 360), 0));
         var enemy = go.GetComponent<EnemyBase>();
-        await enemy.Init(selectedEnemy.ID);
+        await enemy.Init(ID);
         enemy.SetAdditionalData(PatrolPoints.ToList()); 
     
         go.SetLayerRecursively("Default");
@@ -113,28 +90,18 @@ public class EnemySpawner : MonoBehaviour
         }
     }
 
-    private SpawnData GetWeightedRandomEnemy()
+    public void ReSetEnemy()
     {
-        if (Managers.Stage.spawnDatas.Length == 0) return null;
-
-        // 1. 가중치 기반 적 선택 로직 
-        float totalWeight = Managers.Stage.spawnDatas.Sum(data => data.spawnWeight);
-        float pivot = Random.Range(0, totalWeight);
-        float cumulative = 0;
-        SpawnData selectedEnemy = null;
-
-        foreach (var data in Managers.Stage.spawnDatas)
+        if (enemies.Count > 0)
         {
-            cumulative += data.spawnWeight;
-            if (pivot <= cumulative)
+            foreach (var enemy in enemies)
             {
-                selectedEnemy = data;
-                break;
+                Managers.Resource.Destroy(enemy);
             }
         }
-
-        return selectedEnemy;
+        enemies.Clear();
     }
+    
 
     private void OnDrawGizmos()
     {

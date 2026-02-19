@@ -8,7 +8,7 @@ public class CurveProjectile : MonoBehaviour
 {
     public AnimationCurve curve; // 에디터에서 포물선 모양을 그림
     public float heightMultiplier = 5.0f; // 포물선 높이 배율
-    
+    private Coroutine _projectileCoroutine;
     [SerializeField] ParticleSystem _CastEffect;
     [SerializeField] ParticleSystem _HitEffect;
     [SerializeField] ParticleSystem _ProjectileEffect;
@@ -22,7 +22,9 @@ public class CurveProjectile : MonoBehaviour
     public void Launch(Vector3 _target)
     {
         IsHit = false;
-        StartCoroutine(Coroutine_Projectile(_target));
+        // 이미 실행 중인 코루틴이 있다면 중단
+        if (_projectileCoroutine != null) StopCoroutine(_projectileCoroutine);
+        _projectileCoroutine = StartCoroutine(Coroutine_Projectile(_target));
     }
     
     
@@ -85,11 +87,23 @@ public class CurveProjectile : MonoBehaviour
     }
     public void Stop()
     {
+        // 1. 코루틴 즉시 중단
+        if (_projectileCoroutine != null)
+        {
+            StopCoroutine(_projectileCoroutine);
+            _projectileCoroutine = null;
+        }
+
+        // 2. 모든 이펙트 즉시 비활성화 및 초기화
         if (gameObject != null)
         {
-            _HitEffect.Stop();
-            _ProjectileEffect.Stop();
-            _CastEffect.Stop();
+            _CastEffect.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            _ProjectileEffect.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            _HitEffect.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+        
+            _CastEffect.gameObject.SetActive(false);
+            _ProjectileEffect.gameObject.SetActive(false);
+            _HitEffect.gameObject.SetActive(false);
         }
     }
        

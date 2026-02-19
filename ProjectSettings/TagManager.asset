@@ -9,6 +9,7 @@ TagManager:
   - Attack
   - IgnoreBullet
   - Range
+  - Death
   layers:
   - Default
   - TransparentFX

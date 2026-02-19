@@ -55,11 +55,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 7417d34127b532240859c076a9f41b7a
-    m_Address: Assets/Sound/Effect/Enemy04/Enemy04Death.wav
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 784bfba4d9d5c9e4b923773784981be7
     m_Address: Assets/Sound/Effect/Player/Stun.wav
     m_ReadOnly: 0
@@ -75,8 +70,8 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 94ca9da8a50c23542aed41dc81f3fcb7
-    m_Address: Assets/Sound/Effect/Enemy05/Enemy05Death.wav
+  - m_GUID: 85b32c8db0d09d449ae7971484d563b1
+    m_Address: Assets/Sound/Effect/Enemy04/Enemy04Death.wav
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -157,6 +152,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: e653324b3a1fd7442a3f1af88043f747
     m_Address: Assets/Sound/Effect/Enemy03/Enemy03Dash.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f4335291823641d488e17dfc61bf2a22
+    m_Address: Assets/Sound/Effect/Enemy05/Enemy05Death.wav
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

@@ -26,6 +26,7 @@ public class PlayerManager : MonoBehaviour
     private Rigidbody _playerRb;
     private CapsuleCollider _playerCollider;
     private UI_PlayerHPBar _playerHpBar;
+    private bool _isdeath;
 
     // 프로퍼티 (Null 체크 없이 즉시 반환하도록 개선)
     public PlayerUnit Unit=>_playerUnit;
@@ -33,8 +34,8 @@ public class PlayerManager : MonoBehaviour
     public Transform Trans => _playerUnit.transform;
     public Animator Anim => _playerAnim;
     public PlayerController Control => _playerController;
+    public bool IsDeath => _isdeath;
     
-
     
     
     public async UniTask<GameObject> CreatePlayer()
@@ -69,6 +70,8 @@ public class PlayerManager : MonoBehaviour
 
     public void PlayerInit()
     {
+        _isdeath = false;
+        _playerAnim.SetTrigger("LIVE");
         LevelReset();
         data.currentHp = data.maxHp.TotalValue;
         _playerHpBar.SetMaxHP(data.maxHp.TotalValue,data.currentHp);
@@ -91,16 +94,28 @@ public class PlayerManager : MonoBehaviour
     // --- 데이터 수정 메소드들 ---
     public void TakeDamage(float damage)
     {
+        if(_isdeath) return;
         data.currentHp = Mathf.Clamp(data.currentHp - damage, 0, data.maxHp.TotalValue);
         TakeDamageAction?.Invoke(damage);
-        if (data.currentHp <= 0) Die();
+        if (data.currentHp <= 0)
+        {
+            _isdeath = true;
+            Die();
+        }
         if (_playerCombat.IsPactAbyss)
         {
             AdjustPactAbyss();
         }
     }
 
-    public void Die() => DieAcation?.Invoke();
+    private void Die()
+    { 
+        _playerAnim.SetTrigger("DIE");
+        Control.InputActive(false);
+        Control.AllEffectsFinished();
+        Control.StopDashPhysics();
+        DieAcation?.Invoke();
+    } 
 
     public void AddGold(int amount)
     {

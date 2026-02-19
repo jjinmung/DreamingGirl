@@ -9,22 +9,14 @@ using UnityEngine.UI;
 public class PlayerUnit : MonoBehaviour,IDamageable
 {
     public float Damage => Managers.Player.Data.damage.TotalValue;
-    private bool isDead;
-
-    private void OnEnable()
-    {
-        isDead = false;
-    }
-
-
+    
     public void TakeDamage(float damage,Color color= default, bool isRandom =false)
     {
+        if(Managers.Player.IsDeath) return;
+        Managers.Player.TakeDamage(damage);
         ShowBloodEffect().Forget();
         var col = color==default ? Color.red : color;
         Managers.UI.ShowFloatingText(transform.position,$"-{(int)damage}",col,1f).Forget();
-            
-        
-        Managers.Player.TakeDamage(damage);
     }
     
 
@@ -49,6 +41,6 @@ public class PlayerUnit : MonoBehaviour,IDamageable
                 Managers.Resource.Destroy(blood);
             });
     }
-
-
+    
+    
 }

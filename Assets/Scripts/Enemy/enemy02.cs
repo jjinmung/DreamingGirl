@@ -91,7 +91,9 @@ public class Enemy02 : EnemyBase
     //죽을 때 남은 이펙트 제거
     private void OnDisable()
     {
-        projectile.Stop();
+        // 1. 투사체 중단 (코루틴 및 파티클)
+        if (projectile != null) 
+            projectile.Stop();
     }
 
     

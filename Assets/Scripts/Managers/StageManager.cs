@@ -1,9 +1,8 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
-using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
+using Data;
 using UnityEngine;
 using DG.Tweening;
 using Unity.AI.Navigation;
@@ -18,7 +17,6 @@ public class StageManager : MonoBehaviour
 
     public bool CanEsc = true;
     
-    public int StageCount = 10;
     [Range(0, 1f)]
     public float MonsterMapPercent = 0.5f;
 
@@ -26,11 +24,6 @@ public class StageManager : MonoBehaviour
     public int TotalGold;
     public float PlayTime;
     public int TotalKill;
-    public SpawnData[] spawnDatas = new SpawnData[2]
-    {
-        new SpawnData(1,10f),
-        new SpawnData(2,10f),
-    };
     private List<List<RoomNode>> stageMap = new();
     private List<Coin> coins = new();
     private RoomNode currentRoomNode;
@@ -87,11 +80,12 @@ public class StageManager : MonoBehaviour
     {
         currentDepth = 0;
         stageMap.Clear();
+        var stageCount = Managers.Data.SpawnDic.Count;
         // 1. 노드 생성 (총 10단계)
-        for (int i = 0; i < StageCount; i++)
+        for (int i = 0; i < stageCount; i++)
         {
             List<RoomNode> layer = new List<RoomNode>();
-            int roomCount = (i==0||i == StageCount-1) ? 1 : Random.Range(1, 4); //0층,9층은 방 1개
+            int roomCount = (i==0||i == stageCount-1) ? 1 : Random.Range(1, 4); //0층,9층은 방 1개
 
             for (int j = 0; j < roomCount; j++)
             {
@@ -99,7 +93,7 @@ public class StageManager : MonoBehaviour
                 
                 // 타입 결정
                 if (i == 0) node.type = RoomType.Monster;
-                else if(i==StageCount-1) node.type = RoomType.Boss;
+                else if(i==stageCount-1) node.type = RoomType.Boss;
                 else node.type = (Random.value > MonsterMapPercent) ? RoomType.Event : RoomType.Monster;
                 
                 layer.Add(node);
@@ -133,7 +127,8 @@ public class StageManager : MonoBehaviour
 
     public async UniTask ChangeRoom()
     {
-        
+        if(enemySpawner!=null)
+            enemySpawner.EnemyClear();
         Managers.Resource.Destroy(currentRoom.gameObject);
         currentRoomNode = currentRoomNode.nextNodes[doorIndex];
         currentDepth++;
@@ -253,7 +248,8 @@ public class StageManager : MonoBehaviour
             killCount++;
             if(coin != null)
                 coins.Add(coin);
-            if (enemySpawner != null && killCount >= enemySpawner.SpawnCount)
+            var totalCount = Managers.Data.SpawnDic[currentDepth].TotalCount;
+            if (enemySpawner != null && killCount >= totalCount)
             {
                 ClearRoom();
                 foreach (var temp in coins)
@@ -379,10 +375,8 @@ public class StageManager : MonoBehaviour
         switch (currentRoomNode.type)
         {
             case RoomType.Monster:
-                int spawnCount = Random.Range(-2, 4) + currentDepth+10; 
-                spawnDatas[1].spawnWeight=currentDepth*2;
-                enemySpawner.SpawnCount = spawnCount;
-                await enemySpawner.SpawnEnemys();
+                var spawncCount = Managers.Data.SpawnDic[currentDepth];
+                SpawnEnemy(spawncCount);
                 break;
 
             case RoomType.Boss:
@@ -443,6 +437,29 @@ public class StageManager : MonoBehaviour
         await boss.Init(3); 
     }
 
+    public void SpawnEnemy(SpawnCount spawnCount)
+    {
+        
+        int[] counts = {
+            spawnCount.Enemy01Count,
+            spawnCount.Enemy02Count,
+            spawnCount.Enemy03Count,
+            spawnCount.Enemy04Count,
+            spawnCount.Enemy05Count
+        };
+
+        for (int i = 0; i < counts.Length; i++)
+        {
+            int count = counts[i];
+            int enemyId = i + 1;
+
+            for (int j = 0; j < count; j++)
+            {
+                enemySpawner.SpawnEnemy(enemyId).Forget();
+            }
+        }
+    }
+
     #endregion
 
     
@@ -495,15 +512,14 @@ public class StageManager : MonoBehaviour
         
             // 페이드 아웃이 진행되는 동안 1초 대기
             await UniTask.Delay(TimeSpan.FromSeconds(1f), cancellationToken: token);
-
+            enemySpawner.ReSetEnemy();
             // 2. 데이터 및 맵 재구성
             if (currentRoom != null)
             {
                 Managers.Resource.Destroy(currentRoom.gameObject);
             }
-        
-            await GenerateMap();            // 맵 생성
-            Managers.Player.PlayerInit(); // 플레이어 초기화
+            
+            await GenerateMap();// 맵 생성
         
             // 맵 생성 후 짧은 안정화 대기
             await UniTask.Delay(TimeSpan.FromSeconds(1f), cancellationToken: token);

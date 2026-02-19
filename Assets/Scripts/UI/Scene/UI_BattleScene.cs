@@ -177,9 +177,10 @@ public class UI_BattleScene : UI_Scene
         // Line은 GameObjects enum 순서대로 (0, 1, 2)
         // Node는 Images enum 순서대로 (FadeOut이 0이므로 Node1은 1, 2, 3)
         GetObject(index).SetActive(isActive);
+        var startIndex = (int)Images.Node1;
         if (isActive)
         {
-            GetImage(index + 1).sprite = await GetSprite(type);
+            GetImage(index + startIndex).sprite = await GetSprite(type);
         }
     }
 
@@ -274,12 +275,13 @@ public class UI_BattleScene : UI_Scene
     {
         SkillBarInit();
         var skills = Managers.Player.Control.ActiveSkills;
+        int startIndex=(int)Images.Image_Skill1;
         for (int i = 0; i < skills.Length; i++)
         {
             if (skills[i]!=Define.AbilityID.None)
             {
-                GetImage(i+4).gameObject.SetActive(true);
-                GetImage(i + 4).sprite = await Managers.Resource.LoadIconAsync(Managers.Data.AbilityDict[skills[i]].data.iconRef);
+                GetImage(i+startIndex).gameObject.SetActive(true);
+                GetImage(i + startIndex).sprite = await Managers.Resource.LoadIconAsync(Managers.Data.AbilityDict[skills[i]].data.iconRef);
             }
         }
     }
@@ -289,7 +291,7 @@ public class UI_BattleScene : UI_Scene
         // index 0: Dash
         // index 1~4: Skill 1~4
         // Images enum에서 Image_DashCool(8)부터 순서대로 배치되어 있으므로 index를 더해줍니다.
-        int targetImageIndex = (int)Images.Image_DashCool + index;
+        var targetImageIndex = (int)Images.Image_DashCool + index;
     
         Image coolImage = GetImage(targetImageIndex);
     

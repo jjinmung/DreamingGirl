@@ -7,7 +7,6 @@ using Random = UnityEngine.Random;
 public class Coin : MonoBehaviour
 {
     private Rigidbody rb;
-    private bool _isClearing = false;
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -20,7 +19,8 @@ public class Coin : MonoBehaviour
 
     public void Jump()
     {
-        
+        rb.isKinematic = false;
+        transform.localScale = new Vector3(1.2f, 1.2f, 1.2f);
         Vector3 jumpDirection = new Vector3(0, 1f, 0).normalized;
 
         // 2. 위로 튀어오르는 힘 (원하는 세기로 조절)
@@ -34,9 +34,6 @@ public class Coin : MonoBehaviour
 
     public void Clear()
     {
-        if (_isClearing) return; // 중복 실행 방지
-        _isClearing = true;
-
         // 1. 물리 엔진 비활성화 (플레이어에게 직선으로 날아가기 위함)
         rb.isKinematic = true;
 
@@ -57,18 +54,7 @@ public class Coin : MonoBehaviour
         // 모든 연출이 끝나면 실행할 로직
         seq.OnComplete(() =>
         {
-            // 리소스 매니저를 통해 풀로 반납 (이전에 만드신 ResourceManager 활용)
             Managers.Resource.Destroy(gameObject);
-        });
-        
-        // 만약 플레이어가 움직인다면 매 프레임 위치를 업데이트해줘야 할 경우 Update에서 처리하거나 
-        // 아래와 같이 OnUpdate를 사용할 수 있습니다.
-        seq.OnUpdate(() => {
-            if (target != null)
-            {
-                // 타겟의 현재 위치로 목적지를 계속 갱신하고 싶다면 아래 주석 해제 (단, 위 DOMove와 충돌할 수 있음)
-                // transform.position = Vector3.Lerp(transform.position, target.position, Time.deltaTime * 10f);
-            }
         });
     }
 }
