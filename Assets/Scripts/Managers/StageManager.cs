@@ -257,7 +257,7 @@ public class StageManager : MonoBehaviour
                     temp.Clear();
                 }
                 coins.Clear();
-                Invoke(nameof(DelayGetCoin),0.5f);
+                Invoke(nameof(DelayGetCoin),1f);
                 
                 killCount = 0;
             }
@@ -275,6 +275,16 @@ public class StageManager : MonoBehaviour
     {
         Managers.Player.AddGold(stageGold);
         stageGold = 0;
+    }
+    
+    //플레이어가 죽었을 때 코인 파괴
+    void ClearCoin()
+    {
+        foreach (var coin in coins)
+        {
+            Managers.Resource.Destroy(coin.gameObject);
+        }
+        coins.Clear();
     }
     private async UniTaskVoid BossClearAsync(int gold)
     {
@@ -512,6 +522,7 @@ public class StageManager : MonoBehaviour
         
             // 페이드 아웃이 진행되는 동안 1초 대기
             await UniTask.Delay(TimeSpan.FromSeconds(1f), cancellationToken: token);
+            ClearCoin();
             enemySpawner.ReSetEnemy();
             // 2. 데이터 및 맵 재구성
             if (currentRoom != null)

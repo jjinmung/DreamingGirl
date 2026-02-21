@@ -65,7 +65,7 @@ public class CameraManager : MonoBehaviour
         });
     }
 
-    private async void OnBattleSceneLoaded(Scene scene, LoadSceneMode mode)
+    public async void OnBattleSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         if (scene.name == "BattleScene")
         {
@@ -80,8 +80,8 @@ public class CameraManager : MonoBehaviour
             _player= go.transform;
             
             //카메라 세팅
-            Managers.Camera.BattleInit();
-            Managers.Camera.SetTarget(_player);
+            BattleInit();
+            SetTarget(_player);
             
             //씬 세팅
             battleUI.LazyInit();
@@ -90,6 +90,24 @@ public class CameraManager : MonoBehaviour
             Managers.Sound.PlayBgm(Managers.Resource.Data.StoreMapBGM).Forget();
             SceneManager.sceneLoaded -= OnBattleSceneLoaded;
         }
+    }
+    
+    public void LobyToCut()
+    {
+        Sequence camSeq = DOTween.Sequence();
+        camSeq.AppendInterval(1f);
+        Managers.Sound.StopFade(Define.Sound.Bgm);
+        camSeq.AppendCallback(() => {
+            _defalutCam.Priority = 5;
+            _startCam.Priority = 10;
+        });
+
+        camSeq.AppendInterval(3f); 
+
+        camSeq.AppendCallback(() => {
+            Managers.Resource.Clear();
+            SceneManager.LoadScene("CutScene");
+        });
     }
     #endregion
     
@@ -228,11 +246,15 @@ public class CameraManager : MonoBehaviour
         camSeq.AppendCallback(() =>
         {
             var battleUI = Managers.UI.SceneUI as UI_BattleScene;
-            battleUI.AllUIActive(false);
-            battleUI.FadeOut(1f);
+            if (battleUI != null)
+            {
+                battleUI.AllUIActive(false);
+                battleUI.Show();
+            }
+            
         });
 
-        camSeq.AppendInterval(2f); 
+        camSeq.AppendInterval(3f); 
 
         camSeq.AppendCallback(() =>
         {
@@ -251,6 +273,7 @@ public class CameraManager : MonoBehaviour
             Managers.Data.ClearAbility();
             Managers.Sound.PlayBgm(Managers.Resource.Data.LobyBGM).Forget();
             await Managers.UI.ShowSceneUI<UI_LobyScene>();
+            SceneManager.sceneLoaded -= OnLobySceneLoaded;
         }
     }
 

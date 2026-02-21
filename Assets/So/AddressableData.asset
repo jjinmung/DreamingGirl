@@ -102,6 +102,12 @@ MonoBehaviour:
     m_SubObjectType: 
     m_SubObjectGUID: 
     m_EditorAssetChanged: 0
+  DeathBGM:
+    m_AssetGUID: 2661405b875ab0243807082d3418969f
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0
   Enemy01Die:
     m_AssetGUID: f9b5861830d70a44c874c8258281ffb3
     m_SubObjectName: 

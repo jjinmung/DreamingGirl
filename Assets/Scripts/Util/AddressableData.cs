@@ -26,6 +26,7 @@ public class AddressableData : ScriptableObject
     public AssetReference EventRoomBGM;
     public AssetReference OnBattleBGM;
     public AssetReference StoreMapBGM;
+    public AssetReference DeathBGM;
     
     [Header("EnemySFX")]
     public AssetReference Enemy01Die;

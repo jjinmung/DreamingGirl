@@ -73,7 +73,7 @@ public class UI_LobyScene : UI_Scene
     {
         Managers.Data.LoadGame(true);
         Managers.UI.Clear();
-        Managers.Camera.LobyToBattle();
+        Managers.Camera.LobyToCut();
     }
 
     private void TextsInit()

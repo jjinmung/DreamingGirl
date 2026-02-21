@@ -10,7 +10,8 @@ using UnityEngine.UI;
 public class UI_BattleScene : UI_Scene
 {
     private PlayerData _playerData => Managers.Player.Data;
-
+    private Tween fadeTween;
+    private static readonly int FadeAmountId = Shader.PropertyToID("_FadeAmount");
     private float _currentGold = 0;
     
     // 캐싱을 위한 딕셔너리
@@ -74,17 +75,9 @@ public class UI_BattleScene : UI_Scene
         GetImage((int)Images.Image_Skill3Cool).fillAmount = 0f;
         GetImage((int)Images.Image_Skill4Cool).fillAmount = 0f;
         
-        // 초기 연출
-        AllUIActive(false);
-        var fadeImg = GetImage((int)Images.FadeOut);
-        fadeImg.color = Color.black;
-        fadeImg.DOFade(0f, 2f).
-            SetEase(Ease.InQuad)
-            .SetDelay(1.5f)
-            .OnComplete(() =>
-            {
-                LobyUIActive();
-            });
+        //페이드아웃 이미지 초기화
+        GetImage((int)Images.FadeOut).material.SetFloat(FadeAmountId, -0.1f);
+        GetImage((int)Images.FadeOut).color = Color.black;
     }
 
     public void LazyInit()
@@ -110,6 +103,8 @@ public class UI_BattleScene : UI_Scene
         
         //골드 UI동기화
         RefreshGoldUI();
+        
+        Hide();
     }
     
     private void HandleExitRoom() => FadeOut(2f);
@@ -117,15 +112,47 @@ public class UI_BattleScene : UI_Scene
 
     public void FadeOut(float duration)
     {
+        
         var fadeImg = GetImage((int)Images.FadeOut);
+        fadeImg.material.SetFloat(FadeAmountId, -0.1f);
+        fadeImg.color = new Color(0f, 0f, 0f, 0f);
         fadeImg.DOKill();
         fadeImg.DOFade(1f, duration).SetEase(Ease.InQuart);
     }
     public void FadeIn(float duration)
     {
         var fadeImg = GetImage((int)Images.FadeOut);
+        fadeImg.material.SetFloat(FadeAmountId, -0.1f);
+        fadeImg.color = Color.black;
         fadeImg.DOKill();
         fadeImg.DOFade(0f, duration).SetEase(Ease.InQuad);
+    }
+    public void Hide()
+    {
+        GetImage((int)Images.FadeOut).material.SetFloat(FadeAmountId, -0.1f);
+        // 1초 동안 1.0f로 변경
+        PlayFade(1.0f, 2f);
+    }
+
+    public void Show()
+    {
+        GetImage((int)Images.FadeOut).material.SetFloat(FadeAmountId, 1f);
+        // 1초 동안 -0.1f로 변경
+        PlayFade(-0.1f, 2f);
+    }
+    private void PlayFade(float targetValue, float duration)
+    {
+        var fadeOut = GetImage((int)Images.FadeOut);
+        fadeOut.color = Color.black;
+        // 기존 실행 중인 트윈이 있다면 즉시 종료 (중복 실행 방지)
+        fadeTween?.Kill();
+
+        // DOTween.To(getter, setter, targetValue, duration)
+        fadeTween = DOTween.To(() => fadeOut.material.GetFloat(FadeAmountId), 
+                x => fadeOut.material.SetFloat(FadeAmountId, x), 
+                targetValue, 
+                duration)
+            .SetEase(Ease.Linear); 
     }
 
     #region 골드 관련 함수

@@ -109,7 +109,8 @@ public class PlayerManager : MonoBehaviour
     }
 
     private void Die()
-    { 
+    {
+        Managers.Sound.PlayBgm(Managers.Resource.Data.DeathBGM).Forget();
         _playerAnim.SetTrigger("DIE");
         Control.InputActive(false);
         Control.AllEffectsFinished();

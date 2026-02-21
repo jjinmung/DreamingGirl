@@ -51,7 +51,6 @@ public class PlayerInteraction : MonoBehaviour
             {
                 _currentInteractable = null;
                 InteractUI.gameObject.SetActive(false);
-                Debug.Log("상호작용 범위 벗어남");
             }
         }
     }

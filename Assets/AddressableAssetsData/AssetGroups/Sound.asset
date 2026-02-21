@@ -35,6 +35,16 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1e0cdc7754a147d4dbbabad4bb3f4ddb
+    m_Address: Assets/Sound/Cut/Pencil.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2661405b875ab0243807082d3418969f
+    m_Address: Assets/Sound/BGM/GameOverBgm.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 30450f670f05dff41a3dc5c9d836b349
     m_Address: Assets/Sound/Effect/Enemy02/Enemy02Die.mp3
     m_ReadOnly: 0
@@ -60,6 +70,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7ca9b0c723cdfd3428180fce2fd8abca
+    m_Address: Assets/Sound/Cut/Dream.mp3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 81248e830ac8ae44f8e25618f9cd87c2
     m_Address: Assets/Sound/Effect/Player/PlayerNormalAttack.mp3
     m_ReadOnly: 0
@@ -72,6 +87,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 85b32c8db0d09d449ae7971484d563b1
     m_Address: Assets/Sound/Effect/Enemy04/Enemy04Death.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9c68b81fa2048334b91c94aba0deb7d9
+    m_Address: Assets/Sound/Cut/Yawning.mp3
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
