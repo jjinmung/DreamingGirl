@@ -30,6 +30,7 @@ public class DataManager
         get => _saveDataIndex; 
         set => _saveDataIndex = Mathf.Clamp(value, 1, 4); // 1~4 사이로 제한
     }
+    public bool IsNew { get; private set; }
 
     // 파일 경로 생성 시 현재 인덱스 반영
     private string GetSavePath(int index) => Path.Combine(Application.persistentDataPath, $"SaveData_{Mathf.Clamp(index, 1, 4)}.json");
@@ -136,7 +137,7 @@ public class DataManager
                 
             // 신규 세이브 데이터 생성 (새 데이터 만들기)
             SaveData = new SaveData();
-        
+            IsNew = true;
             if (PlayerBasicStat.TryGetValue(playerIndex, out PlayerBasicStat basicStat))
             {
                 SaveData.player.ResetStats(basicStat.MaxHp,StartPos);
@@ -148,6 +149,8 @@ public class DataManager
             _sessionStartTime = Time.unscaledTime;
             return;
         }
+
+        IsNew = false;
         _sessionStartTime = Time.unscaledTime;
         string json = File.ReadAllText(CurrentSavePath);
         SaveData = JsonConvert.DeserializeObject<SaveData>(json);

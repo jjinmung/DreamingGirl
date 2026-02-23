@@ -115,8 +115,10 @@ public class CameraManager : MonoBehaviour
     
 
     #region 전투씬 함수
-    public void BattleInit()
+    public void BattleInit(Transform player=null)
     {
+        if (player != null)
+            _player = player;
         _mainCam = Camera.main;
         _ceilingLayer = LayerMask.NameToLayer("Ceiling"); 
         
@@ -199,6 +201,7 @@ public class CameraManager : MonoBehaviour
 
     public void SetTarget(Transform target)
     {
+        _player =target;
         _thirdPersonCam.Target.TrackingTarget= target;
         _quarterViewCam.Target.TrackingTarget= target;
         _middleViewCam.Target.TrackingTarget = target;

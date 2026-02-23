@@ -14,6 +14,7 @@ public class AddressableData : ScriptableObject
     public AssetReference UI_Blood;
     public AssetReference UI_FloatingText;
     public AssetReference CircleAttackRange;
+    public AssetReference UI_Diaogue;
 
     [Header("Texture")] 
     public AssetReference EnemyMap;
@@ -27,6 +28,7 @@ public class AddressableData : ScriptableObject
     public AssetReference OnBattleBGM;
     public AssetReference StoreMapBGM;
     public AssetReference DeathBGM;
+    public AssetReference DialogueBGM;
     
     [Header("EnemySFX")]
     public AssetReference Enemy01Die;

@@ -54,6 +54,12 @@ MonoBehaviour:
     m_SubObjectType: 
     m_SubObjectGUID: 
     m_EditorAssetChanged: 0
+  UI_Diaogue:
+    m_AssetGUID: 380d66ea5f2e7824ba39d460ee4404ba
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0
   EnemyMap:
     m_AssetGUID: 6e76c4feccec0cd4c9e4b3f394e4e585
     m_SubObjectName: 
@@ -104,6 +110,12 @@ MonoBehaviour:
     m_EditorAssetChanged: 0
   DeathBGM:
     m_AssetGUID: 2661405b875ab0243807082d3418969f
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0
+  DialogueBGM:
+    m_AssetGUID: 1af74a6c3ab22a04cb53ef337cb47005
     m_SubObjectName: 
     m_SubObjectType: 
     m_SubObjectGUID: 

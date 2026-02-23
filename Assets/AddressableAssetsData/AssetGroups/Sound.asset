@@ -35,6 +35,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1af74a6c3ab22a04cb53ef337cb47005
+    m_Address: Assets/Sound/BGM/DialogueBGM.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 1e0cdc7754a147d4dbbabad4bb3f4ddb
     m_Address: Assets/Sound/Cut/Pencil.mp3
     m_ReadOnly: 0

@@ -95,6 +95,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 380d66ea5f2e7824ba39d460ee4404ba
+    m_Address: Assets/Prefabs/UI/Popup/UI_Dialogue.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 3de6a85170e8baa4ab0d9135dfecf235
     m_Address: Assets/Prefabs/UI/Popup/UI_StageEnding.prefab
     m_ReadOnly: 0

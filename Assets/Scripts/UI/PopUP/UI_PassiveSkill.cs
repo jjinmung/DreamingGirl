@@ -168,7 +168,6 @@ public class UI_PassiveSkill : UI_Popup
     public void Close()
     {
         HideInfo();
-        Managers.Player.Control.InputActive(true);
         ClosePopupUI();
     }
 

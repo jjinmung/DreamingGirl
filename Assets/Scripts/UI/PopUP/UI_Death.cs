@@ -20,7 +20,7 @@ public class UI_Death : UI_Popup
         {
             Managers.Stage.ReturnToLoby();
             ClosePopupUI();
-            Managers.Sound.Stop(Define.Sound.Bgm);
+            Managers.Sound.StopFade(Define.Sound.Bgm,1f);
         });
     }
 }

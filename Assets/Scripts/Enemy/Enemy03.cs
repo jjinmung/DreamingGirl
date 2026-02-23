@@ -40,18 +40,6 @@ public class Enemy03 : EnemyBase
         await base.Init(id);
         var data = Managers.Resource.Data;
         var hpBar = await Managers.UI.MakeSubItem<UI_EnemyHPBar>(data.Boss_HP_BAR);
-        //위치 초기화
-        RectTransform rect = hpBar.GetComponent<RectTransform>();
-        if (rect != null)
-        {
-            // 1. 앵커를 중앙으로 설정 (부모의 중앙 기준)
-            rect.anchorMin = new Vector2(0.5f, 0.5f);
-            rect.anchorMax = new Vector2(0.5f, 0.5f);
-            rect.pivot = new Vector2(0.5f, 0.5f);
-
-            // 2. 위치 좌표를 0,0으로 (중앙 정렬)
-            rect.anchoredPosition = Vector2.zero;
-        }
         
         hpBar.SetMaxHP(stat.MaxHp);
         

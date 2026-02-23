@@ -48,7 +48,8 @@ public class UI_BattleScene : UI_Scene
         Line3, 
         Map,
         SkillBar,
-        Info
+        Info,
+        TutorialWASD,
     }
 
     enum Sliders
@@ -65,9 +66,11 @@ public class UI_BattleScene : UI_Scene
         Bind<GameObject>(typeof(GameObjects));
         Bind<Slider>(typeof(Sliders));
         
+        GetObject((int)GameObjects.TutorialWASD).SetActive(false);
         //첫 진입은 로비라 전투 UI 비활성화
         LobyUIActive();
-        
+        if(Managers.Data.IsNew)
+            GetObject((int)GameObjects.Info).SetActive(false);
         //스킬바 초기화
         GetImage((int)Images.Image_DashCool).fillAmount = 0f;
         GetImage((int)Images.Image_Skill1Cool).fillAmount = 0f;
@@ -337,7 +340,15 @@ public class UI_BattleScene : UI_Scene
             });
     }
     #endregion
-    
+
+    #region 튜토리얼 함수
+
+    public void ShowTutorial()
+    {
+        GetObject((int)GameObjects.TutorialWASD).SetActive(true);
+    }
+
+    #endregion
     
     public void AllUIActive(bool isActive)
     {
