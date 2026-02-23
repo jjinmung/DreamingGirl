@@ -830,8 +830,7 @@ Shader "/_Vefects_/SH_Vefects_Grid_01"
 				#endif
 
 				#ifdef _WRITE_RENDERING_LAYERS
-					uint renderingLayers = GetMeshRenderingLayer();
-					outRenderingLayers = float4( EncodeMeshRenderingLayer( renderingLayers ), 0, 0, 0 );
+					outRenderingLayers = float4( EncodeMeshRenderingLayer( ), 0, 0, 0 );
 				#endif
 
 				return color;
@@ -2425,8 +2424,7 @@ Shader "/_Vefects_/SH_Vefects_Grid_01"
 				#endif
 
 				#ifdef _WRITE_RENDERING_LAYERS
-					uint renderingLayers = GetMeshRenderingLayer();
-					outRenderingLayers = float4( EncodeMeshRenderingLayer( renderingLayers ), 0, 0, 0 );
+					outRenderingLayers = float4( EncodeMeshRenderingLayer(), 0, 0, 0 );
 				#endif
 			}
 			ENDHLSL

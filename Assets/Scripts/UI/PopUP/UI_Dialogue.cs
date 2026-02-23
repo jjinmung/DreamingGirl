@@ -84,7 +84,8 @@ public class UI_Dialogue : UI_Base
     {
         Debug.Log("모든 대화 완료");
         //이벤트 호출
-        currentData.eventToRaise.Raise();
+        Managers.Dialogue.Publish(currentData);
+        
         currentIndex = -1;
         Managers.Dialogue.OnDialogueEnd();
         Managers.Resource.Destroy(gameObject);

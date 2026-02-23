@@ -100,9 +100,12 @@ public class UI_Setting : UI_Popup
             TMP_Dropdown.OptionData option = new TMP_Dropdown.OptionData();
             option.text = item.width + "x" + item.height;
             resolution.options.Add(option);
-            
-            if(item.width == Screen.width && item.height == Screen.height)
+
+            if (item.width == Screen.width && item.height == Screen.height)
+            {
+                Managers.UI.ResolutionIndex = optionIndex;
                 resolution.value = optionIndex;
+            }
             optionIndex++;
         }
         resolution.RefreshShownValue();

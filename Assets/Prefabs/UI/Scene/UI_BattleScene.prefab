@@ -4232,7 +4232,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1caf1f793be3e3f48ba1de2879a38e12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameEventListener
-  Event: {fileID: 11400000, guid: c07c6ea5b5aaafd458813dbb92c42ef2, type: 2}
+  eventName: 1
   Response:
     m_PersistentCalls:
       m_Calls:

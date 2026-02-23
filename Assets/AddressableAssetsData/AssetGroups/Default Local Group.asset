@@ -75,6 +75,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 255cce2b13bcb3c46935c3db623ed174
+    m_Address: Assets/So/GameEvent/GameEvent3.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 32116cdd87cbb8345a90063d3a5d6c34
     m_Address: Assets/Prefabs/UI/Scene/UI_BattleScene.prefab
     m_ReadOnly: 0
@@ -120,6 +125,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 62fcb81166f39fb4e915b4aa0521e48f
+    m_Address: Assets/So/Dialogue/2.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 6928e84ae278ef444b6e22fd29b42bf8
     m_Address: Assets/Prefabs/UI/Item/BossHPBar.prefab
     m_ReadOnly: 0
@@ -145,8 +155,18 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7b35bdb8174e4824ab6fc70b1eccfd4d
+    m_Address: Assets/So/Dialogue/3.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7b72bb16093d6924fad9bdbd5683bd0c
     m_Address: Assets/Prefabs/Enemy/4.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 839df5369e92dd942aa1bc69fc1d95ea
+    m_Address: Assets/So/Dialogue/1.asset
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -221,8 +241,18 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c07c6ea5b5aaafd458813dbb92c42ef2
+    m_Address: Assets/So/GameEvent/GameEvent1.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: dbf0c0a067cb5e34f97a77f53068b1f5
     m_Address: Assets/Prefabs/Map/MonsterMap/3DoorMonsterRoom_4.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: de83e55fe3d641b41a72fc4aca14f8d7
+    m_Address: Assets/So/GameEvent/GameEvent2.asset
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

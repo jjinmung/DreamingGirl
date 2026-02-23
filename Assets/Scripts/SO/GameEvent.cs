@@ -1,22 +1,27 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "GameEvent", menuName = "Events/GameEvent")]
 public class GameEvent : ScriptableObject
 {
-    // 이 이벤트를 구독 중인 리스너들의 목록
-    private List<GameEventListener> listeners = new List<GameEventListener>();
+    private Action onEventRaised;
 
-    // 이벤트 발생! (방송 송출)
     public void Raise()
     {
-        for (int i = listeners.Count - 1; i >= 0; i--)
-            listeners[i].OnEventRaised();
+        int count = (onEventRaised != null) ? onEventRaised.GetInvocationList().Length : 0;
+        Debug.Log($"[GameEvent] {this.name} 발생 시도! 등록된 리스너 수: {count}");
+        onEventRaised?.Invoke();
     }
 
-    public void RegisterListener(GameEventListener listener)
-    { listeners.Add(listener); }
+    // 컴포넌트용 등록 메서드
+    public void RegisterAction(Action action)
+    {
+        onEventRaised += action;
+    }
 
-    public void UnregisterListener(GameEventListener listener)
-    { listeners.Remove(listener); }
+    public void UnregisterAction(Action action)
+    {
+        onEventRaised -= action;
+    }
 }

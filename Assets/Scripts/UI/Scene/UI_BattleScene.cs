@@ -65,6 +65,7 @@ public class UI_BattleScene : UI_Scene
         Bind<Image>(typeof(Images));
         Bind<GameObject>(typeof(GameObjects));
         Bind<Slider>(typeof(Sliders));
+
         
         GetObject((int)GameObjects.TutorialWASD).SetActive(false);
         //첫 진입은 로비라 전투 UI 비활성화

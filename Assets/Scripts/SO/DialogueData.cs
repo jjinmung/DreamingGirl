@@ -6,7 +6,6 @@ using UnityEngine.Events;
 public class DialogueData:ScriptableObject
 {
     public List<DialogueEntry> dialogues;
-    public GameEvent eventToRaise;
 }
 [System.Serializable]
 public class DialogueEntry

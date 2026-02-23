@@ -518,8 +518,7 @@ Shader "Vefects/SH_Vefects_VFX_URP_Trail_New"
 				#endif
 
 				#ifdef _WRITE_RENDERING_LAYERS
-					uint renderingLayers = GetMeshRenderingLayer();
-					outRenderingLayers = float4( EncodeMeshRenderingLayer( renderingLayers ), 0, 0, 0 );
+					outRenderingLayers = float4( EncodeMeshRenderingLayer(), 0, 0, 0 );
 				#endif
 
 				return half4( Color, Alpha );
@@ -1644,8 +1643,7 @@ Shader "Vefects/SH_Vefects_VFX_URP_Trail_New"
 				#endif
 
 				#ifdef _WRITE_RENDERING_LAYERS
-					uint renderingLayers = GetMeshRenderingLayer();
-					outRenderingLayers = float4(EncodeMeshRenderingLayer(renderingLayers), 0, 0, 0);
+					outRenderingLayers = float4(EncodeMeshRenderingLayer(), 0, 0, 0);
 				#endif
 			}
 

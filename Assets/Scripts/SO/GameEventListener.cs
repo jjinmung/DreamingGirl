@@ -3,11 +3,11 @@ using UnityEngine.Events;
 
 public class GameEventListener : MonoBehaviour
 {
-    public GameEvent Event;      // 어떤 이벤트를 감시할지 (파일 드래그)
+    public string eventName;
     public UnityEvent Response; // 이벤트 터지면 실행할 함수 (인스펙터에서 연결)
 
-    private void OnEnable() => Event.RegisterListener(this);
-    private void OnDisable() => Event.UnregisterListener(this);
+    private void OnEnable() => Managers.Dialogue.Subscribe(eventName, OnEventRaised);
+    private void OnDisable() => Managers.Dialogue.Unubscribe(eventName, OnEventRaised);
 
     public void OnEventRaised() => Response.Invoke();
 }

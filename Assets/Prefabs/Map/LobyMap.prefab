@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1caf1f793be3e3f48ba1de2879a38e12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameEventListener
-  Event: {fileID: 11400000, guid: de83e55fe3d641b41a72fc4aca14f8d7, type: 2}
+  eventName: 2
   Response:
     m_PersistentCalls:
       m_Calls:
@@ -932,7 +932,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1caf1f793be3e3f48ba1de2879a38e12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameEventListener
-  Event: {fileID: 11400000, guid: 255cce2b13bcb3c46935c3db623ed174, type: 2}
+  eventName: 3
   Response:
     m_PersistentCalls:
       m_Calls:
