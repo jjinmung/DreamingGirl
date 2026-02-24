@@ -51,5 +51,6 @@ public class Door : MonoBehaviour
     public void CloseImmediately()
     {
         door.localEulerAngles = close;
+        doorCollider.enabled = false;
     }
 }

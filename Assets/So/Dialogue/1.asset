@@ -27,4 +27,3 @@ MonoBehaviour:
       \uAFBC\uB2E4\uACE0\u2026?"
     portrait: {fileID: 21300000, guid: e1e0e2bc27a26e6429821cb3715add25, type: 3}
     isRight: 0
-  eventToRaise: {fileID: 11400000, guid: c07c6ea5b5aaafd458813dbb92c42ef2, type: 2}

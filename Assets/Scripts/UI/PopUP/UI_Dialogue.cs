@@ -25,12 +25,7 @@ public class UI_Dialogue : UI_Base
     {
         Init();
     }
-
-    private void OnEnable()
-    {
-        GetImage((int)Images.PortraitL).gameObject.SetActive(false);
-        GetImage((int)Images.PortraitR).gameObject.SetActive(false);
-    }
+    
 
     public override void Init()
     {
@@ -40,6 +35,8 @@ public class UI_Dialogue : UI_Base
     
     public void StartDialogue(DialogueData data)
     {
+        GetImage((int)Images.PortraitL).gameObject.SetActive(false);
+        GetImage((int)Images.PortraitR).gameObject.SetActive(false);
         currentData = data;
         currentIndex = 0;
         DisplayNextSentence();
