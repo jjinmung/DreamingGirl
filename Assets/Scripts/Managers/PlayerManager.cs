@@ -81,6 +81,7 @@ public class PlayerManager : MonoBehaviour
         {
             _playerController.ActiveSkills[i] = AbilityID.None;
         }
+        
         _playerController.PactAbyssParticle.Stop();
     }
 

@@ -40,7 +40,6 @@ public class UI_StageEnding : UI_Popup
 
     private void RetunToLoby()
     {
-        Managers.Data.ClearAbility();
         Managers.Stage.ReturnToLoby();
         ClosePopupUI();
     }

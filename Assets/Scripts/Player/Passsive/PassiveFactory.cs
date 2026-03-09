@@ -6,6 +6,7 @@ public static class PassiveFactory
         {
             case Define.PassiveSkillID.PowerAwakening: return new PowerAwakeningEffect();
             case Define.PassiveSkillID.LifeDrain: return new LifeDrainEffect();
+            case Define.PassiveSkillID.CriticalSense: return new CriticalSense();
             // ... 나머지 스킬들 매핑
             default: return null;
         }

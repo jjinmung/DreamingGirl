@@ -56,21 +56,12 @@ MonoBehaviour:
     portrait: {fileID: 21300000, guid: 707da4a5f82266d40aea1399aa144c2d, type: 3}
     isRight: 1
   - speakerName: 
-    dialogueText: "\uBB50, \uAC81\uBA39\uC744 \uAC74 \uC5C6\uC5B4."
-    portrait: {fileID: 0}
-    isRight: 0
-  - speakerName: 
-    dialogueText: "\uC5B4\uCC28\uD53C \uCC98\uC74C\uC5D4 \uB2E4 \uBC14\uB2E5\uC5D0\uC11C
-      \uAD6C\uB978\uB2E4."
+    dialogueText: "\uBB50, \uAC81\uBA39\uC744 \uAC74 \uC5C6\uC5B4.\n\uC5B4\uCC28\uD53C
+      \uCC98\uC74C\uC5D4 \uB2E4 \uBC14\uB2E5\uC5D0\uC11C \uAD6C\uB978\uB2E4."
     portrait: {fileID: 0}
     isRight: 0
   - speakerName: 
     dialogueText: "\uC55E\uC5D0 \uBCF4\uC774\uB294 \uB188\uB4E4\uBD80\uD130 \uC815\uB9AC\uD558\uACE0
-      \uC640."
+      \uC640.\n\uB358\uC804\uC740 \uCE5C\uC808\uD558\uC9C0 \uC54A\uAC70\uB4E0."
     portrait: {fileID: 0}
     isRight: 0
-  - speakerName: 
-    dialogueText: "\uB358\uC804\uC740 \uCE5C\uC808\uD558\uC9C0 \uC54A\uAC70\uB4E0."
-    portrait: {fileID: 0}
-    isRight: 0
-  eventToRaise: {fileID: 11400000, guid: 255cce2b13bcb3c46935c3db623ed174, type: 2}

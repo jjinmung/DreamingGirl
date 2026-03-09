@@ -157,6 +157,15 @@ public class DataManager
         Debug.Log($"Slot {SaveDataIndex} Loaded.");
     }
 
+    //패시브 스킬 초기화
+    public void SetPassive()
+    {
+        foreach (var passiveID in SaveData.player.ownedPassives)
+        {
+            PassiveDict[passiveID].GetEffect()?.Apply();
+        }
+    }
+    
     // 슬롯 삭제 (초기화 기능)
     public void ClearSlot(int index)
     {

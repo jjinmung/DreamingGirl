@@ -32,6 +32,7 @@ public abstract class EnemyBase : MonoBehaviour,IDamageable
     public EnemyStat stat; 
     public bool IsAttack=false;
     public bool isDead=false;
+    protected virtual bool ShouldDropCoin => true;
     [Header("이펙트")]
     [SerializeField]private ParticleSystem HitParticle;
     [SerializeField]private ParticleSystem fireParticle;
@@ -187,10 +188,16 @@ public abstract class EnemyBase : MonoBehaviour,IDamageable
         IceParticle.Stop();
         
         //코인 생성
-        var go = await Managers.Resource.InstantiateAsync(Managers.Resource.Data.Coin,transform.position);
-        var coin = go.GetComponent<Coin>();
-        //스테이지 관리
-        Managers.Stage.CheckClear(stat.Gold,coin);
+        if (ShouldDropCoin)
+        {
+            var go = await Managers.Resource.InstantiateAsync(Managers.Resource.Data.Coin, transform.position);
+            var coin = go.GetComponent<Coin>();
+            Managers.Stage.CheckClear(stat.Gold, coin);
+        }
+        else
+        {
+            Managers.Stage.CheckClear(stat.Gold);
+        }
         
         //이벤트 호출
         dieAcation.Invoke();

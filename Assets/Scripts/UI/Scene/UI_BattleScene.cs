@@ -118,17 +118,17 @@ public class UI_BattleScene : UI_Scene
     {
         
         var fadeImg = GetImage((int)Images.FadeOut);
+        fadeImg.DOKill();
         fadeImg.material.SetFloat(FadeAmountId, -0.1f);
         fadeImg.color = new Color(0f, 0f, 0f, 0f);
-        fadeImg.DOKill();
         fadeImg.DOFade(1f, duration).SetEase(Ease.InQuart);
     }
     public void FadeIn(float duration)
     {
         var fadeImg = GetImage((int)Images.FadeOut);
+        fadeImg.DOKill();
         fadeImg.material.SetFloat(FadeAmountId, -0.1f);
         fadeImg.color = Color.black;
-        fadeImg.DOKill();
         fadeImg.DOFade(0f, duration).SetEase(Ease.InQuad);
     }
     public void Hide()
@@ -147,10 +147,10 @@ public class UI_BattleScene : UI_Scene
     private void PlayFade(float targetValue, float duration)
     {
         var fadeOut = GetImage((int)Images.FadeOut);
-        fadeOut.color = Color.black;
         // 기존 실행 중인 트윈이 있다면 즉시 종료 (중복 실행 방지)
         fadeTween?.Kill();
-
+        fadeOut.DOKill();
+        fadeOut.color = Color.black;
         // DOTween.To(getter, setter, targetValue, duration)
         fadeTween = DOTween.To(() => fadeOut.material.GetFloat(FadeAmountId), 
                 x => fadeOut.material.SetFloat(FadeAmountId, x), 

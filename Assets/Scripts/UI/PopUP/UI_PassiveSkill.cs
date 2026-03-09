@@ -184,8 +184,8 @@ public class UI_PassiveSkill : UI_Popup
             Managers.Player.AddGold(-skillData.price);
             Managers.Data.SaveData.player.ownedPassives.Add(selectedSkillID);
             
-            // 2. 패시브 효과 즉시 적용 (Player에게 알림)
-            //skillData.GetEffect().Apply();
+            //2.패시브 적용
+            skillData.GetEffect()?.Apply();
 
             // 3. UI 갱신
             RefreshUI();

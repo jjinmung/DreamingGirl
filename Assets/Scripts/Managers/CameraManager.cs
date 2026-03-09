@@ -79,6 +79,9 @@ public class CameraManager : MonoBehaviour
             var go = await Managers.Player.CreatePlayer();
             _player= go.transform;
             
+            //패시브 적용
+            Managers.Data.SetPassive();
+            
             //카메라 세팅
             BattleInit();
             SetTarget(_player);

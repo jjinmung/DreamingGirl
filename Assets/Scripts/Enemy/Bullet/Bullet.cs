@@ -89,7 +89,7 @@ namespace MasterStylizedProjectile
         }
         private void OnTriggerEnter(Collider other)
         {
-            if(other.gameObject.CompareTag("Enemy") ||other.gameObject.CompareTag("IgnoreBullet")) return;
+            if(other.gameObject.CompareTag("Enemy") ||other.gameObject.CompareTag("IgnoreBullet")||other.gameObject.CompareTag("Range")) return;
             if(other.gameObject.CompareTag("Player"))
                 other.gameObject.GetComponent<IDamageable>().TakeDamage(Damage);
             

@@ -24,7 +24,7 @@ public class PlayerAttack : MonoBehaviour
             }
             else
             {
-                float critcal =Random.Range(0, 100);
+                var critcal =Random.Range(0, 100);
                 if (critcal <= Managers.Player.Data.criticalChance.TotalValue)//크리티컬일 때
                 {
                     other.gameObject.GetComponent<IDamageable>().TakeDamage(player.Damage*1.5f,Color.red);

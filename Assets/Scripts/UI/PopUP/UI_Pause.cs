@@ -181,7 +181,7 @@ public class UI_Pause : UI_Popup
         GetText((int)Texts.MaxHpText).text = $"{Mathf.RoundToInt(Managers.Player.Data.maxHp.TotalValue)}";
         GetText((int)Texts.AttackText).text = $"{Mathf.RoundToInt(Managers.Player.Data.damage.TotalValue)}";
         GetText((int)Texts.MoveSpeedText).text = $"{Mathf.RoundToInt(Managers.Player.Data.moveSpeed.TotalValue)}";
-        GetText((int)Texts.AttackSpeedText).text = $"{Mathf.RoundToInt(Managers.Player.Data.attackSpeed.TotalValue)}";
+        GetText((int)Texts.AttackSpeedText).text = $"{Mathf.Round(Managers.Player.Data.attackSpeed.TotalValue*10f)/10f}";
         GetText((int)Texts.CriticalText).text = $"{Mathf.RoundToInt(Managers.Player.Data.criticalChance.TotalValue)}%";
         
     }

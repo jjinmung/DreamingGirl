@@ -13,7 +13,7 @@ public class Enemy03 : EnemyBase
 
     private float beamDuration = 5f;
     private float beamRotaion = 0.7f;
-    
+    protected override bool ShouldDropCoin => false;
     private Vector3 _dashTargetPos;
     
     [Header("Effects")]

@@ -8,6 +8,7 @@ using UnityEngine.Rendering.Universal;
 public class Enemy05 : EnemyBase
 {
     [SerializeField] private SphereCollider attackAttange;
+    
     public override void Attack()
     {
         if(isDead) return;

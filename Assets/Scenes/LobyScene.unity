@@ -18896,7 +18896,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CanEsc: 1
-  MonsterMapPercent: 0.8
+  MonsterMapPercent: 0.6
   TotalGold: 0
   PlayTime: 0
   TotalKill: 0

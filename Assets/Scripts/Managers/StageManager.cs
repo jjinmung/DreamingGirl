@@ -132,7 +132,6 @@ public class StageManager : MonoBehaviour
         Managers.Resource.Destroy(currentRoom.gameObject);
         currentRoomNode = currentRoomNode.nextNodes[doorIndex];
         currentDepth++;
-        TotalGold += currentDepth * 15;
         var go = await Managers.Resource.InstantiateAsync(currentRoomNode.address, Vector3.zero, default,
             Root.transform);
         currentRoom = go.GetComponent<Room>();
@@ -173,6 +172,8 @@ public class StageManager : MonoBehaviour
             _ => ""
         };
     }
+
+    #region 방 나가는 로직
 
     public void OnExitRoom(Door exitDoor)
     {
@@ -238,11 +239,14 @@ public class StageManager : MonoBehaviour
         
     }
 
+    #endregion
+    
+
     public void CheckClear(int gold, Coin coin = null)
     {
+        TotalGold += gold;
         if (currentRoomNode.type == RoomType.Monster)
         {
-            TotalGold += gold;
             stageGold += gold;
             TotalKill++;
             killCount++;
@@ -264,7 +268,6 @@ public class StageManager : MonoBehaviour
         }
         else if (currentRoomNode.type == RoomType.Boss)
         {
-            
             TotalKill++;
             PlayTime = Time.time-PlayTime;
             BossClearAsync(gold).Forget();
@@ -297,11 +300,14 @@ public class StageManager : MonoBehaviour
             
             await UniTask.Delay(TimeSpan.FromSeconds(2f), delayType: DelayType.Realtime, cancellationToken: token);
             // 2. 1초 대기 (이때는 정상 시간 흐름)
-            Time.timeScale = 1f;
-            Managers.Player.AddGold(gold);
+            DOTween.To(() => Time.timeScale, x => Time.timeScale = x, 1f, 0.5f)
+                .SetUpdate(true)
+                .OnComplete(() =>
+                {
+                    Managers.Player.AddGold(gold);
+                });
             
-            await UniTask.Delay(TimeSpan.FromSeconds(1f), cancellationToken: token);
-        
+            await UniTask.Delay(TimeSpan.FromSeconds(1.5f), cancellationToken: token);
             // 3. UI 팝업 로드 및 대기 
             UI_StageEnding ui = await Managers.UI.ShowPopupUI<UI_StageEnding>();
 
@@ -505,6 +511,7 @@ public class StageManager : MonoBehaviour
     }
     public void ReturnToLoby()
     {
+        Managers.Data.ClearAbility();
         ReturnToLobyAsync().Forget();
     }
 
@@ -523,7 +530,10 @@ public class StageManager : MonoBehaviour
             // 페이드 아웃이 진행되는 동안 1초 대기
             await UniTask.Delay(TimeSpan.FromSeconds(1f), cancellationToken: token);
             ClearCoin();
-            enemySpawner.ReSetEnemy();
+            if (enemySpawner != null) 
+            {
+                enemySpawner.ReSetEnemy();
+            }
             // 2. 데이터 및 맵 재구성
             if (currentRoom != null)
             {
